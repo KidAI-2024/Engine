@@ -21,6 +21,6 @@ EditorBuildSettings:
     path: Assets/GlobalAssets/Scenes/Training/Audio.unity
     guid: d524e0b4a3ca4d14dbb1151ac1e0c67e
   - enabled: 1
-    path: Assets/Scenes/Games/Mortal Kombat.unity
-    guid: b6d1f26dad5a37c408087f2e4779cb49
+    path: Assets/MortalKombat/Scenes/Mortal Kombat.unity
+    guid: e06d7bdf4d99b294495fecfc609d92b6
   m_configObjects: {}
