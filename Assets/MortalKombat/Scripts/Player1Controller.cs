@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NinjaAnimationStateController : MonoBehaviour
+public class Player1Controller : MonoBehaviour
 {
     Animator animator;
     int isWalkingHash;
     int legPunshHash;
     int boxPunshHash;
     int jumpHash;
+    int blockHash;
     public float moveSpeed = 0.5f; // Adjust the speed as needed
 
     void Start()
@@ -19,6 +20,7 @@ public class NinjaAnimationStateController : MonoBehaviour
         legPunshHash = Animator.StringToHash("legPunsh");
         boxPunshHash = Animator.StringToHash("box");
         jumpHash = Animator.StringToHash("jump");
+        blockHash = Animator.StringToHash("block");
     }
 
     void Update()
@@ -32,6 +34,7 @@ public class NinjaAnimationStateController : MonoBehaviour
         bool legPunsh = animator.GetBool(legPunshHash);
         bool boxPunsh = animator.GetBool(boxPunshHash);
         bool jump = animator.GetBool(jumpHash);
+        bool block = animator.GetBool(blockHash);
 
         bool forwardPressed = Input.GetKey("d");
         bool backwardPressed = Input.GetKey("a");
@@ -48,6 +51,18 @@ public class NinjaAnimationStateController : MonoBehaviour
             animator.SetBool(isWalkingHash, false);
         }
         
+        // Block
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            // Set the "jump" parameter to true
+            animator.SetBool(blockHash, true);
+        }
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            // Set the "jump" parameter to false
+            animator.SetBool(blockHash, false);
+        }
+
         // Jump
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -75,12 +90,12 @@ public class NinjaAnimationStateController : MonoBehaviour
 
 
         // Box Punsh
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             // Set the "box" parameter to true
             animator.SetBool(boxPunshHash, true);
         }
-        if (Input.GetKeyUp(KeyCode.B))
+        if (Input.GetKeyUp(KeyCode.E))
         {
             // Set the "box" parameter to false
             animator.SetBool(boxPunshHash, false);

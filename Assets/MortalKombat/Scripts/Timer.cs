@@ -4,6 +4,7 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     private static bool isInputEnabled = false;
+    public bool EnableTimer;
 
     public TextMeshProUGUI countdownText;
     private int seconds = 90;
@@ -20,11 +21,19 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-        isInputEnabled = false;
+        if (EnableTimer)
+        {
+            isInputEnabled = false;
 
-        countdownText.gameObject.SetActive(false);
-        // Start the pre-game countdown
-        InvokeRepeating("UpdatePreGameCountdown", 1f, 1f);
+            countdownText.gameObject.SetActive(false);
+            // Start the pre-game countdown
+            InvokeRepeating("UpdatePreGameCountdown", 1f, 1f);
+        }
+        else{
+            
+            preGameCountdownText.gameObject.SetActive(false);
+            isInputEnabled = true;
+        }
     }
 
     void UpdatePreGameCountdown()
