@@ -5,32 +5,37 @@ using UnityEngine;
 public class Player2Controller : MonoBehaviour
 {
     Animator animator;
+    public int health;
     int isWalkingHash;
-    // int legPunshHash;
-    // int boxPunshHash;
+    int isWalkingBackHash;
+    int legPunshHash;
+    int boxPunshHash;
     // int jumpHash;
     public float moveSpeed = 0.5f; // Adjust the speed as needed
 
     void Start()
     {
+        health = 100;
         // Assuming the Animator component is attached to the child GameObject as this script
         animator  = GetComponentInChildren<Animator>();
         isWalkingHash = Animator.StringToHash("isWalking");
-        // legPunshHash = Animator.StringToHash("legPunsh");
-        // boxPunshHash = Animator.StringToHash("box");
+        isWalkingBackHash = Animator.StringToHash("back");
+        legPunshHash = Animator.StringToHash("legPunsh");
+        boxPunshHash = Animator.StringToHash("box");
         // jumpHash = Animator.StringToHash("jump");
     }
 
     void Update()
     {
         // Disable input if the 3..2..1 countdown is still running
-        if(!Timer.IsInputEnabled){
+        if(!UI.IsInputEnabled){
             return;
         }
 
         bool isWalking = animator.GetBool(isWalkingHash);
-        // bool legPunsh = animator.GetBool(legPunshHash);
-        // bool boxPunsh = animator.GetBool(boxPunshHash);
+        bool isWalkingBack = animator.GetBool(isWalkingBackHash);
+        bool legPunsh = animator.GetBool(legPunshHash);
+        bool boxPunsh = animator.GetBool(boxPunshHash);
         // bool jump = animator.GetBool(jumpHash);
 
         bool forwardPressed = Input.GetKey("left");
@@ -47,6 +52,17 @@ public class Player2Controller : MonoBehaviour
             // Set the "isWalking" parameter to false
             animator.SetBool(isWalkingHash, false);
         }
+        // Walking Back
+        if (!isWalkingBack && (backwardPressed))
+        {
+            // Set the "isWalkingBack" parameter to true
+            animator.SetBool(isWalkingBackHash, true);
+        }
+        if (isWalkingBack && !(backwardPressed))
+        {
+            // Set the "isWalkingBack" parameter to false
+            animator.SetBool(isWalkingBackHash, false);
+        }   
         /*
         // Jump with arrow up
         if (Input.GetKeyDown("up"))
@@ -59,7 +75,7 @@ public class Player2Controller : MonoBehaviour
             // Set the "jump" parameter to false
             animator.SetBool(jumpHash, false);
         }
-
+        */
 
         // Leg Punsh with / key
         if (Input.GetKeyDown("/"))
@@ -69,8 +85,8 @@ public class Player2Controller : MonoBehaviour
         }
         if (Input.GetKeyUp("/"))
         {
-            // Set the "legPunsh" parameter to false
-            animator.SetBool(legPunshHash, false);
+            // wait for the animation to finish then make it false
+            StartCoroutine(Reset(legPunshHash));
         }
 
 
@@ -83,9 +99,10 @@ public class Player2Controller : MonoBehaviour
         if (Input.GetKeyUp("."))
         {
             // Set the "box" parameter to false
-            animator.SetBool(boxPunshHash, false);
+            // wait for the animation to finish then make it false
+            StartCoroutine(Reset(boxPunshHash));
         }
-        */
+        
         // Move the character forward if walking
         if (isWalking)
         {
@@ -98,5 +115,11 @@ public class Player2Controller : MonoBehaviour
                 transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
             }
         }
+    }
+
+    IEnumerator Reset(int hash)
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool(hash, false);
     }
 }

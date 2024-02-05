@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player1Controller : MonoBehaviour
 {
     Animator animator;
+    public int health;
     int isWalkingHash;
     int legPunshHash;
     int boxPunshHash;
@@ -14,6 +15,7 @@ public class Player1Controller : MonoBehaviour
 
     void Start()
     {
+        health = 100;
         // Assuming the Animator component is attached to the child GameObject as this script
         animator  = GetComponentInChildren<Animator>();
         isWalkingHash = Animator.StringToHash("isWalking");
@@ -26,7 +28,7 @@ public class Player1Controller : MonoBehaviour
     void Update()
     {
         // Disable input if the 3..2..1 countdown is still running
-        if(!Timer.IsInputEnabled){
+        if(!UI.IsInputEnabled){
             return;
         }
 
@@ -85,7 +87,8 @@ public class Player1Controller : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             // Set the "legPunsh" parameter to false
-            animator.SetBool(legPunshHash, false);
+            // wait for the animation to finish then make it false
+            StartCoroutine(Reset(legPunshHash));
         }
 
 
@@ -98,7 +101,8 @@ public class Player1Controller : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.E))
         {
             // Set the "box" parameter to false
-            animator.SetBool(boxPunshHash, false);
+            // wait for the animation to finish then make it false
+            StartCoroutine(Reset(boxPunshHash));
         }
 
         // Move the character forward if walking
@@ -113,5 +117,10 @@ public class Player1Controller : MonoBehaviour
                 transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
             }
         }
+    }
+    IEnumerator Reset(int hash)
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool(hash, false);
     }
 }
