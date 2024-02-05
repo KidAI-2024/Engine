@@ -18,8 +18,8 @@ public class AnimationStateController : MonoBehaviour
     void Update()
     {
         bool isWalking = animator.GetBool(isWalkingHash);
-        bool forwardPressed = Input.GetKey("w");
-        bool backwardPressed = Input.GetKey("s");
+        bool forwardPressed = Input.GetKey("left");
+        bool backwardPressed = Input.GetKey("right");
 
         // Check if the "W" key is pressed
         if (!isWalking && (forwardPressed || backwardPressed))

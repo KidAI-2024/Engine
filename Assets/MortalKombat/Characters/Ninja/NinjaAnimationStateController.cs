@@ -8,6 +8,7 @@ public class NinjaAnimationStateController : MonoBehaviour
     int isWalkingHash;
     int legPunshHash;
     int boxPunshHash;
+    int jumpHash;
     public float moveSpeed = 0.5f; // Adjust the speed as needed
 
     void Start()
@@ -17,17 +18,25 @@ public class NinjaAnimationStateController : MonoBehaviour
         isWalkingHash = Animator.StringToHash("isWalking");
         legPunshHash = Animator.StringToHash("legPunsh");
         boxPunshHash = Animator.StringToHash("box");
+        jumpHash = Animator.StringToHash("jump");
     }
 
     void Update()
     {
+        // Disable input if the 3..2..1 countdown is still running
+        if(!Timer.IsInputEnabled){
+            return;
+        }
+
         bool isWalking = animator.GetBool(isWalkingHash);
         bool legPunsh = animator.GetBool(legPunshHash);
         bool boxPunsh = animator.GetBool(boxPunshHash);
-        bool forwardPressed = Input.GetKey("w");
-        bool backwardPressed = Input.GetKey("s");
+        bool jump = animator.GetBool(jumpHash);
 
-        // Check if the "W" key is pressed
+        bool forwardPressed = Input.GetKey("d");
+        bool backwardPressed = Input.GetKey("a");
+
+        // Walking
         if (!isWalking && (forwardPressed || backwardPressed))
         {
             // Set the "isWalking" parameter to true
@@ -38,6 +47,21 @@ public class NinjaAnimationStateController : MonoBehaviour
             // Set the "isWalking" parameter to false
             animator.SetBool(isWalkingHash, false);
         }
+        
+        // Jump
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            // Set the "jump" parameter to true
+            animator.SetBool(jumpHash, true);
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            // Set the "jump" parameter to false
+            animator.SetBool(jumpHash, false);
+        }
+
+
+        // Leg Punsh
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Set the "legPunsh" parameter to true
@@ -48,6 +72,9 @@ public class NinjaAnimationStateController : MonoBehaviour
             // Set the "legPunsh" parameter to false
             animator.SetBool(legPunshHash, false);
         }
+
+
+        // Box Punsh
         if (Input.GetKeyDown(KeyCode.B))
         {
             // Set the "box" parameter to true
@@ -58,6 +85,7 @@ public class NinjaAnimationStateController : MonoBehaviour
             // Set the "box" parameter to false
             animator.SetBool(boxPunshHash, false);
         }
+
         // Move the character forward if walking
         if (isWalking)
         {
