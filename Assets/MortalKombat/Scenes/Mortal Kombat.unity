@@ -2006,7 +2006,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1254100124
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3172,7 +3172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a364c2dca1b627b4abe44e75f87cf630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableTimer: 0
+  EnableTimer: 1
   Player1HealthSlider: {fileID: 259285843}
   Player2HealthSlider: {fileID: 1881946561}
   countdownText: {fileID: 849490067}
