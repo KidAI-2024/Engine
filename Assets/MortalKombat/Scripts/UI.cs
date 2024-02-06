@@ -30,8 +30,8 @@ public class UI : MonoBehaviour
     {
         player1 = GameObject.Find("Player1").GetComponent<Player1Controller>();
         player2 = GameObject.Find("Player2").GetComponent<Player2Controller>();
-        Player1HealthSlider.value = 100;
-        Player2HealthSlider.value = 100;
+        Player1HealthSlider.maxValue = player1.health;
+        Player2HealthSlider.maxValue = player2.health;
         if (EnableTimer)
         {
             isInputEnabled = false;
@@ -55,6 +55,7 @@ public class UI : MonoBehaviour
             isInputEnabled = false;
             countdownText.gameObject.SetActive(false);
             preGameCountdownText.gameObject.SetActive(false);
+            GameOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = player1.health <= 0 ? "Player 2 Wins!" : "Player 1 Wins!";
             GameOverText.SetActive(true);
         }
     }

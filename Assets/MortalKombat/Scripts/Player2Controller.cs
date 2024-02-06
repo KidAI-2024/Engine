@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Player2Controller : MonoBehaviour
 {
-    Animator animator;
     public int health;
+    public int legPower = 15;
+    public int weaponPower = 20;
+
+
+    Animator animator;
     int isWalkingHash;
     int isWalkingBackHash;
     int legPunshHash;
@@ -15,7 +19,7 @@ public class Player2Controller : MonoBehaviour
 
     void Start()
     {
-        health = 100;
+        health = 150;
         // Assuming the Animator component is attached to the child GameObject as this script
         animator  = GetComponentInChildren<Animator>();
         isWalkingHash = Animator.StringToHash("isWalking");
@@ -37,6 +41,8 @@ public class Player2Controller : MonoBehaviour
         bool legPunsh = animator.GetBool(legPunshHash);
         bool boxPunsh = animator.GetBool(boxPunshHash);
         // bool jump = animator.GetBool(jumpHash);
+
+        // check the name of the current animation and its state
 
         bool forwardPressed = Input.GetKey("left");
         bool backwardPressed = Input.GetKey("right");
@@ -76,7 +82,6 @@ public class Player2Controller : MonoBehaviour
             animator.SetBool(jumpHash, false);
         }
         */
-
         // Leg Punsh with / key
         if (Input.GetKeyDown("/"))
         {
@@ -104,22 +109,25 @@ public class Player2Controller : MonoBehaviour
         }
         
         // Move the character forward if walking
-        if (isWalking)
+        if (transform.position.z < 33.8f && transform.position.z >= 28.9f)
         {
-            if (forwardPressed)
+            if (isWalking)
             {
-                transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-            }
-            else if (backwardPressed)
-            {
-                transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+                if (forwardPressed)
+                {
+                    transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+                }
+                else if (backwardPressed)
+                {
+                    transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+                }
             }
         }
     }
 
     IEnumerator Reset(int hash)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.2f);
         animator.SetBool(hash, false);
     }
 }

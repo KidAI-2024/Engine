@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Player1Controller : MonoBehaviour
 {
-    Animator animator;
     public int health;
+    public int legPower = 10;
+    public int boxPower = 15;
+
+    Animator animator;
     int isWalkingHash;
     int legPunshHash;
     int boxPunshHash;
@@ -105,22 +108,27 @@ public class Player1Controller : MonoBehaviour
             StartCoroutine(Reset(boxPunshHash));
         }
 
-        // Move the character forward if walking
-        if (isWalking)
+        // check if the player is not at the end of the screen
+        if (transform.position.z < 33.8f && transform.position.z >= 28.9f)
         {
-            if (forwardPressed)
+            // Move the character forward if walking
+            if (isWalking)
             {
-                transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-            }
-            else if (backwardPressed)
-            {
-                transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+                if (forwardPressed)
+                {
+                    transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+                }
+                else if (backwardPressed)
+                {
+                    transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+                }
             }
         }
     }
+        
     IEnumerator Reset(int hash)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
         animator.SetBool(hash, false);
     }
 }
