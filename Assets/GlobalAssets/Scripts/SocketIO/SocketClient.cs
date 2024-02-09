@@ -6,17 +6,26 @@ using UnityEngine;
 using SocketIOClient.Newtonsoft.Json;
 using System.Runtime.InteropServices;
 using UnityEngine.UI;
+using TMPro;
 
 namespace GlobalAssets.SocketIO
 {
     public class SocketClient : MonoBehaviour
     {
-        public RawImage rawImage;
+        // Singleton pattern
         public static SocketClient Instance { get; private set; }
+        // The socket
 
         private SocketIOUnity socket;
+        // For camera streaming
         private WebCamTexture webcamTexture;
         private Color32[] frame;
+        public RawImage rawImage;
+        // Response text
+        public TMP_Text responseText;
+        // The number of frames to send per second
+        public float frameRate = 2f;  // The number of frames to send per second
+        private float nextFrameTime = 0;
 
         void Awake()
         {
@@ -37,19 +46,21 @@ namespace GlobalAssets.SocketIO
             {
                 Query = new Dictionary<string, string> { { "token", "UNITY" } },
                 Transport = SocketIOClient.Transport.TransportProtocol.WebSocket
-            });
-
-            socket.JsonSerializer = new NewtonsoftJsonSerializer();
+            })
+            {
+                JsonSerializer = new NewtonsoftJsonSerializer()
+            };
 
             socket.OnConnected += (sender, e) =>
             {
-                Debug.Log("socket.OnConnected");
+                Debug.Log("Socket Connected Successfully");
             };
-            socket.On("result", (response) =>
+            // Execute the callback in the Unity thread
+            socket.OnUnityThread("result", (response) =>
             {
-                // Handle the result here
-                Debug.Log("Received result from server:");
+                Debug.LogError("Received result from server:");
                 Debug.Log(response.GetValue<string>());
+                responseText.text = response.GetValue<string>();
             });
 
             socket.Connect();
@@ -57,8 +68,8 @@ namespace GlobalAssets.SocketIO
             webcamTexture = new WebCamTexture
             {
                 // reduce the resolution of the webcam
-                requestedWidth = 320,
-                requestedHeight = 240
+                requestedWidth = 160,
+                requestedHeight = 120
             };
             rawImage.texture = webcamTexture;
             rawImage.material.mainTexture = webcamTexture;
@@ -74,7 +85,8 @@ namespace GlobalAssets.SocketIO
         void Update()
         {
             // // Emit a frame to the server
-            if (Input.GetKeyDown(KeyCode.Space))
+            // if (Input.GetKeyDown(KeyCode.Space))
+            if (Time.time >= nextFrameTime)
             {
                 // list of 1,2,3
                 //     List<int> frameBytes = new List<int> { 1, 2, 3 };
@@ -88,7 +100,7 @@ namespace GlobalAssets.SocketIO
                 if (webcamTexture.isPlaying)
                 {
 
-                    Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
+                    // Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
                     // Capture the current frame
                     frame = webcamTexture.GetPixels32();
 
@@ -110,25 +122,32 @@ namespace GlobalAssets.SocketIO
                     // Convert the frame to a byte array
                     // byte[] frameBytes = Color32ArrayToByteArray(frame);
                     byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
-                    Debug.Log("Size of frameBytes: " + frameBytes.Length);
+                    // Encode the byte array to a Base64 string
+                    string frameBase64 = Convert.ToBase64String(frameBytes);
+                    // Debug.Log("Size of frameBytes: " + frameBytes.Length);
 
                     // List<int> frameBytes = new List<int> { 1, 2, 3 };
 
                     var frameData = new Dictionary<string, object>
-            {
-                { "width", newWidth },
-                { "height", newHeight },
-                { "frame", frameBytes }
-            };
-                    Debug.Log("frameData: " + frameBytes);
+                    {
+                        { "width", newWidth },
+                        { "height", newHeight },
+                        { "frame", frameBase64 }
+                    };
+                    // Debug.Log("frameData: " + frameBytes);
                     // Emit the frame to the server
                     socket.Emit("frame", frameData);
+                    // Schedule the next frame
+                    nextFrameTime = Time.time + 1f / frameRate;
                 }
             }
         }
 
         void OnDestroy()
         {
+            // Stop the webcam
+            webcamTexture.Stop();
+            // Disconnect the socket
             socket.Disconnect();
         }
         // Helper method to convert a Color32 array to a byte array
@@ -165,31 +184,31 @@ namespace GlobalAssets.SocketIO
             return bytes;
         }
         // Helper method to convert a Color32 array to a byte array
-        private byte[] Color32ArrayToByteArray(Color32[] colors)
-        {
-            if (colors == null || colors.Length == 0)
-                return null;
+        // private byte[] Color32ArrayToByteArray(Color32[] colors)
+        // {
+        //     if (colors == null || colors.Length == 0)
+        //         return null;
 
-            int lengthOfColor32 = Marshal.SizeOf(typeof(Color32));
-            int length = lengthOfColor32 * colors.Length;
-            byte[] bytes = new byte[length];
+        //     int lengthOfColor32 = Marshal.SizeOf(typeof(Color32));
+        //     int length = lengthOfColor32 * colors.Length;
+        //     byte[] bytes = new byte[length];
 
-            GCHandle handle = default(GCHandle);
-            try
-            {
-                handle = GCHandle.Alloc(colors, GCHandleType.Pinned);
-                IntPtr ptr = handle.AddrOfPinnedObject();
-                Marshal.Copy(ptr, bytes, 0, length);
-            }
-            finally
-            {
-                if (handle != default(GCHandle))
-                    handle.Free();
-            }
+        //     GCHandle handle = default(GCHandle);
+        //     try
+        //     {
+        //         handle = GCHandle.Alloc(colors, GCHandleType.Pinned);
+        //         IntPtr ptr = handle.AddrOfPinnedObject();
+        //         Marshal.Copy(ptr, bytes, 0, length);
+        //     }
+        //     finally
+        //     {
+        //         if (handle != default(GCHandle))
+        //             handle.Free();
+        //     }
 
-            return bytes;
+        //     return bytes;
 
-        }
+        // }
     }
 
 }
