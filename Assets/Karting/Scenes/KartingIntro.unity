@@ -458,6 +458,7 @@ GameObject:
   - component: {fileID: 1086498090}
   - component: {fileID: 1086498089}
   - component: {fileID: 1086498088}
+  - component: {fileID: 1086498091}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -481,10 +482,10 @@ RectTransform:
   m_Father: {fileID: 436694025}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 325.57645, y: -162.62448}
-  m_SizeDelta: {x: 175.2128, y: 64.229}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 310.09998, y: 49.37552}
+  m_SizeDelta: {x: -646.78723, y: 64.229004}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1086498088
 MonoBehaviour:
@@ -529,7 +530,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1086498089}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1086498091}
+        m_TargetAssemblyTypeName: GlobalAssets.UI.SceneChanger, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: KartingMain
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1086498089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,6 +581,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086498086}
   m_CullTransparentMesh: 1
+--- !u!114 &1086498091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086498086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96fd71e5028a67f4eaafe0422f7c7d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1166970577
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,6 +775,7 @@ GameObject:
   - component: {fileID: 1665011273}
   - component: {fileID: 1665011272}
   - component: {fileID: 1665011271}
+  - component: {fileID: 1665011275}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -839,6 +865,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1665011275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665011270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96fd71e5028a67f4eaafe0422f7c7d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1899684535
 GameObject:
   m_ObjectHideFlags: 0
