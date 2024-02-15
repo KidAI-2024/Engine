@@ -4,34 +4,35 @@ namespace Karting.Camera
 {
     public class CameraFollow : MonoBehaviour
     {
-        [Header("Smoothness")]
-        public float moveSmoothness;
-        public float rotSmoothness;
-
+        [Header("Target")]
+        public Transform player;
+        private Rigidbody playerRB;
         [Header("Offsets")]
         public Vector3 moveOffset;
         public Vector3 rotOffset;
+        [Header("Smoothness")]
+        public float moveSmoothness;
+        public float rotSmoothness;
+        // Start is called before the first frame update
+        void Start()
+        {
+            playerRB = player.GetComponent<Rigidbody>();
+        }
 
-        [Header("Target")]
-        public Transform carTarget;
-
+        // Update is called once per frame
         void LateUpdate()
         {
-            Move();
-            Rotate();
+            Vector3 playerForward = (playerRB.velocity + player.transform.forward).normalized;
+            transform.position = Vector3.Lerp(transform.position,
+                player.position + player.transform.TransformVector(moveOffset)
+                + playerForward * (-5f),
+                moveSmoothness * Time.deltaTime);
+            // Vector3
+            transform.LookAt(player.position + rotOffset);
+            // Handle the camera's rotation
+            // Quaternion toRotation = Quaternion.LookRotation(player.position - transform.position + rotOffset, player.up);
+            // transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotSmoothness);
         }
 
-        void Move()
-        {
-            Vector3 targetPos = carTarget.TransformPoint(moveOffset);
-            transform.position = Vector3.Lerp(transform.position, targetPos, moveSmoothness * Time.deltaTime);
-        }
-
-        void Rotate()
-        {
-            var direction = carTarget.position - transform.position;
-            var rotation = Quaternion.LookRotation(direction + rotOffset, Vector3.up);
-            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotSmoothness * Time.deltaTime);
-        }
     }
 }
