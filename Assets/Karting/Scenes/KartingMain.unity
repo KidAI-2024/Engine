@@ -4363,6 +4363,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1891153031136923287, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.345
+      objectReference: {fileID: 0}
+    - target: {fileID: 1891346822877186245, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.345
+      objectReference: {fileID: 0}
     - target: {fileID: 5600988111247552904, guid: 4034997214d5d20459779b25b1385505, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -4411,6 +4419,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car_02
       objectReference: {fileID: 0}
+    - target: {fileID: 5600988111706949216, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.347
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988111706949216, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.121
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988111706949217, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_Radius
+      value: 0.395
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988111860073091, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.347
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988111860073091, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.102
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988111860073116, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_Radius
+      value: 0.43
+      objectReference: {fileID: 0}
     - target: {fileID: 5600988111860073116, guid: 4034997214d5d20459779b25b1385505, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
       value: 2
@@ -4419,6 +4451,14 @@ PrefabInstance:
       propertyPath: m_SidewaysFriction.m_Stiffness
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5600988112013612110, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.102
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988112013612111, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_Radius
+      value: 0.43
+      objectReference: {fileID: 0}
     - target: {fileID: 5600988112013612111, guid: 4034997214d5d20459779b25b1385505, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
       value: 2
@@ -4426,6 +4466,14 @@ PrefabInstance:
     - target: {fileID: 5600988112013612111, guid: 4034997214d5d20459779b25b1385505, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988112425680538, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.121
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600988112425680539, guid: 4034997214d5d20459779b25b1385505, type: 3}
+      propertyPath: m_Radius
+      value: 0.395
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4034997214d5d20459779b25b1385505, type: 3}
