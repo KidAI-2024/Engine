@@ -194,7 +194,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885709922509001681}
   m_LocalRotation: {x: -6.123234e-17, y: 1, z: -6.123234e-17, w: -1.6081226e-16}
-  m_LocalPosition: {x: 1.3114976, y: -0.0991323, z: 1.2173262}
+  m_LocalPosition: {x: 1.356759, y: -0.0991323, z: 1.2173262}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -360,7 +360,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886301809272058011}
   m_LocalRotation: {x: 0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 1.3567587, y: -0.117675304, z: -1.7975645}
+  m_LocalPosition: {x: 1.356759, y: -0.117675304, z: -1.7975645}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -614,7 +614,7 @@ WheelCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600988111706949223}
-  m_Center: {x: 0, y: 0.155, z: 0}
+  m_Center: {x: 0, y: 0.15, z: 0}
   m_Radius: 0.4
   m_SuspensionSpring:
     spring: 35000
@@ -662,7 +662,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600988111860073090}
   m_LocalRotation: {x: -6.123234e-17, y: 1, z: -6.123234e-17, w: -1.6081226e-16}
-  m_LocalPosition: {x: 1.3114976, y: -0.0991323, z: 1.2173262}
+  m_LocalPosition: {x: 1.311498, y: -0.0991323, z: 1.2173262}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -676,8 +676,8 @@ WheelCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600988111860073090}
-  m_Center: {x: 0, y: 0.155, z: 0}
-  m_Radius: 0.4
+  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Radius: 0.43
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -738,8 +738,8 @@ WheelCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600988112013612109}
-  m_Center: {x: 0, y: 0.155, z: 0}
-  m_Radius: 0.4
+  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Radius: 0.43
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -800,7 +800,7 @@ WheelCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5600988112425680537}
-  m_Center: {x: 0, y: 0.155, z: 0}
+  m_Center: {x: 0, y: 0.15, z: 0}
   m_Radius: 0.4
   m_SuspensionSpring:
     spring: 35000
