@@ -62,7 +62,7 @@ public class WebcamController : MonoBehaviour
         newImageObject.transform.localPosition = newPosition;
         
         // get the imageContainer and increase its height
-        if (col == 0)
+        if (col == 0 && capturedImages.Count > 8)
         {
             imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(imageContainer.GetComponent<RectTransform>().sizeDelta.x, imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
         }
@@ -100,7 +100,7 @@ public class WebcamController : MonoBehaviour
             newImageObject.transform.localPosition = newPosition;
             
             // get the imageContainer and increase its height
-            if (col == 0)
+            if (col == 0 && capturedImages.Count > 8)
             {
                 finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
             }
