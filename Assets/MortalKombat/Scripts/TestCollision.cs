@@ -39,7 +39,7 @@ public class TestCollision : MonoBehaviour
         // player (left player)
         if (PLayer1Animator.GetBool(boxHash) && this.gameObject.tag == "hand" && col.gameObject.tag == "enemy")
         {
-            Player2.health -= Player2.weaponPower;
+            Player2.health -= Player1.boxPower;
             // play hit animation
             StartCoroutine(Player2HitAnimation());
 
@@ -51,7 +51,7 @@ public class TestCollision : MonoBehaviour
         }
         if (PLayer1Animator.GetBool(legHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "enemy")
         {
-            Player2.health -= Player2.legPower;
+            Player2.health -= Player1.legPower;
             // play hit animation
             StartCoroutine(Player2HitAnimation());
             
@@ -70,14 +70,14 @@ public class TestCollision : MonoBehaviour
         // enemy (right player)
         if (PLayer2Animator.GetBool(boxHash) && this.gameObject.tag == "weapon" && col.gameObject.tag == "player")
         {
-            Player1.health -= Player1.boxPower;
+            Player1.health -= Player2.weaponPower;
             PLayer2Animator.SetBool(boxHash, false);
             StartCoroutine(Player1HitAnimation());
             audioSource.PlayOneShot(hitSound);
         }
         if (PLayer2Animator.GetBool(legHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "player")
         {
-            Player1.health -= Player1.legPower;
+            Player1.health -= Player2.legPower;
             StartCoroutine(Player1HitAnimation());
             PLayer2Animator.SetBool(legHash, false);
             audioSource.PlayOneShot(hitSound);
