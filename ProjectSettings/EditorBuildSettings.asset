@@ -23,4 +23,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MortalKombat/Scenes/Mortal Kombat.unity
     guid: 7769f33fb4fa2e5458344a36556ad760
+  - enabled: 1
+    path: Assets/Karting/Scenes/KartingIntro.unity
+    guid: dff6b5a5e053a2d40867edd5449ef4c6
+  - enabled: 1
+    path: Assets/Karting/Scenes/KartingMain.unity
+    guid: 2a5da18706f703f4f828adf36e62bee8
   m_configObjects: {}
