@@ -43,9 +43,17 @@ namespace GlobalAssets.WebcamFeed
                     Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
                     frame = webcamTexture.GetPixels32();
                     byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
-
-                    socketClient.SendMessage(frameBytes);
-                    // SendFrame(frame);
+                    // Encode the byte array to a Base64 string
+                    string frameBase64 = Convert.ToBase64String(frameBytes);
+                    // Construct dictionary to send to server
+                    Dictionary<string, string> message = new Dictionary<string, string>
+                    {
+                        { "frame", frameBase64 },
+                        { "width", webcamTexture.width.ToString() },
+                        { "height", webcamTexture.height.ToString() },
+                        { "event", "predict_frame" }
+                    };
+                    socketClient.SendMessage(message);
                     nextFrameReady = false;
                 }
             }
