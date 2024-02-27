@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Net;
 using System;
 using UnityEngine.UI;
-namespace GlobalAssets.SocketUDP
+namespace GlobalAssets.Socket
 {
 
     public class SocketUDP : MonoBehaviour
