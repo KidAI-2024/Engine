@@ -60,8 +60,7 @@ namespace GlobalAssets.WebcamFeed
             // Receive the response from the server
             if (socketClient.isDataAvailable())
             {
-                byte[] data = socketClient.ReceiveData();
-                string message = System.Text.Encoding.UTF8.GetString(data);
+                string message = socketClient.ReceiveMessage();
                 Debug.Log("Received: " + message);
                 nextFrameReady = true;
             }

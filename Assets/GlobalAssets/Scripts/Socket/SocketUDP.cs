@@ -34,6 +34,14 @@ namespace GlobalAssets.Socket
             udp = new UdpClient();
             remoteEP = new IPEndPoint(IPAddress.Any, 0);
         }
+
+        public void SendMessage(Dictionary<string, string> message)
+        {
+            string message_string = SerializeDictionary(message);
+            // Debug.Log("Sending: " + message_string);
+            byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message_string);
+            SendMessageBytes(messageBytes);
+        }
         private void SendMessageBytes(byte[] messageBytes)
         {
             // Debug.Log(System.Text.Encoding.UTF8.GetString(messageBytes));
@@ -47,25 +55,23 @@ namespace GlobalAssets.Socket
                 udp.Send(chunk, chunk.Length, host, port);
             }
         }
-        public void SendMessage(Dictionary<string, string> message)
+        public string ReceiveMessage()
         {
-            string message_string = SerializeDictionary(message);
-            // Debug.Log("Sending: " + message_string);
-            byte[] messageBytes = System.Text.Encoding.UTF8.GetBytes(message_string);
-            SendMessageBytes(messageBytes);
+            byte[] data = ReceiveMessageBytes();
+            return System.Text.Encoding.UTF8.GetString(data);
+        }
+        public bool isDataAvailable()
+        {
+            return udp.Available > 0;
         }
         private string SerializeDictionary(Dictionary<string, string> message)
         {
             return JsonConvert.SerializeObject(message);
         }
-        public byte[] ReceiveData()
+        private byte[] ReceiveMessageBytes()
         {
             byte[] data = udp.Receive(ref remoteEP);
             return data;
-        }
-        public bool isDataAvailable()
-        {
-            return udp.Available > 0;
         }
         void OnApplicationQuit()
         {
