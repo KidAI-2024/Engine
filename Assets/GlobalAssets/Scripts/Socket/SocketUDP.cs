@@ -8,6 +8,8 @@ namespace GlobalAssets.Socket
 
     public class SocketUDP : MonoBehaviour
     {
+        // Singleton pattern
+        public static SocketUDP Instance { get; private set; }
         // For camera streaming
         private WebCamTexture webcamTexture;
         private Color32[] frame;
@@ -16,13 +18,26 @@ namespace GlobalAssets.Socket
         private UdpClient udp;
         private IPEndPoint remoteEP;
         private bool nextFrameReady = true;
-        private String host = "localhost";
+        private string host = "localhost";
         private int port = 5065;
-
-        void Start()
+        void Awake()
         {
+            // Singleton pattern
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
             udp = new UdpClient();
             remoteEP = new IPEndPoint(IPAddress.Any, 0);
+        }
+        void Start()
+        {
             // Start the webcam
             webcamTexture = new WebCamTexture
             {
