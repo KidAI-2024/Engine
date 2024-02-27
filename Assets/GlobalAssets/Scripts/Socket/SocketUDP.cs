@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Net;
 using System;
 using System.Collections.Generic;
-// using System.Linq;
 using Newtonsoft.Json;
 namespace GlobalAssets.Socket
 {
@@ -18,6 +17,7 @@ namespace GlobalAssets.Socket
         private IPEndPoint remoteEP;
         private string host = "localhost";
         private int port = 5065;
+        private int chunkSize = 60000; // Size of each chunk in bytes
         void Awake()
         {
             // Singleton pattern
@@ -45,7 +45,6 @@ namespace GlobalAssets.Socket
         private void SendMessageBytes(byte[] messageBytes)
         {
             // Debug.Log(System.Text.Encoding.UTF8.GetString(messageBytes));
-            int chunkSize = 60000; // Size of each chunk in bytes
             for (int i = 0; i < messageBytes.Length; i += chunkSize)
             {
                 // Debug.Log("messageBytes.Length: " + messageBytes.Length);
