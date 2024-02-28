@@ -3449,7 +3449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetGameObject: {fileID: 277870856}
-  folderPath: Training
+  folderPath: Projects
 --- !u!1 &855544451
 GameObject:
   m_ObjectHideFlags: 0
