@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 using System.IO;
 
@@ -8,8 +9,38 @@ public class StartTraining : MonoBehaviour
     public GameObject targetGameObject; // The GameObject whose children contain ScrollView components
     public string folderPath = "Training"; // Folder path to save the images
     private string savePath;
-    
-    public void ExtractAndSaveImages()
+
+    private GlobalAssets.Socket.SocketUDP socketClient;
+    void Start()
+    {
+        // get socket from SocketClient
+        socketClient = GlobalAssets.Socket.SocketUDP.Instance;
+    }
+
+    public void StartSocketTraining(){
+        ExtractAndSaveImages();
+        SocketTrain();
+    }
+    private void SocketTrain()
+    {    
+        // if (Input.GetKeyDown(KeyCode.Space))
+        Dictionary<string, string> message = new Dictionary<string, string>
+        {
+            { "path", "./Training/" },
+            { "event", "start_body_pose_train" }
+        };
+        socketClient.SendMessage(message);
+    } 
+    void Update()
+    {
+        // Receive the response from the server
+        if (socketClient.isDataAvailable())
+        {
+            string message = socketClient.ReceiveMessage();
+            Debug.Log("Received: " + message);
+        }
+    }
+    private void ExtractAndSaveImages()
     {
         // Check if the targetGameObject is provided
         if (targetGameObject == null)
