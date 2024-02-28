@@ -691,6 +691,7 @@ MonoBehaviour:
   imageContainer: {fileID: 1866285604}
   finalImagesContainer: {fileID: 485446245}
   captureButton: {fileID: 2143016749}
+  capturedImages: []
 --- !u!114 &122326725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4037,6 +4038,7 @@ MonoBehaviour:
   imageContainer: {fileID: 238913385}
   finalImagesContainer: {fileID: 1641469093}
   captureButton: {fileID: 602443124}
+  capturedImages: []
 --- !u!114 &1034918957
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,7 +11,14 @@ public class WebcamController : MonoBehaviour
     public Button captureButton;
 
     private WebCamTexture webcamTexture;
-    private List<Texture2D> capturedImages = new List<Texture2D>();
+    public List<Texture2D> capturedImages = new List<Texture2D>();
+
+
+    void Start()
+    {
+        // Add a listener to the capture button
+        captureButton.onClick.AddListener(CapturePhoto);
+    }
 
     public void OpenCamera()
     {   
@@ -26,9 +33,6 @@ public class WebcamController : MonoBehaviour
         webcamTexture = new WebCamTexture();
         webcamDisplay.texture = webcamTexture;
         webcamTexture.Play();
-
-        // Attach the capturePhoto method to the captureButton's onClick event
-        captureButton.onClick.AddListener(CapturePhoto);
     }
 
     public void CapturePhoto()
@@ -60,20 +64,22 @@ public class WebcamController : MonoBehaviour
 
         Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
         newImageObject.transform.localPosition = newPosition;
+        newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
         
         // get the imageContainer and increase its height
         if (col == 0 && capturedImages.Count > 8)
         {
             imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(imageContainer.GetComponent<RectTransform>().sizeDelta.x, imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
         }
-
-
-        // Optionally, you can save the photo or do further processing here
-        // For simplicity, let's log the photo's dimensions
     }
 
     public void CloseCamera()
     {
+        // clear finalImagesContainer content
+        foreach (Transform child in finalImagesContainer)
+        {
+            Destroy(child.gameObject);
+        }
         // Stop webcam feed when the object is destroyed
         if (webcamTexture != null)
             webcamTexture.Stop();
@@ -88,6 +94,8 @@ public class WebcamController : MonoBehaviour
             // reduce its size and set its position as in the imageContainer
             // newImageObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
+            // set imagePrefab.ImageIndex = i;
+            
             // Set the position of the new RawImage to stack horizontally in a grid
             float spacingX = 70f; // Adjust the horizontal spacing between images
             float spacingY = 70f; // Adjust the vertical spacing between rows
