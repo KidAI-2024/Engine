@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+namespace Survival
 
 public class Door : MonoBehaviour
 {

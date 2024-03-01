@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+namespace Survival
 
 public class KillPlayer : MonoBehaviour
 {

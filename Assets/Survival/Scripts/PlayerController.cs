@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Survival
 
 // This Will Auto Add Character Controller To Gameobject If It's Not Already Applied:
 [RequireComponent(typeof(CharacterController))]

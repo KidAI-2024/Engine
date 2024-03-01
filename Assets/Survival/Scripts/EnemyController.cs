@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+namespace Survival
 
 public class EnemyController : MonoBehaviour
 {
