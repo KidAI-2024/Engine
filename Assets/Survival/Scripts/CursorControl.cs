@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 namespace Survival
-
-public class CursorControl : MonoBehaviour
 {
-    private void Start()
+
+
+    public class CursorControl : MonoBehaviour
     {
-        // Make the cursor visible and unlock it
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        private void Start()
+        {
+            // Make the cursor visible and unlock it
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
+
 }

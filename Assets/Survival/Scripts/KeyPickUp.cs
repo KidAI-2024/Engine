@@ -2,57 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 namespace Survival
-
-public class KeyPickUp : MonoBehaviour
 {
-    public GameObject handUI;
-    public GameObject objToActivate;
-
-    private GameObject ob;
 
 
-    private bool inReach;
-
-
-    void Start()
+    public class KeyPickUp : MonoBehaviour
     {
-        handUI.SetActive(false);
+        public GameObject handUI;
+        public GameObject objToActivate;
 
-        objToActivate.SetActive(false);
-
-        ob = this.gameObject;
-
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Reach")
-        {
-            inReach = true;
-            handUI.SetActive(true);
-        }
-
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Reach")
-        {
-            inReach = false;
-            handUI.SetActive(false);
-        }
-    }
-
-    void Update()
-    {
+        private GameObject ob;
 
 
-        if (inReach && Input.GetButtonDown("Interact"))
+        private bool inReach;
+
+
+        void Start()
         {
             handUI.SetActive(false);
-            objToActivate.SetActive(true);
-            ob.GetComponent<MeshRenderer>().enabled = false;
-        }
-    }
 
+            objToActivate.SetActive(false);
+
+            ob = this.gameObject;
+
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "Reach")
+            {
+                inReach = true;
+                handUI.SetActive(true);
+            }
+
+        }
+
+        void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.tag == "Reach")
+            {
+                inReach = false;
+                handUI.SetActive(false);
+            }
+        }
+
+        void Update()
+        {
+
+
+            if (inReach && Input.GetButtonDown("Interact"))
+            {
+                handUI.SetActive(false);
+                objToActivate.SetActive(true);
+                ob.GetComponent<MeshRenderer>().enabled = false;
+            }
+        }
+
+    }
 }
