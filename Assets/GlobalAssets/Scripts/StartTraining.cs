@@ -21,7 +21,7 @@ public class StartTraining : MonoBehaviour
 
     void Start()
     {
-        projectName = "Project1"; // Project One be dynamic
+        projectName = PlayerPrefs.GetString("ProjectName", ""); 
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
@@ -59,7 +59,7 @@ public class StartTraining : MonoBehaviour
         for (int i = 0; i < ImagesData.Count; i++)
         {
             // Construct the folder path for the current class
-            string classFolderPath = Path.Combine(basePath, "Project1", i + "_" + ImagesData[i].className);
+            string classFolderPath = Path.Combine(basePath, projectName, i + "_" + ImagesData[i].className);
 
             // Create the directory if it doesn't exist
             if (!Directory.Exists(classFolderPath))
@@ -76,8 +76,7 @@ public class StartTraining : MonoBehaviour
                 // Write the image bytes to the file
                 File.WriteAllBytes(imagePath, ImagesData[i].images[j]);
             }
-
-            Debug.Log("Saved " + ImagesData[i].className + " images to " + classFolderPath);
+            Debug.Log("Saved Class : " + ImagesData[i].className + " images to " + classFolderPath);
         }
     }
 
