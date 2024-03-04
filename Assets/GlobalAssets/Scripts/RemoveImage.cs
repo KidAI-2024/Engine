@@ -17,7 +17,6 @@ public class RemoveImage : MonoBehaviour
             GrandParentObject = GrandParentObject.parent.GetChild(1);
         }
         capturedImages = GrandParentObject.GetComponent<WebcamController>().capturedImages;
-        Debug.Log("GrandParentObject.name = " + GrandParentObject.name);
     }
 
     public void RemoveThisImage()
@@ -34,8 +33,6 @@ public class RemoveImage : MonoBehaviour
             // Get the RectTransform of the preceding sibling
             RectTransform prevSiblingRectTransform = parent.GetChild(i - 1).GetComponent<RectTransform>();
 
-            // Debug.Log("i = " + i + " position(i) = " + childRectTransform.localPosition + " position(i - 1) = " + prevSiblingRectTransform.localPosition);
-
             // Set the localPosition of the child to match the preceding sibling
             childRectTransform.localPosition = prevSiblingRectTransform.localPosition;
 
@@ -47,7 +44,5 @@ public class RemoveImage : MonoBehaviour
 
         // Update the capturedImages list
         capturedImages.RemoveAt(ImageIndex);
-
-        Debug.Log("Image removed. capturedImages.Count = " + capturedImages.Count);
     }
 }

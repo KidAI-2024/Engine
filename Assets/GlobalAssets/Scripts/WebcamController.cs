@@ -49,9 +49,6 @@ public class WebcamController : MonoBehaviour
         RawImage newImage = newImageObject.GetComponent<RawImage>();
         newImage.texture = photo;
 
-
-
-
         // Set the position of the new RawImage to stack horizontally in a grid
         float spacingX = 70f; // Adjust the horizontal spacing between images
         float spacingY = 70f; // Adjust the vertical spacing between rows
@@ -91,10 +88,6 @@ public class WebcamController : MonoBehaviour
             GameObject newImageObject = Instantiate(imagePrefab, finalImagesContainer);
             RawImage newImage = newImageObject.GetComponent<RawImage>();
             newImage.texture = image;
-            // reduce its size and set its position as in the imageContainer
-            // newImageObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-
-            // set imagePrefab.ImageIndex = i;
             
             // Set the position of the new RawImage to stack horizontally in a grid
             float spacingX = 70f; // Adjust the horizontal spacing between images
