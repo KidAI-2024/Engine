@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class ProjectName : MonoBehaviour
@@ -10,10 +11,15 @@ public class ProjectName : MonoBehaviour
     public GameObject ProjectListPanel;    
     public GameObject ProjectBtnPrefab;
     public string projectType;
+    public string nextSceneName;
     
     public void SetProjectType(string type)
     {
         projectType = type;
+    }
+    public void SetNextScene(string scene)
+    {
+        nextSceneName = scene;
     }
 
     public void CreateProject()
@@ -47,5 +53,6 @@ public class ProjectName : MonoBehaviour
         // Change its position (add -70 in the y axes) depending on the count of the projects till now
         int projectCount = ProjectListPanel.transform.childCount;
         newProjectBtn.transform.localPosition = new Vector3(0, -70 * projectCount, 0);
+        SceneManager.LoadScene(nextSceneName);
     }
 }

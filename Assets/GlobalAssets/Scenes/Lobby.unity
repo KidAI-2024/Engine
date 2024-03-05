@@ -1021,6 +1021,7 @@ MonoBehaviour:
   ProjectListPanel: {fileID: 1701126947}
   ProjectBtnPrefab: {fileID: 1921220201738013555, guid: 3a926db7b44e801498e17bf23b8c2c88, type: 3}
   projectType: 
+  nextSceneName: 
 --- !u!1 &476362235
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,18 +2310,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1446371222}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Bodypose
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 396781754}
         m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
         m_MethodName: SetProjectType
@@ -2331,6 +2320,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Body Pose Classification
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 396781754}
+        m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
+        m_MethodName: SetNextScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bodypose
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 396781754}
@@ -2480,18 +2481,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1549251405}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Audio
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 396781754}
         m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
         m_MethodName: SetProjectType
@@ -2502,6 +2491,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Audio Classification
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 396781754}
+        m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
+        m_MethodName: SetNextScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Audio
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 396781754}
@@ -3233,18 +3234,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1660869000}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Handpose
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 396781754}
         m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
         m_MethodName: SetProjectType
@@ -3255,6 +3244,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Hand Gesture Classification
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 396781754}
+        m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
+        m_MethodName: SetNextScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Handpose
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 396781754}
@@ -3404,18 +3405,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1674587682}
-        m_TargetAssemblyTypeName: SceneChanger, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Image
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 396781754}
         m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
         m_MethodName: SetProjectType
@@ -3426,6 +3415,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Image Classification
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 396781754}
+        m_TargetAssemblyTypeName: ProjectName, Assembly-CSharp
+        m_MethodName: SetNextScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Image
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 396781754}

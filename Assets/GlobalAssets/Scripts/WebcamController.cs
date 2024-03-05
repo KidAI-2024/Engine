@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class WebcamController : MonoBehaviour
 {
@@ -9,15 +10,24 @@ public class WebcamController : MonoBehaviour
     public Transform imageContainer; // Parent transform for instantiated RawImages
     public Transform finalImagesContainer; // Parent transform for instantiated RawImages
     public Button captureButton;
+    public Button autoCaptureButton;
+    public GameObject autoCaptureGO;
 
+    private int autoCaptureTime = 1;
     private WebCamTexture webcamTexture;
+    private TMP_Dropdown autoCaptureDDL;
     public List<Texture2D> capturedImages = new List<Texture2D>();
 
 
     void Start()
     {
         // Add a listener to the capture button
+        autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
         captureButton.onClick.AddListener(CapturePhoto);
+        autoCaptureButton.onClick.AddListener(AutoCapture);
+        autoCaptureDDL.onValueChanged.AddListener(delegate {
+            AutoCaptureTimeValueChanged(autoCaptureDDL.options[autoCaptureDDL.value].text);
+        });
     }
 
     public void OpenCamera()
@@ -30,11 +40,37 @@ public class WebcamController : MonoBehaviour
         }
 
         // Get the default webcam and start streaming
-        webcamTexture = new WebCamTexture();
+        // webcamTexture = new WebCamTexture();
+        webcamTexture = new WebCamTexture
+        {
+            // reduce the resolution of the webcam
+            requestedWidth = 320,
+            requestedHeight = 180
+        };
         webcamDisplay.texture = webcamTexture;
         webcamTexture.Play();
     }
+    public void AutoCaptureTimeValueChanged(string value)
+    {
+        autoCaptureTime = int.Parse(value);
+    }
 
+    public void AutoCapture()
+    {
+        // change autoCaptureButton text mesh pro to stop
+        autoCaptureButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stop";
+        InvokeRepeating("CapturePhoto", autoCaptureTime, autoCaptureTime);
+        autoCaptureButton.onClick.RemoveAllListeners();
+        autoCaptureButton.onClick.AddListener(StopAutoCapture);
+    }
+    public void StopAutoCapture()
+    {
+        // change autoCaptureButton text mesh pro to stop
+        CancelInvoke("CapturePhoto");
+        autoCaptureButton.GetComponentInChildren<TextMeshProUGUI>().text = "Auto capture";
+        autoCaptureButton.onClick.RemoveAllListeners();
+        autoCaptureButton.onClick.AddListener(AutoCapture);
+    }
     public void CapturePhoto()
     {
         // Create a texture with the same dimensions as the webcam feed
@@ -72,6 +108,9 @@ public class WebcamController : MonoBehaviour
 
     public void CloseCamera()
     {
+        // stop the InvokeRepeating
+        CancelInvoke("CapturePhoto");
+
         // clear finalImagesContainer content
         foreach (Transform child in finalImagesContainer)
         {
