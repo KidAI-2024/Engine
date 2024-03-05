@@ -4482,6 +4482,7 @@ GameObject:
   - component: {fileID: 765856342}
   - component: {fileID: 765856341}
   - component: {fileID: 765856345}
+  - component: {fileID: 765856346}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4591,6 +4592,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96fd71e5028a67f4eaafe0422f7c7d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &765856346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765856340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3afe694fb52834594b2b90c6466286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  webcamDisplay: {fileID: 1645920694}
+  predictionText: {fileID: 546712362}
 --- !u!1 &778464768
 GameObject:
   m_ObjectHideFlags: 0
@@ -5538,7 +5553,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1324067365}
+      - m_Target: {fileID: 765856346}
         m_TargetAssemblyTypeName: PredictionController, Assembly-CSharp
         m_MethodName: StartPrediction
         m_Mode: 1
@@ -7562,7 +7577,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1324067364}
-  - component: {fileID: 1324067365}
   m_Layer: 0
   m_Name: Predictions
   m_TagString: Untagged
@@ -7587,20 +7601,6 @@ Transform:
   m_Father: {fileID: 765856344}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1324067365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1324067363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca3afe694fb52834594b2b90c6466286, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  webcamDisplay: {fileID: 1645920694}
-  predictionText: {fileID: 546712362}
 --- !u!1 &1326127029
 GameObject:
   m_ObjectHideFlags: 0

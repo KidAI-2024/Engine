@@ -17,18 +17,8 @@ public class PredictionController : MonoBehaviour
 
     void Start()
     {
+        predictionText.text = "Predict";
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
-        // Check if the device supports webcam
-        if (WebCamTexture.devices.Length == 0)
-        {
-            Debug.LogError("No webcam found!");
-            return;
-        }
-        predictionText.text = "";
-    }
-    public void StartPrediction()
-    {
-        startPrediction = true;
         // Get the default webcam and start streaming
         webcamTexture = new WebCamTexture
         {
@@ -36,6 +26,17 @@ public class PredictionController : MonoBehaviour
             requestedWidth = 320,
             requestedHeight = 180
         };
+    }
+    public void StartPrediction()
+    {
+        predictionText.text = "Predicting...";
+        startPrediction = true;
+        // Check if the device supports webcam
+        if (WebCamTexture.devices.Length == 0)
+        {
+            Debug.LogError("No webcam found!");
+            return;
+        }
         webcamDisplay.texture = webcamTexture;
         webcamDisplay.material.mainTexture = webcamTexture;
         webcamTexture.Play();
@@ -44,7 +45,7 @@ public class PredictionController : MonoBehaviour
     void Update()
     {
         // if (Input.GetKeyDown(KeyCode.Space))
-        if (nextFrameReady && startPrediction)
+        if (nextFrameReady)
         {
             if (webcamTexture.isPlaying)
             {
@@ -70,13 +71,15 @@ public class PredictionController : MonoBehaviour
         if (socketClient.isDataAvailable())
         {
             string message = socketClient.ReceiveMessage();
-            // predictionText.text = message;
+            predictionText.text = message;
             Debug.Log("Received: " + message);
-            nextFrameReady = true;
+            Invoke("ResetNextFrameReady", 1.0f);
         }
-
     }
-    
+    void ResetNextFrameReady(){
+        nextFrameReady = true;
+        predictionText.text = "Predicting...";
+    }
     void OnDestroy()
     {
         // Stop the webcam
