@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class PredictionController : MonoBehaviour
 {
     public RawImage webcamDisplay;
     public TextMeshProUGUI predictionText;
+    public GameObject classesContainer;
 
     private bool nextFrameReady = true;
     private bool startPrediction = false;
     private Color32[] frame;
+    private Dictionary<string, string> classMap = new Dictionary<string, string>();
     private GlobalAssets.Socket.SocketUDP socketClient;
     private WebCamTexture webcamTexture;
 
@@ -29,7 +32,7 @@ public class PredictionController : MonoBehaviour
     }
     public void StartPrediction()
     {
-        predictionText.text = "Predicting...";
+        CreateClassMap();
         startPrediction = true;
         // Check if the device supports webcam
         if (WebCamTexture.devices.Length == 0)
@@ -41,7 +44,6 @@ public class PredictionController : MonoBehaviour
         webcamDisplay.material.mainTexture = webcamTexture;
         webcamTexture.Play();
     }
-    
     void Update()
     {
         // if (Input.GetKeyDown(KeyCode.Space))
@@ -71,14 +73,38 @@ public class PredictionController : MonoBehaviour
         if (socketClient.isDataAvailable())
         {
             string message = socketClient.ReceiveMessage();
-            predictionText.text = message;
-            Debug.Log("Received: " + message);
+            predictionText.text = MapToClassName(message);
             Invoke("ResetNextFrameReady", 1.0f);
         }
     }
+    // This function creates a map of class names to class indices
+    void CreateClassMap()
+    {
+        // Get the classes container to map the prediction to the class name
+        if (classesContainer == null)
+        {
+            Debug.LogError("Please assign the target GameObject!");
+            return;
+        }
+        int j = 0;
+        Transform targetTransform = classesContainer.transform;
+        foreach (Transform child in targetTransform)
+        {
+            classMap.Add(j.ToString(), child.GetComponentInChildren<TMP_InputField>().text);
+            j++;
+        }
+    }
+    // This function maps the prediction to the class name text
+    string MapToClassName(string message)
+    {
+        if (classMap.ContainsKey(message))
+        {
+            return classMap[message];
+        }
+        return message;
+    }
     void ResetNextFrameReady(){
         nextFrameReady = true;
-        predictionText.text = "Predicting...";
     }
     void OnDestroy()
     {

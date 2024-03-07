@@ -12,6 +12,7 @@ public class WebcamController : MonoBehaviour
     public Button captureButton;
     public Button autoCaptureButton;
     public GameObject autoCaptureGO;
+    public TextMeshProUGUI numCapturedText;
 
     private int autoCaptureTime = 1;
     private WebCamTexture webcamTexture;
@@ -29,7 +30,10 @@ public class WebcamController : MonoBehaviour
             AutoCaptureTimeValueChanged(autoCaptureDDL.options[autoCaptureDDL.value].text);
         });
     }
-
+    void Update()
+    {
+        numCapturedText.text = "Captured: " + capturedImages.Count + " images";
+    }
     public void OpenCamera()
     {   
         // Check if the device supports webcam
@@ -147,4 +151,5 @@ public class WebcamController : MonoBehaviour
             i++;
         }
     }
+     
 }
