@@ -14,6 +14,8 @@ namespace Karting.Car
         private float speed;
         private Rigidbody playerRB;
         public AnimationCurve steeringCurve;
+        private float Gforce;
+        private float lastVelocity;
         // Start is called before the first frame update
         void Start()
         {
@@ -29,6 +31,16 @@ namespace Karting.Car
             Brake();
             Steer();
             ApplyWheelPositions();
+        }
+        void FixedUpdate()
+        {
+            float currVelocity = playerRB.velocity.magnitude;
+            Gforce = (currVelocity - lastVelocity) / (Time.fixedDeltaTime * Physics.gravity.magnitude);
+            lastVelocity = currVelocity;
+        }
+        public float GetGforce()
+        {
+            return Gforce;
         }
         void GetInput()
         {
