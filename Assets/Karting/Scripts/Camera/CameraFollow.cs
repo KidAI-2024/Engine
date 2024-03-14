@@ -10,7 +10,7 @@ namespace Karting.Camera
 
         public GameObject atachedVehicle;
         private int locationIndicator = 0;
-        private Car.CarController2 controllerRef;
+        private Car.CarController3 controllerRef;
 
         private Vector3 newPos;
         private Transform target;
@@ -29,7 +29,7 @@ namespace Karting.Camera
             focusPoint = atachedVehicle.transform.Find("focus").gameObject;
 
             target = focusPoint.transform;
-            controllerRef = atachedVehicle.GetComponent<Car.CarController2>();
+            controllerRef = atachedVehicle.GetComponent<Car.CarController3>();
         }
 
         private void FixedUpdate()
