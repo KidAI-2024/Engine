@@ -538,11 +538,16 @@ MonoBehaviour:
     Grip: 0.97
     Steer: 4
     AddedGravity: 1
-  m_VisualWheels:
-  - {fileID: 1908643274116190741}
-  - {fileID: 1908043593177709723}
-  - {fileID: 1908580920712580519}
-  - {fileID: 1909313113630880277}
+  wheelMeshes:
+    FrontLeftWheel: {fileID: 1908643274116190741}
+    FrontRightWheel: {fileID: 1908043593177709723}
+    RearLeftWheel: {fileID: 1908580920712580519}
+    RearRightWheel: {fileID: 1909313113630880277}
+  wheelColliders:
+    FrontLeftWheel: {fileID: 5600988111706949217}
+    FrontRightWheel: {fileID: 5600988112425680539}
+    RearLeftWheel: {fileID: 5600988111860073116}
+    RearRightWheel: {fileID: 5600988112013612111}
   CenterOfMass: {fileID: 5600988112478734944}
   AirborneReorientationCoefficient: 3
   DriftGrip: 0.85
@@ -555,10 +560,6 @@ MonoBehaviour:
   SuspensionSpring: 20000
   SuspensionDamp: 500
   WheelsPositionVerticalOffset: 0
-  FrontLeftWheel: {fileID: 5600988111706949217}
-  FrontRightWheel: {fileID: 5600988112425680539}
-  RearLeftWheel: {fileID: 5600988111860073116}
-  RearRightWheel: {fileID: 5600988112013612111}
   GroundLayers:
     serializedVersion: 2
     m_Bits: 4294967291
