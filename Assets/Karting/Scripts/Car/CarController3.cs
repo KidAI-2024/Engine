@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 namespace Karting.Car
 {
@@ -41,34 +42,39 @@ namespace Karting.Car
 
         [Header("Drifting")]
         [Range(0.01f, 1.0f), Tooltip("The grip value when drifting.")]
-        public float DriftGrip = 0.4f;
+        public float DriftGrip = 0.85f;
         [Range(0.0f, 10.0f), Tooltip("Additional steer when the kart is drifting.")]
         public float DriftAdditionalSteer = 5.0f;
         [Range(1.0f, 30.0f), Tooltip("The higher the angle, the easier it is to regain full grip.")]
-        public float MinAngleToFinishDrift = 10.0f;
+        public float MinAngleToFinishDrift = 29.0f;
         [Range(0.01f, 0.99f), Tooltip("Mininum speed percentage to switch back to full grip.")]
-        public float MinSpeedPercentToFinishDrift = 0.5f;
+        public float MinSpeedPercentToFinishDrift = 0.95f;
         [Range(1.0f, 20.0f), Tooltip("The higher the value, the easier it is to control the drift steering.")]
-        public float DriftControl = 10.0f;
+        public float DriftControl = 16.0f;
         [Range(0.0f, 20.0f), Tooltip("The lower the value, the longer the drift will last without trying to control it by steering.")]
-        public float DriftDampening = 10.0f;
+        public float DriftDampening = 8.0f;
 
         [Header("Suspensions")]
         [Tooltip("The maximum extension possible between the kart's body and the wheels.")]
         [Range(0.0f, 1.0f)]
-        public float SuspensionHeight = 0.2f;
+        public float SuspensionHeight = 0.1f;
         [Range(10.0f, 100000.0f), Tooltip("The higher the value, the stiffer the suspension will be.")]
-        public float SuspensionSpring = 20000.0f;
+        public float SuspensionSpring = 70000.0f;
         [Range(0.0f, 5000.0f), Tooltip("The higher the value, the faster the kart will stabilize itself.")]
-        public float SuspensionDamp = 500.0f;
+        public float SuspensionDamp = 5000.0f;
         [Tooltip("Vertical offset to adjust the position of the wheels relative to the kart's body.")]
         [Range(-1.0f, 1.0f)]
         public float WheelsPositionVerticalOffset = 0.0f;
 
-
-
         [Tooltip("Which layers the wheels will detect.")]
         public LayerMask GroundLayers = Physics.DefaultRaycastLayers;
+
+        [Header("Animation")]
+        [Tooltip("The damping for the appearance of steering compared to the input.  The higher the number the less damping.")]
+        public float steeringAnimationDamping = 10f;
+        [Tooltip("The maximum angle in degrees that the front wheels can be turned away from their default positions, when the Steering input is either 1 or -1.")]
+        public float maxSteeringAngle = 30f;
+        float m_SmoothedSteeringInput;
         const float k_NullInput = 0.01f;
         const float k_NullSpeed = 0.01f;
         Vector3 m_VerticalReference = Vector3.up;
@@ -132,7 +138,24 @@ namespace Karting.Car
             m_PreviousGroundPercent = GroundPercent;
 
             // UpdateDriftVFXOrientation();
+            // Set animation params
+            AnimateWheels();
+        }
+        void LateUpdate()
+        {
             ApplyWheelPositions();
+        }
+
+        private void AnimateWheels()
+        {
+            m_SmoothedSteeringInput = Mathf.MoveTowards(m_SmoothedSteeringInput, Input.TurnInput,
+              steeringAnimationDamping * Time.deltaTime);
+
+            // Steer front wheels
+            float rotationAngle = m_SmoothedSteeringInput * maxSteeringAngle;
+
+            wheelColliders.FrontLeftWheel.steerAngle = rotationAngle;
+            wheelColliders.FrontRightWheel.steerAngle = rotationAngle;
         }
 
         int CountGroundedWheels()

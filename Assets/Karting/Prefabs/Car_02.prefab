@@ -557,12 +557,14 @@ MonoBehaviour:
   DriftControl: 16
   DriftDampening: 8
   SuspensionHeight: 0.2
-  SuspensionSpring: 20000
-  SuspensionDamp: 500
+  SuspensionSpring: 70000
+  SuspensionDamp: 5000
   WheelsPositionVerticalOffset: 0
   GroundLayers:
     serializedVersion: 2
     m_Bits: 4294967291
+  steeringAnimationDamping: 10
+  maxSteeringAngle: 30
 --- !u!1 &5600988111605742749
 GameObject:
   m_ObjectHideFlags: 0
