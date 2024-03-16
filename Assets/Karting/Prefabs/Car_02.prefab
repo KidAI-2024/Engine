@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats:
-    TopSpeed: 20
+    TopSpeed: 50
     Acceleration: 7
     ReverseSpeed: 10
     ReverseAcceleration: 3

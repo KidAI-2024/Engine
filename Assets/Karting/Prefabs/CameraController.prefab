@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e61e1de84db3d241a2701c9a77ee59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpTime: 5
+  lerpTime: 7
   forwardDistance: 3
   atachedVehicle: {fileID: 0}
   distance: 5
