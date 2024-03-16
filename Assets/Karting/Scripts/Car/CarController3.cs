@@ -28,6 +28,7 @@ namespace Karting.Car
 
         [Header("Vehicle Visual")]
         public WheelMeshes wheelMeshes;
+        public BrakeLights brakeLights;
         [Header("Physical Wheels")]
         [Tooltip("The physical representations of the Kart's wheels.")]
         public WheelColliders wheelColliders;
@@ -104,6 +105,11 @@ namespace Karting.Car
             Rigidbody = GetComponent<Rigidbody>();
             UpdateAllSuspensionParams();
             m_CurrentGrip = baseStats.Grip;
+            if (brakeLights.LeftLight != null && brakeLights.RightLight != null)
+            {
+                brakeLights.LeftLight.SetActive(false);
+                brakeLights.RightLight.SetActive(false);
+            }
         }
 
         void FixedUpdate()
@@ -249,6 +255,8 @@ namespace Karting.Car
             bool isBraking = (localVelDirectionIsFwd && brake) || (!localVelDirectionIsFwd && accelerate);
             // apply inputs to forward/backward
             float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
+            // manage break lights
+            ManageBreakLights(isBraking);
 
             // forward movement
             ForwardMovement(accelInput, currentSpeed, maxSpeed, isBraking, turningPower, accelDirectionIsFwd);
@@ -274,6 +282,15 @@ namespace Karting.Car
             UpdateVerticalReference();
             // Airborne / Half on ground management
             AirborneManagement();
+        }
+
+        private void ManageBreakLights(bool isBraking)
+        {
+            if (brakeLights.LeftLight != null && brakeLights.RightLight != null)
+            {
+                brakeLights.LeftLight.SetActive(isBraking);
+                brakeLights.RightLight.SetActive(isBraking);
+            }
         }
 
         private void ForwardMovement(float accelInput, float currentSpeed, float maxSpeed, bool isBraking, float turningPower, bool accelDirectionIsFwd)
@@ -520,6 +537,12 @@ namespace Karting.Car
             public MeshRenderer FrontRightWheel;
             public MeshRenderer RearLeftWheel;
             public MeshRenderer RearRightWheel;
+        }
+        [System.Serializable]
+        public struct BrakeLights
+        {
+            public GameObject LeftLight;
+            public GameObject RightLight;
         }
         [System.Serializable]
         public struct StatPowerup
