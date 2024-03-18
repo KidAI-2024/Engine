@@ -15,6 +15,8 @@ public class Player1Controller : MonoBehaviour
     int jumpHash;
     int blockHash;
     public float moveSpeed = 0.5f; // Adjust the speed as needed
+    public AudioSource audioSource;
+    public AudioClip whoofSound;
 
     void Start()
     {
@@ -86,6 +88,7 @@ public class Player1Controller : MonoBehaviour
         {
             // Set the "legPunsh" parameter to true
             animator.SetBool(legPunshHash, true);
+            audioSource.PlayOneShot(whoofSound);
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -100,6 +103,7 @@ public class Player1Controller : MonoBehaviour
         {
             // Set the "box" parameter to true
             animator.SetBool(boxPunshHash, true);
+            audioSource.PlayOneShot(whoofSound);
         }
         if (Input.GetKeyUp(KeyCode.E))
         {

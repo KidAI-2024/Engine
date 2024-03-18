@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestCollision : MonoBehaviour
+public class CollisionController : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioClip hitSound;

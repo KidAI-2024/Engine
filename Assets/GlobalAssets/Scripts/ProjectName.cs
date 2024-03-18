@@ -52,7 +52,12 @@ public class ProjectName : MonoBehaviour
 
         // Change its position (add -70 in the y axes) depending on the count of the projects till now
         int projectCount = ProjectListPanel.transform.childCount;
-        newProjectBtn.transform.localPosition = new Vector3(0, -70 * projectCount, 0);
+        // newProjectBtn.transform.localPosition = new Vector3(0, -70 * projectCount, 0);
+        RectTransform newProjectBtnRectTransform = newProjectBtn.GetComponent<RectTransform>();
+        float buttonHeight = newProjectBtnRectTransform.rect.height;
+        float offsetY = -70 * (projectCount - 1) - 10;
+        newProjectBtnRectTransform.anchoredPosition = new Vector2(0, offsetY);
+
         SceneManager.LoadScene(nextSceneName);
     }
 }
