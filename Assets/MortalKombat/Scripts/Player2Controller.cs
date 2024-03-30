@@ -17,7 +17,7 @@ public class Player2Controller : MonoBehaviour
     // int jumpHash;
     public float moveSpeed = 0.5f; // Adjust the speed as needed
 
-    void Start()
+    void OnEnable() // instead of start to make sure the health is set when the game is starts
     {
         health = 150;
         // Assuming the Animator component is attached to the child GameObject as this script
@@ -32,7 +32,7 @@ public class Player2Controller : MonoBehaviour
     void Update()
     {
         // Disable input if the 3..2..1 countdown is still running
-        if(!UI.IsInputEnabled){
+        if(!MortalKombat.UI.IsInputEnabled){
             return;
         }
 
@@ -73,7 +73,7 @@ public class Player2Controller : MonoBehaviour
         {
             animator.SetBool(legPunshHash, true);
         }
-        ResetAnimation(legPunshHash,"kick");
+        ResetAnimation(legPunshHash,"legPunsh");
 
         // Melee Punsh
         if (Input.GetKeyDown("."))
