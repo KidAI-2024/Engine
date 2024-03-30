@@ -50,14 +50,13 @@ public class Player2Controller : MonoBehaviour
         // Walking
         if (!isWalking && (forwardPressed || backwardPressed))
         {
-            // Set the "isWalking" parameter to true
             animator.SetBool(isWalkingHash, true);
         }
         if (isWalking && !(forwardPressed || backwardPressed))
         {
-            // Set the "isWalking" parameter to false
             animator.SetBool(isWalkingHash, false);
         }
+
         // Walking Back
         if (!isWalkingBack && (backwardPressed))
         {
@@ -66,47 +65,22 @@ public class Player2Controller : MonoBehaviour
         }
         if (isWalkingBack && !(backwardPressed))
         {
-            // Set the "isWalkingBack" parameter to false
             animator.SetBool(isWalkingBackHash, false);
         }   
-        /*
-        // Jump with arrow up
-        if (Input.GetKeyDown("up"))
-        {
-            // Set the "jump" parameter to true
-            animator.SetBool(jumpHash, true);
-        }
-        if (Input.GetKeyUp("up"))
-        {
-            // Set the "jump" parameter to false
-            animator.SetBool(jumpHash, false);
-        }
-        */
-        // Leg Punsh with / key
+
+        // Leg Punsh 
         if (Input.GetKeyDown("/"))
         {
-            // Set the "legPunsh" parameter to true
             animator.SetBool(legPunshHash, true);
         }
-        if (Input.GetKeyUp("/"))
-        {
-            // wait for the animation to finish then make it false
-            StartCoroutine(Reset(legPunshHash));
-        }
+        ResetAnimation(legPunshHash,"kick");
 
-
-        // Box Punsh with . key
+        // Melee Punsh
         if (Input.GetKeyDown("."))
         {
-            // Set the "box" parameter to true
             animator.SetBool(boxPunshHash, true);
         }
-        if (Input.GetKeyUp("."))
-        {
-            // Set the "box" parameter to false
-            // wait for the animation to finish then make it false
-            StartCoroutine(Reset(boxPunshHash));
-        }
+        ResetAnimation(boxPunshHash,"melee");
         
         // Move the character forward if walking
         if (transform.position.z < 33.8f && transform.position.z >= 28.9f)
@@ -125,9 +99,12 @@ public class Player2Controller : MonoBehaviour
         }
     }
 
-    IEnumerator Reset(int hash)
+
+    void ResetAnimation(int hash, string animationName = "")
     {
-        yield return new WaitForSeconds(1.2f);
-        animator.SetBool(hash, false);
+        if(animator.GetBool(hash) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+        {
+            animator.SetBool(hash, false);
+        }
     }
 }

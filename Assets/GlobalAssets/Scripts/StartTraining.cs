@@ -40,6 +40,7 @@ public class StartTraining : MonoBehaviour
             { "event", "start_body_pose_train" }
         };
         socketClient.SendMessage(message);
+        Debug.Log("Training Started");
     } 
     void Update()
     {
