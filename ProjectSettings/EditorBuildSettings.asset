@@ -29,4 +29,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Karting/Scenes/KartingMain.unity
     guid: 2a5da18706f703f4f828adf36e62bee8
+  - enabled: 1
+    path: Assets/Karting/Scenes/KartingTrack1.unity
+    guid: 7d2a518a833dafc418754d62abf1e309
+  - enabled: 1
+    path: Assets/Karting/Scenes/KartingTrack2.unity
+    guid: aade33ef1596ff24cb19602ec4928844
   m_configObjects: {}
