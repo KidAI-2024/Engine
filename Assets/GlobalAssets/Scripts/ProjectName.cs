@@ -55,7 +55,7 @@ public class ProjectName : MonoBehaviour
         // newProjectBtn.transform.localPosition = new Vector3(0, -70 * projectCount, 0);
         RectTransform newProjectBtnRectTransform = newProjectBtn.GetComponent<RectTransform>();
         float buttonHeight = newProjectBtnRectTransform.rect.height;
-        float offsetY = -70 * (projectCount - 1) - 10;
+        float offsetY = -65 * (projectCount - 1) - 10;
         newProjectBtnRectTransform.anchoredPosition = new Vector2(0, offsetY);
 
         SceneManager.LoadScene(nextSceneName);
