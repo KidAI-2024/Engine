@@ -14,7 +14,8 @@
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
 
-*.png
+# ignore all inside the Projects folder
+/[Pp]rojects/
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
