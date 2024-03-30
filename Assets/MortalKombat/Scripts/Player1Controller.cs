@@ -13,10 +13,9 @@ public class Player1Controller : MonoBehaviour
     int legPunshHash;
     int boxPunshHash;
     int jumpHash;
+    int jumpKickHash;
     int blockHash;
     public float moveSpeed = 0.5f; // Adjust the speed as needed
-    public AudioSource audioSource;
-    public AudioClip whoofSound;
 
     void Start()
     {
@@ -27,6 +26,7 @@ public class Player1Controller : MonoBehaviour
         legPunshHash = Animator.StringToHash("legPunsh");
         boxPunshHash = Animator.StringToHash("box");
         jumpHash = Animator.StringToHash("jump");
+        jumpKickHash = Animator.StringToHash("JumpKick");
         blockHash = Animator.StringToHash("block");
     }
 
@@ -45,72 +45,57 @@ public class Player1Controller : MonoBehaviour
 
         bool forwardPressed = Input.GetKey("d");
         bool backwardPressed = Input.GetKey("a");
+        bool jumpPressed = Input.GetKeyDown(KeyCode.W);
+        bool legKickPressed = Input.GetKeyDown(KeyCode.Space);
 
         // Walking
         if (!isWalking && (forwardPressed || backwardPressed))
         {
-            // Set the "isWalking" parameter to true
             animator.SetBool(isWalkingHash, true);
         }
         if (isWalking && !(forwardPressed || backwardPressed))
         {
-            // Set the "isWalking" parameter to false
             animator.SetBool(isWalkingHash, false);
         }
         
         // Block
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            // Set the "jump" parameter to true
             animator.SetBool(blockHash, true);
         }
         if (Input.GetKeyUp(KeyCode.Q))
         {
-            // Set the "jump" parameter to false
             animator.SetBool(blockHash, false);
         }
 
-        // Jump
-        if (Input.GetKeyDown(KeyCode.W))
+        // Jump & Kick
+        if (jumpPressed && legKickPressed)
         {
-            // Set the "jump" parameter to true
+            animator.SetBool(jumpKickHash, true);
+        }
+        ResetAnimation(jumpKickHash,"JumpKick");
+
+        // Jump
+        if (jumpPressed && !legKickPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
+        {
             animator.SetBool(jumpHash, true);
         }
-        if (Input.GetKeyUp(KeyCode.W))
-        {
-            // Set the "jump" parameter to false
-            animator.SetBool(jumpHash, false);
-        }
-
+        ResetAnimation(jumpHash,"Jumping");
 
         // Leg Punsh
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (legKickPressed && !jumpPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
         {
-            // Set the "legPunsh" parameter to true
             animator.SetBool(legPunshHash, true);
-            audioSource.PlayOneShot(whoofSound);
         }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            // Set the "legPunsh" parameter to false
-            // wait for the animation to finish then make it false
-            StartCoroutine(Reset(legPunshHash));
-        }
+        ResetAnimation(legPunshHash,"legPunsh");
 
 
         // Box Punsh
         if (Input.GetKeyDown(KeyCode.E))
         {
-            // Set the "box" parameter to true
             animator.SetBool(boxPunshHash, true);
-            audioSource.PlayOneShot(whoofSound);
         }
-        if (Input.GetKeyUp(KeyCode.E))
-        {
-            // Set the "box" parameter to false
-            // wait for the animation to finish then make it false
-            StartCoroutine(Reset(boxPunshHash));
-        }
+        ResetAnimation(boxPunshHash,"Boxing");
 
         // check if the player is not at the end of the screen
         if (transform.position.z < 33.8f && transform.position.z >= 28.9f)
@@ -129,10 +114,12 @@ public class Player1Controller : MonoBehaviour
             }
         }
     }
-        
-    IEnumerator Reset(int hash)
+
+    void ResetAnimation(int hash, string animationName = "")
     {
-        yield return new WaitForSeconds(0.3f);
-        animator.SetBool(hash, false);
+        if(animator.GetBool(hash) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.2f && animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+        {
+            animator.SetBool(hash, false);
+        }
     }
 }

@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CollisionController : MonoBehaviour
-{
-    public AudioSource audioSource;
-    public AudioClip hitSound;
-    
+{   
     Player1Controller Player1;
     Player2Controller Player2;
     Animator PLayer1Animator;
@@ -17,6 +14,7 @@ public class CollisionController : MonoBehaviour
     int winHash;
     int dieHash;
     int hitHash;
+    int blockHash;
 
     void Start()
     {
@@ -32,6 +30,7 @@ public class CollisionController : MonoBehaviour
         winHash = Animator.StringToHash("win");
         dieHash = Animator.StringToHash("die");
         hitHash = Animator.StringToHash("hit");
+        blockHash = Animator.StringToHash("لاlock");
     }
     
     void OnTriggerEnter (Collider col)
@@ -40,26 +39,14 @@ public class CollisionController : MonoBehaviour
         if (PLayer1Animator.GetBool(boxHash) && this.gameObject.tag == "hand" && col.gameObject.tag == "enemy")
         {
             Player2.health -= Player1.boxPower;
-            // play hit animation
-            StartCoroutine(Player2HitAnimation());
-
-            // reset box animation
+            PLayer2Animator.SetBool(hitHash, true);
             PLayer1Animator.SetBool(boxHash, false);
-
-            // play hit sound
-            audioSource.PlayOneShot(hitSound);
         }
         if (PLayer1Animator.GetBool(legHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "enemy")
         {
             Player2.health -= Player1.legPower;
-            // play hit animation
-            StartCoroutine(Player2HitAnimation());
-            
-            // reset legPunsh animation
+            PLayer2Animator.SetBool(hitHash, true);
             PLayer1Animator.SetBool(legHash, false);
-
-            // play hit sound
-            audioSource.PlayOneShot(hitSound);
         }
         if (Player2.health <= 0)
         {
@@ -71,16 +58,14 @@ public class CollisionController : MonoBehaviour
         if (PLayer2Animator.GetBool(boxHash) && this.gameObject.tag == "weapon" && col.gameObject.tag == "player")
         {
             Player1.health -= Player2.weaponPower;
+            PLayer1Animator.SetBool(hitHash, true);
             PLayer2Animator.SetBool(boxHash, false);
-            StartCoroutine(Player1HitAnimation());
-            audioSource.PlayOneShot(hitSound);
         }
         if (PLayer2Animator.GetBool(legHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "player")
         {
             Player1.health -= Player2.legPower;
-            StartCoroutine(Player1HitAnimation());
+            PLayer1Animator.SetBool(hitHash, true);
             PLayer2Animator.SetBool(legHash, false);
-            audioSource.PlayOneShot(hitSound);
         }
         if (Player1.health <= 0)
         {
@@ -88,17 +73,15 @@ public class CollisionController : MonoBehaviour
             PLayer1Animator.SetBool(dieHash, true);
         }
     }
-
-    IEnumerator Player1HitAnimation()
+    void Update()
     {
-        PLayer1Animator.SetBool(hitHash, true);
-        yield return new WaitForSeconds(0.5f);
-        PLayer1Animator.SetBool(hitHash, false);
-    }
-    IEnumerator Player2HitAnimation()
-    {
-        PLayer2Animator.SetBool(hitHash, true);
-        yield return new WaitForSeconds(0.5f);
-        PLayer2Animator.SetBool(hitHash, false);
+        if(PLayer2Animator.GetBool(hitHash) && PLayer2Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.1f && PLayer2Animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        {
+            PLayer2Animator.SetBool(hitHash, false);
+        }
+        if(PLayer1Animator.GetBool(hitHash) && PLayer1Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.1f && PLayer1Animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        {
+            PLayer1Animator.SetBool(hitHash, false);
+        }
     }
 }
