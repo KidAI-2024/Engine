@@ -15,6 +15,13 @@ namespace MortalKombat.ChoosePlayer
         public TMPro.TextMeshProUGUI player1Text;
         public TMPro.TextMeshProUGUI player2Text;
 
+        // 2 public panels ui for player 1 and player 2
+        public GameObject player1InfoPanel;
+        public GameObject player2InfoPanel;
+
+        public GameObject ninjaButton;
+        public GameObject hulkButton;
+
         // 2 public game objects for player 1 and player 2
         public GameObject player1;
         public GameObject player2;
@@ -22,6 +29,8 @@ namespace MortalKombat.ChoosePlayer
         public bool player1Ready = false;
         public bool player2Ready = false;
 
+        string selectedPlayer1Name = "";
+        string selectedPlayer2Name = "";
 
         void Start(){
             gameManager = GameManager.Instance;
@@ -31,6 +40,12 @@ namespace MortalKombat.ChoosePlayer
             player2Button.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(Player2Ready);
             player1Text.text = "";
             player2Text.text = "";
+
+            // initialize player 1 and player 2 info panel
+            OnCharacterPlayer1Change("Ninja");
+            OnCharacterPlayer1Change("Hulk");
+            ninjaButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayer1Change("Ninja"));
+            hulkButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayer1Change("Hulk"));
         }
 
         public void Player1Ready()
@@ -38,11 +53,9 @@ namespace MortalKombat.ChoosePlayer
             player1Ready = !player1Ready;
             if (player1Ready)
             {
-                string player1Name = player1.transform.GetChild(0).name;
-                gameManager.player1Name = player1Name;
+                gameManager.player1Name = selectedPlayer1Name;
                 player1Text.text = "Ready";
                 player1Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Unready";
-                Debug.Log(player1Name);
             }
             else
             {
@@ -56,11 +69,9 @@ namespace MortalKombat.ChoosePlayer
             player2Ready = !player2Ready;
             if (player2Ready)
             {
-                string player2Name = player2.transform.GetChild(0).name;
-                gameManager.player2Name = player2Name;
+                gameManager.player2Name = selectedPlayer2Name;
                 player1Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Unready";
                 player2Text.text = "Ready";
-                Debug.Log(player2Name);
             }
             else
             { 
@@ -74,6 +85,32 @@ namespace MortalKombat.ChoosePlayer
             if(player1Ready && player2Ready)
             {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Mortal Kombat");
+            }
+        }
+
+
+        void OnCharacterPlayer1Change(string characterName)
+        {   
+            switch(characterName)
+            {
+                case "Ninja":
+                    selectedPlayer1Name = "Ninja";
+                    // Health
+                    player1InfoPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.7f;
+                    // Power
+                    player1InfoPanel.transform.GetChild(1).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.6f;
+                    // Speed
+                    player1InfoPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.96f;
+                    break;
+                case "Hulk":
+                    selectedPlayer1Name = "Hulk";
+                    // Health
+                    player2InfoPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.85f;
+                    // Power
+                    player2InfoPanel.transform.GetChild(1).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.78f;
+                    // Speed
+                    player2InfoPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.5f;
+                    break;
             }
         }
 
