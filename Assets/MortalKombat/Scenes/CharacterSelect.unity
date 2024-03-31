@@ -130,6 +130,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 481807530}
     m_Modifications:
+    - target: {fileID: 3113915011400149887, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113915011400149887, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113915011400149887, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 481807531}
+    - target: {fileID: 3113915011400149887, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113915011400149887, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Player2Ready
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113915011400149887, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ChoosePlayerManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113915011400149887, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5406544125027666450, guid: 9793b5a9c892b1940aed9af233843c96, type: 3}
       propertyPath: m_Name
       value: ChoosePlayer2 Panel
@@ -364,7 +392,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8864106036229830853, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
+    - {fileID: 8864106035571474834, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
 --- !u!1 &481807526
 GameObject:
@@ -415,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -483,8 +513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17613651012d654a8b2c23994eab864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1ReadyButton: {fileID: 0}
-  player2ReadyButton: {fileID: 0}
+  player1: {fileID: 667509723}
+  player2: {fileID: 2118985385}
   player1Ready: 0
   player2Ready: 0
 --- !u!224 &537552968 stripped
@@ -578,7 +608,7 @@ GameObject:
   m_Component:
   - component: {fileID: 667509724}
   m_Layer: 0
-  m_Name: 'Player 1 '
+  m_Name: Player 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -889,7 +919,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ninja
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1414183118428507216, guid: 45c60fe61ff97324faee242a9406ec59, type: 3}
+    - {fileID: 1414183118056763409, guid: 45c60fe61ff97324faee242a9406ec59, type: 3}
+    - {fileID: 1414183118629725346, guid: 45c60fe61ff97324faee242a9406ec59, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 45c60fe61ff97324faee242a9406ec59, type: 3}
 --- !u!4 &1786094709 stripped
 Transform:
