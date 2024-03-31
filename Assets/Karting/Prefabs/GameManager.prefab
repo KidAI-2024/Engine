@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedGameMode: 0
   selectedRaceTrack: 0
-  selectedCarPrefab: {fileID: 0}
+  selectedCarPrefab: {fileID: 5600988111247552909, guid: 4034997214d5d20459779b25b1385505, type: 3}
 --- !u!114 &4401076477504810479
 MonoBehaviour:
   m_ObjectHideFlags: 0

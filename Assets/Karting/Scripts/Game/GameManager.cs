@@ -16,43 +16,42 @@ namespace Karting.Game
             if (instance == null)
             {
                 instance = this;
+                DontDestroyOnLoad(gameObject);
             }
             else if (instance != this)
             {
                 Destroy(gameObject);
             }
-            DontDestroyOnLoad(gameObject);
         }
 
         public void SelectGameMode_Timed()
         {
             selectedGameMode = GameMode.Timed;
+            Debug.Log("Game mode selected: " + selectedGameMode);
         }
 
         public void SelectRaceTrack_Forest()
         {
             selectedRaceTrack = RaceTrack.KartingTrack2;
+            Debug.Log("Track selected: " + selectedRaceTrack);
         }
-        public void SelectCar_Dodge()
+
+        public void SelectCar(GameObject carPrefab)
         {
-            SelectCar("Car_02");
-        }
-        void SelectCar(string carName)
-        {
-            // Load car prefab using its name
-            selectedCarPrefab = Resources.Load<GameObject>("../../Prefabs/" + carName);
+            selectedCarPrefab = carPrefab;
+            Debug.Log("Car selected: " + selectedCarPrefab.name);
         }
 
         // Call this method to start the race
         public void StartCustomMatch()
         {
             SceneManager.LoadScene(selectedRaceTrack.ToString());
+
         }
         public void StartQuickMatch()
         {
             SelectGameMode_Timed();
             SelectRaceTrack_Forest();
-            SelectCar_Dodge();
             StartCustomMatch();
         }
     }
