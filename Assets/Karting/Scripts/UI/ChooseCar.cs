@@ -65,5 +65,10 @@ namespace Karting.UI
             }
             InstantiateCurrentCar();
         }
+        void ondestroy()
+        {
+            selectButton.onClick.RemoveAllListeners();
+
+        }
     }
 }

@@ -15,5 +15,9 @@ namespace Karting.UI
             forestButton.onClick.AddListener(() => gameManager.SelectRaceTrack_Forest());
             forestButton.onClick.AddListener(() => SceneManager.LoadScene(nextSceneName));
         }
+        void ondestroy()
+        {
+            forestButton.onClick.RemoveAllListeners();
+        }
     }
 }

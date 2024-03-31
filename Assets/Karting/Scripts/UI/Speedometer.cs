@@ -23,5 +23,9 @@ namespace Karting.UI
             // Update direction display
             gearText.text = isMovingForward ? "D" : "R";
         }
+        void ondestroy()
+        {
+            carRigidbody = null;
+        }
     }
 }
