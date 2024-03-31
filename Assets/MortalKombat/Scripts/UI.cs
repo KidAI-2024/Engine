@@ -5,6 +5,8 @@ namespace MortalKombat
 {
     public class UI : MonoBehaviour
     {
+        // get game manager static instance
+        public static GameManager gameManager;
 
         private static bool isInputEnabled = false;
         public bool EnableTimer;
@@ -42,9 +44,11 @@ namespace MortalKombat
 
         void Start()
         {
+            gameManager = GameManager.Instance;
+            gameManager.InstantiateCharacters();
             // Load the Round value from Player Preferences
-            Round = PlayerPrefs.GetInt("Round", 1);
-            RoundScore = PlayerPrefs.GetInt("RoundScore", 0);
+            Round = gameManager.Round;
+            RoundScore = gameManager.RoundScore;
             PlayerPrefs.DeleteAll();
             flag = true;
 
@@ -91,13 +95,11 @@ namespace MortalKombat
                 }
                 else{
                     // Save the Round value to Player Preferences
-                    PlayerPrefs.SetInt("Round", Round);
-                    PlayerPrefs.SetInt("RoundScore", RoundScore);
-                    Debug.Log(PlayerPrefs.GetInt("Round", 1) + " " + PlayerPrefs.GetInt("RoundScore", 0));
+                    gameManager.Round = Round;
+                    gameManager.RoundScore = RoundScore;
                     RoundOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = player1.health <= 0 ? "Player 2 Wins!" : "Player 1 Wins!";
                     RoundOverText.SetActive(true);
-                    // wait for 10 seconds then restart the game
-                    Invoke("RestartGame", 8);
+                    Invoke("RestartGame", 8);   
                 }
             }
         }
