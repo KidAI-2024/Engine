@@ -274,7 +274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2141082759803511197}
   - component: {fileID: 4411833538550719211}
-  - component: {fileID: 4411833538550719208}
+  - component: {fileID: 1207316410117255362}
   m_Layer: 0
   m_Name: Car_01
   m_TagString: Untagged
@@ -315,7 +315,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4411833538550719208
+--- !u!114 &1207316410117255362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,36 +324,50 @@ MonoBehaviour:
   m_GameObject: {fileID: 4411833538550719209}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61221fa41fc52f84086084561057eb80, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ef573d2b27789b4c9cb05ff55ef8b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  control: 0
-  maxAcceleration: 30
-  brakeAcceleration: 50
-  turnSensitivity: 1
-  maxSteerAngle: 30
-  _centerOfMass: {x: 0, y: 0, z: 0}
-  wheels:
-  - wheelModel: {fileID: 3694196124272086063}
-    wheelCollider: {fileID: 6905055670005721962}
-    wheelEffectObj: {fileID: 0}
-    smokeParticle: {fileID: 0}
-    axel: 0
-  - wheelModel: {fileID: 7973826927486158380}
-    wheelCollider: {fileID: 6905055671360563624}
-    wheelEffectObj: {fileID: 0}
-    smokeParticle: {fileID: 0}
-    axel: 0
-  - wheelModel: {fileID: 1874793159081810994}
-    wheelCollider: {fileID: 6905055670273651791}
-    wheelEffectObj: {fileID: 0}
-    smokeParticle: {fileID: 0}
-    axel: 1
-  - wheelModel: {fileID: 8617414213003832450}
-    wheelCollider: {fileID: 6905055669800372174}
-    wheelEffectObj: {fileID: 0}
-    smokeParticle: {fileID: 0}
-    axel: 1
+  baseStats:
+    TopSpeed: 10
+    Acceleration: 5
+    ReverseSpeed: 5
+    ReverseAcceleration: 5
+    AccelerationCurve: 4
+    Braking: 10
+    CoastingDrag: 4
+    Grip: 0.95
+    Steer: 5
+    AddedGravity: 1
+  wheelMeshes:
+    FrontLeftWheel: {fileID: 9083648987632763713}
+    FrontRightWheel: {fileID: 3384940477614407037}
+    RearLeftWheel: {fileID: 3102381710407543230}
+    RearRightWheel: {fileID: 6324233786069681207}
+  brakeLights:
+    LeftLight: {fileID: 0}
+    RightLight: {fileID: 0}
+  wheelColliders:
+    FrontLeftWheel: {fileID: 6905055670005721962}
+    FrontRightWheel: {fileID: 6905055671360563624}
+    RearLeftWheel: {fileID: 6905055670273651791}
+    RearRightWheel: {fileID: 6905055669800372174}
+  CenterOfMass: {fileID: 6905055671254362195}
+  AirborneReorientationCoefficient: 3
+  DriftGrip: 0.85
+  DriftAdditionalSteer: 5
+  MinAngleToFinishDrift: 29
+  MinSpeedPercentToFinishDrift: 0.95
+  DriftControl: 16
+  DriftDampening: 8
+  SuspensionHeight: 0.1
+  SuspensionSpring: 70000
+  SuspensionDamp: 5000
+  WheelsPositionVerticalOffset: 0
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  steeringAnimationDamping: 10
+  maxSteeringAngle: 30
 --- !u!1 &6905055669800372175
 GameObject:
   m_ObjectHideFlags: 0
