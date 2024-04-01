@@ -14,7 +14,7 @@ namespace MortalKombat
         public Slider Player1HealthSlider;
         public Slider Player2HealthSlider; 
         Player1Controller player1;
-        Player2Controller player2;
+        Player1Controller player2;
 
         public TextMeshProUGUI countdownText;
         private int seconds = 90;
@@ -53,7 +53,7 @@ namespace MortalKombat
             flag = true;
 
             player1 = GameObject.Find("Player1").GetComponent<Player1Controller>();
-            player2 = GameObject.Find("Player2").GetComponent<Player2Controller>();
+            player2 = GameObject.Find("Player2").GetComponent<Player1Controller>();
             Player1HealthSlider.maxValue = player1.health;
             Player2HealthSlider.maxValue = player2.health;
             RoundOverText.gameObject.SetActive(false);

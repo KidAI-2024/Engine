@@ -31,14 +31,19 @@ namespace MortalKombat
         }
         public void InstantiateCharacters()
         {
-            Debug.Log("Instantiating Characters");
             if (player1Name == "Ninja")
             {
                 player1 = Instantiate(ninjaPrefab);
                 player1.name = "Player1";
-            }
-            else{
-                Debug.Log("Player 1 not instantiated");
+                var player1Controller = player1.GetComponent<Player1Controller>();
+                player1Controller.health = 100;
+                player1Controller.primaryPower = 10;
+                player1Controller.secondaryPower = 15;
+                player1Controller.speed = 2.5f;
+                // constants for  first player
+                player1Controller.startLimit = 33.8f;
+                player1Controller.endLimit = 28.3f;
+                player1Controller.controls = SetPlayer1Controls();
             }
 
 
@@ -47,10 +52,41 @@ namespace MortalKombat
             {
                 player2 = Instantiate(hulkPrefab);
                 player2.name = "Player2";
-            }else{
-                Debug.Log("Player 2 not instantiated");
+                var player2Controller = player2.GetComponent<Player1Controller>();
+                player2Controller.health = 150;
+                player2Controller.primaryPower = 20;
+                player2Controller.secondaryPower = 15;
+                player2Controller.speed = 1.5f;
+                // constants for  second player
+                player2Controller.startLimit = 28.3f;
+                player2Controller.endLimit = 33.8f;
+                player2Controller.controls = SetPlayer2Controls();
             }
+        }
 
+        Controls SetPlayer1Controls()
+        {
+            return new Controls
+            {
+                forward = "d",
+                backward = "a",
+                jump = "w",
+                primaryHit = "e",
+                secondaryHit = "space",
+                block = "q"
+            };
+        }
+        Controls SetPlayer2Controls()
+        {
+            return new Controls
+            {
+                forward = "left",
+                backward = "right",
+                jump = "up",
+                primaryHit = "/",
+                secondaryHit = ".",
+                block = "down"
+            };
         }
     }
 }

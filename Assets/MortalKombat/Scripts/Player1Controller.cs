@@ -3,32 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace MortalKombat
 {
+    public struct Controls
+    {
+        public string forward;
+        public string backward;
+        public string jump;
+        public string primaryHit;
+        public string secondaryHit;
+        public string block;
+    }
     public class Player1Controller : MonoBehaviour
     {
         public int health;
-        public int legPower = 10;
-        public int boxPower = 15;
+        public int primaryPower;
+        public int secondaryPower;
+        public float speed; // Adjust the speed as needed
+        public Controls controls;   
 
         Animator animator;
         int isWalkingHash;
-        int legPunshHash;
-        int boxPunshHash;
+        int secondaryHitHash;
+        int primaryHitHash;
         int jumpHash;
         int jumpKickHash;
         int blockHash;
-        public float moveSpeed = 0.5f; // Adjust the speed as needed
+        public float startLimit;
+        public float endLimit;
+
+        
 
         void OnEnable() // instead of start to make sure the health is set when the game is starts
         {
-            health = 100;
             // Assuming the Animator component is attached to the child GameObject as this script
             animator  = GetComponentInChildren<Animator>();
             isWalkingHash = Animator.StringToHash("isWalking");
-            legPunshHash = Animator.StringToHash("legPunsh");
-            boxPunshHash = Animator.StringToHash("box");
+            secondaryHitHash = Animator.StringToHash("secondary");
+            primaryHitHash = Animator.StringToHash("primary");
             jumpHash = Animator.StringToHash("jump");
             jumpKickHash = Animator.StringToHash("JumpKick");
             blockHash = Animator.StringToHash("block");
+
+            Debug.Log(gameObject.name + " " + startLimit + " " + endLimit);
         }
 
         void Update()
@@ -39,15 +54,17 @@ namespace MortalKombat
             }
 
             bool isWalking = animator.GetBool(isWalkingHash);
-            bool legPunsh = animator.GetBool(legPunshHash);
-            bool boxPunsh = animator.GetBool(boxPunshHash);
+            bool legPunsh = animator.GetBool(secondaryHitHash);
+            bool boxPunsh = animator.GetBool(primaryHitHash);
             bool jump = animator.GetBool(jumpHash);
             bool block = animator.GetBool(blockHash);
 
-            bool forwardPressed = Input.GetKey("d");
-            bool backwardPressed = Input.GetKey("a");
-            bool jumpPressed = Input.GetKeyDown(KeyCode.W);
-            bool legKickPressed = Input.GetKeyDown(KeyCode.Space);
+            bool forwardPressed = Input.GetKey(controls.forward);
+            bool backwardPressed = Input.GetKey(controls.backward);
+            bool jumpPressed = Input.GetKeyDown(controls.jump);
+            bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit);
+            bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit);
+            bool blockPressed = Input.GetKeyDown(controls.block);
 
             // Walking
             if (!isWalking && (forwardPressed || backwardPressed))
@@ -60,7 +77,7 @@ namespace MortalKombat
             }
             
             // Block
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (blockPressed)
             {
                 animator.SetBool(blockHash, true);
             }
@@ -70,48 +87,46 @@ namespace MortalKombat
             }
 
             // Jump & Kick
-            if (jumpPressed && legKickPressed)
+            if (jumpPressed && secondaryHitPressed)
             {
                 animator.SetBool(jumpKickHash, true);
             }
             ResetAnimation(jumpKickHash,"JumpKick");
 
             // Jump
-            if (jumpPressed && !legKickPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
+            if (jumpPressed && !secondaryHitPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
             {
                 animator.SetBool(jumpHash, true);
             }
             ResetAnimation(jumpHash,"Jumping");
 
             // Leg Punsh
-            if (legKickPressed && !jumpPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
+            if (secondaryHitPressed && !jumpPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
             {
-                animator.SetBool(legPunshHash, true);
+                animator.SetBool(secondaryHitHash, true);
             }
-            ResetAnimation(legPunshHash,"legPunsh");
+            ResetAnimation(secondaryHitHash,"secondary");
 
 
             // Box Punsh
-            if (Input.GetKeyDown(KeyCode.E))
+            if (primaryHitPressed)
             {
-                animator.SetBool(boxPunshHash, true);
+                animator.SetBool(primaryHitHash, true);
             }
-            ResetAnimation(boxPunshHash,"box");
+            ResetAnimation(primaryHitHash,"primary");
 
-            // check if the player is not at the end of the screen
-            if (transform.position.z < 33.8f && transform.position.z >= 28.9f)
+            // Move the character forward if walking
+            if (isWalking)
             {
-                // Move the character forward if walking
-                if (isWalking)
+                bool isInForwardLimit = gameObject.name == "Player1" ? transform.position.z > endLimit : transform.position.z < endLimit;
+                bool isInBackwardLimit = gameObject.name == "Player1" ? transform.position.z < startLimit : transform.position.z > startLimit;
+                if (forwardPressed && isInForwardLimit && !backwardPressed)
                 {
-                    if (forwardPressed)
-                    {
-                        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-                    }
-                    else if (backwardPressed)
-                    {
-                        transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
-                    }
+                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
+                }
+                else if (backwardPressed && isInBackwardLimit && !forwardPressed)
+                {
+                    transform.Translate(Vector3.back * speed * Time.deltaTime);
                 }
             }
         }

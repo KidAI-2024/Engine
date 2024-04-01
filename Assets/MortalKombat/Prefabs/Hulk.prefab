@@ -2951,7 +2951,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7608497585595105750}
-  m_LocalRotation: {x: 0.42551893, y: 0.021086425, z: 0.020767061, w: 0.9044655}
+  m_LocalRotation: {x: 0.38306725, y: 0.02375517, z: 0.02343611, w: 0.9231176}
   m_LocalPosition: {x: -0.000000001862633, y: 0.21000017, z: -0.00000007450579}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2959,7 +2959,7 @@ Transform:
   - {fileID: 4835238454503457603}
   m_Father: {fileID: 6600923301139015690}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 44.92, y: 5.008, z: 4.98}
 --- !u!136 &8864106035571474837
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3631,6 +3631,7 @@ GameObject:
   - component: {fileID: 8864106036007977788}
   - component: {fileID: 8864106036007977920}
   - component: {fileID: 8864106036007977789}
+  - component: {fileID: 4513593036803335040}
   m_Layer: 0
   m_Name: Hulk
   m_TagString: Untagged
@@ -3780,15 +3781,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8629680460142611306}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ee2e61114eb5b448b1e364ba2d22e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  legPower: 15
-  weaponPower: 20
-  moveSpeed: 0.5
+  primaryPower: 0
+  secondaryPower: 0
+  speed: 0
 --- !u!114 &8864106036007977789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3803,6 +3804,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whoofSound: {fileID: 8300000, guid: d3a4dbf46e0b62e469595ea0093efc58, type: 3}
   headHitSound: {fileID: 8300000, guid: 6a62bfb064af4e845a6295a7b474b5d6, type: 3}
+--- !u!114 &4513593036803335040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8629680460142611306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953d5ade5f1ff694c90151c9bf99064b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  primaryPower: 0
+  secondaryPower: 0
+  speed: 0
 --- !u!1 &8726994223816668285
 GameObject:
   m_ObjectHideFlags: 0

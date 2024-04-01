@@ -266,6 +266,16 @@ PrefabInstance:
     - {fileID: 8864106036229830853, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
     - {fileID: 8864106035571474834, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
+--- !u!1 &225823584 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7268367990403637834, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
+  m_PrefabInstance: {fileID: 2208015263838705349}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &304593647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9127624677171571335, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
+  m_PrefabInstance: {fileID: 1384689104}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &481807526
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +955,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 81
       objectReference: {fileID: 0}
+    - target: {fileID: 7268367990403637834, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
+      propertyPath: m_Name
+      value: Hulk
+      objectReference: {fileID: 0}
     - target: {fileID: 7375574419135206906, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1133,6 +1147,11 @@ PrefabInstance:
     - {fileID: 1414183118056763409, guid: 45c60fe61ff97324faee242a9406ec59, type: 3}
     - {fileID: 1414183118629725346, guid: 45c60fe61ff97324faee242a9406ec59, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 45c60fe61ff97324faee242a9406ec59, type: 3}
+--- !u!1 &1671255466 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9127624677171571335, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
+  m_PrefabInstance: {fileID: 2208015263838705349}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1755399565 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2530449161063642743, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
@@ -1187,6 +1206,10 @@ MonoBehaviour:
   player2Button: {fileID: 1755399565}
   player1Text: {fileID: 1018347150}
   player2Text: {fileID: 1783971122}
+  player1InfoPanel: {fileID: 1671255466}
+  player2InfoPanel: {fileID: 304593647}
+  ninjaButton: {fileID: 225823584}
+  hulkButton: {fileID: 2081277262}
   player1: {fileID: 667509723}
   player2: {fileID: 2118985385}
   player1Ready: 0
@@ -1373,6 +1396,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2530449161063642743, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
   m_PrefabInstance: {fileID: 2208015263838705349}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2081277262 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7268367990403637834, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
+  m_PrefabInstance: {fileID: 1384689104}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2118985385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,6 +1547,10 @@ PrefabInstance:
     - target: {fileID: 5824440830215532533, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268367990403637834, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
+      propertyPath: m_Name
+      value: Ninja
       objectReference: {fileID: 0}
     - target: {fileID: 7375574419135206906, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_Pivot.x

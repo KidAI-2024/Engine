@@ -6,12 +6,12 @@ namespace MortalKombat
     public class CollisionController : MonoBehaviour
     {   
         Player1Controller Player1;
-        Player2Controller Player2;
+        Player1Controller Player2;
         Animator PLayer1Animator;
         Animator PLayer2Animator;
 
-        int boxHash;
-        int legHash;
+        int primaryHitHash;
+        int secondaryHitHash;
         int winHash;
         int dieHash;
         int hitHash;
@@ -22,32 +22,36 @@ namespace MortalKombat
             GameObject p1 = GameObject.Find("Player1");
             GameObject p2 = GameObject.Find("Player2");
             Player1 = p1.GetComponent<Player1Controller>();
-            Player2 = p2.GetComponent<Player2Controller>();
+            Player2 = p2.GetComponent<Player1Controller>();
             PLayer1Animator = p1.GetComponent<Animator>();
             PLayer2Animator = p2.GetComponent<Animator>();
 
-            boxHash = Animator.StringToHash("box");
-            legHash = Animator.StringToHash("legPunsh");
             winHash = Animator.StringToHash("win");
             dieHash = Animator.StringToHash("die");
             hitHash = Animator.StringToHash("hit");
             blockHash = Animator.StringToHash("block");
+            primaryHitHash = Animator.StringToHash("primary");
+            secondaryHitHash = Animator.StringToHash("secondary");
         }
         
         void OnTriggerEnter (Collider col)
         {   
-            // player (left player)
-            if (PLayer1Animator.GetBool(boxHash) && this.gameObject.tag == "hand" && col.gameObject.tag == "enemy")
+            if(PLayer1Animator == null || PLayer2Animator == null)
             {
-                Player2.health -= Player1.boxPower;
-                PLayer2Animator.SetBool(hitHash, true);
-                PLayer1Animator.SetBool(boxHash, false);
+                return;
             }
-            if (PLayer1Animator.GetBool(legHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "enemy")
+            // player (left player)
+            if (PLayer1Animator.GetBool(primaryHitHash) && this.gameObject.tag == "hand" && col.gameObject.tag == "enemy")
             {
-                Player2.health -= Player1.legPower;
+                Player2.health -= Player1.primaryPower;
                 PLayer2Animator.SetBool(hitHash, true);
-                PLayer1Animator.SetBool(legHash, false);
+                PLayer1Animator.SetBool(primaryHitHash, false);
+            }
+            if (PLayer1Animator.GetBool(secondaryHitHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "enemy")
+            {
+                Player2.health -= Player1.secondaryPower;
+                PLayer2Animator.SetBool(hitHash, true);
+                PLayer1Animator.SetBool(secondaryHitHash, false);
             }
             if (Player2.health <= 0)
             {
@@ -56,17 +60,17 @@ namespace MortalKombat
             }
 
             // enemy (right player)
-            if (PLayer2Animator.GetBool(boxHash) && this.gameObject.tag == "weapon" && col.gameObject.tag == "player")
+            if (PLayer2Animator.GetBool(primaryHitHash) && this.gameObject.tag == "weapon" && col.gameObject.tag == "player")
             {
-                Player1.health -= Player2.weaponPower;
+                Player1.health -= Player2.primaryPower;
                 PLayer1Animator.SetBool(hitHash, true);
-                PLayer2Animator.SetBool(boxHash, false);
+                PLayer2Animator.SetBool(primaryHitHash, false);
             }
-            if (PLayer2Animator.GetBool(legHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "player")
+            if (PLayer2Animator.GetBool(secondaryHitHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "player")
             {
-                Player1.health -= Player2.legPower;
+                Player1.health -= Player2.secondaryPower;
                 PLayer1Animator.SetBool(hitHash, true);
-                PLayer2Animator.SetBool(legHash, false);
+                PLayer2Animator.SetBool(secondaryHitHash, false);
             }
             if (Player1.health <= 0)
             {

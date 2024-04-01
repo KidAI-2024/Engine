@@ -42,10 +42,10 @@ namespace MortalKombat.ChoosePlayer
             player2Text.text = "";
 
             // initialize player 1 and player 2 info panel
-            OnCharacterPlayer1Change("Ninja");
-            OnCharacterPlayer1Change("Hulk");
-            ninjaButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayer1Change("Ninja"));
-            hulkButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayer1Change("Hulk"));
+            OnCharacterPlayerChange("Ninja");
+            OnCharacterPlayerChange("Hulk");
+            ninjaButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Ninja"));
+            hulkButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Hulk"));
         }
 
         public void Player1Ready()
@@ -59,6 +59,7 @@ namespace MortalKombat.ChoosePlayer
             }
             else
             {
+                player1Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Ready";
                 gameManager.player1Name = "";
                 player1Text.text = "";
             }
@@ -70,11 +71,12 @@ namespace MortalKombat.ChoosePlayer
             if (player2Ready)
             {
                 gameManager.player2Name = selectedPlayer2Name;
-                player1Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Unready";
+                player2Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Unready";
                 player2Text.text = "Ready";
             }
             else
             { 
+                player2Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Ready";
                 gameManager.player2Name = "";
                 player2Text.text = "";
             }
@@ -89,7 +91,7 @@ namespace MortalKombat.ChoosePlayer
         }
 
 
-        void OnCharacterPlayer1Change(string characterName)
+        void OnCharacterPlayerChange(string characterName)
         {   
             switch(characterName)
             {
@@ -103,7 +105,7 @@ namespace MortalKombat.ChoosePlayer
                     player1InfoPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.96f;
                     break;
                 case "Hulk":
-                    selectedPlayer1Name = "Hulk";
+                    selectedPlayer2Name = "Hulk";
                     // Health
                     player2InfoPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.85f;
                     // Power
