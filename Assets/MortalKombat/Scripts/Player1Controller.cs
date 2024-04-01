@@ -132,7 +132,7 @@ namespace MortalKombat
 
         void ResetAnimation(int hash, string animationName = "")
         {
-            if(animator.GetBool(hash) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.2f && animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+            if(animator.GetBool(hash) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
             {
                 animator.SetBool(hash, false);
             }
