@@ -13,6 +13,8 @@ namespace MortalKombat
 
         public Slider Player1HealthSlider;
         public Slider Player2HealthSlider; 
+        public GameObject Player1Score;
+        public GameObject Player2Score;
         Player1Controller player1;
         Player1Controller player2;
 
@@ -57,6 +59,11 @@ namespace MortalKombat
             Player1HealthSlider.maxValue = player1.health;
             Player2HealthSlider.maxValue = player2.health;
             RoundOverText.gameObject.SetActive(false);
+            for (int i = 0; i < 3; i++)
+            {
+                Player1Score.transform.GetChild(i).gameObject.SetActive(false);
+                Player2Score.transform.GetChild(i).gameObject.SetActive(false);
+            }
             if (EnableTimer)
             {
                 isInputEnabled = false;
@@ -87,6 +94,7 @@ namespace MortalKombat
                 // Increment the Round variable
                 Round++;
                 RoundScore = player1.health <= 0 ? RoundScore - 1 : RoundScore + 1;
+                UpdateRoundScoreUI();
                 if (Round > 3 || RoundScore > 1 ||  RoundScore < -1) // 3 rounds finished = game over
                 {
                     PlayerPrefs.DeleteAll();
@@ -169,6 +177,17 @@ namespace MortalKombat
         {
             // Reload the scene to restart the game with a new round
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
+        void UpdateRoundScoreUI()
+        {
+            if (RoundScore > 0)
+            {
+                Player1Score.transform.GetChild(RoundScore - 1).gameObject.SetActive(true);
+            }
+            if (RoundScore < 0)
+            {
+                Player2Score.transform.GetChild(-RoundScore -1).gameObject.SetActive(true);
+            }
         }
         void PlayRoundSound(int Round)
         {

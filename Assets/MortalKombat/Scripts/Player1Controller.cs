@@ -11,6 +11,7 @@ namespace MortalKombat
         public string primaryHit;
         public string secondaryHit;
         public string block;
+        public bool isEnabled;
     }
     public class Player1Controller : MonoBehaviour
     {
@@ -42,14 +43,12 @@ namespace MortalKombat
             jumpHash = Animator.StringToHash("jump");
             jumpKickHash = Animator.StringToHash("JumpKick");
             blockHash = Animator.StringToHash("block");
-
-            Debug.Log(gameObject.name + " " + startLimit + " " + endLimit);
         }
 
         void Update()
         {
             // Disable input if the 3..2..1 countdown is still running
-            if(!UI.IsInputEnabled){
+            if(!UI.IsInputEnabled || !controls.isEnabled){
                 return;
             }
 

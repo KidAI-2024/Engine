@@ -73,7 +73,8 @@ namespace MortalKombat
                 jump = "w",
                 primaryHit = "e",
                 secondaryHit = "space",
-                block = "q"
+                block = "q",
+                isEnabled = true
             };
         }
         Controls SetPlayer2Controls()
@@ -85,7 +86,8 @@ namespace MortalKombat
                 jump = "up",
                 primaryHit = "/",
                 secondaryHit = ".",
-                block = "down"
+                block = "down",
+                isEnabled = true
             };
         }
     }
