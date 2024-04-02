@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Karting/Scenes/KartingMain.unity
     guid: 2a5da18706f703f4f828adf36e62bee8
+  - enabled: 1
+    path: Assets/MortalKombat/Scenes/CharacterSelect.unity
+    guid: b6cd0d51bc545644a9fcf16f16397611
   m_configObjects: {}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace MortalKombat.ChoosePlayer
 {
 
@@ -31,7 +32,11 @@ namespace MortalKombat.ChoosePlayer
 
         string selectedPlayer1Name = "";
         string selectedPlayer2Name = "";
-
+        
+        private AudioSource audioSource;
+        public AudioClip ninja_sfx;
+        public AudioClip hulk_sfx;
+        
         void Start(){
             gameManager = GameManager.Instance;
             // add event listener to player 1 button
@@ -42,8 +47,8 @@ namespace MortalKombat.ChoosePlayer
             player2Text.text = "";
 
             // initialize player 1 and player 2 info panel
-            OnCharacterPlayerChange("Ninja");
-            OnCharacterPlayerChange("Hulk");
+            OnCharacterPlayerChange("Ninja",true);
+            OnCharacterPlayerChange("Hulk",true);
             ninjaButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Ninja"));
             hulkButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Hulk"));
         }
@@ -90,12 +95,17 @@ namespace MortalKombat.ChoosePlayer
             }
         }
 
-
-        void OnCharacterPlayerChange(string characterName)
+        void OnCharacterPlayerChange(string characterName, bool isFirstPlayer = false)
         {   
             switch(characterName)
             {
                 case "Ninja":
+                    ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    if(!isFirstPlayer)
+                    {
+                        audioSource = ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
+                        audioSource.PlayOneShot(ninja_sfx);
+                    }
                     selectedPlayer1Name = "Ninja";
                     // Health
                     player1InfoPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.7f;
@@ -105,6 +115,12 @@ namespace MortalKombat.ChoosePlayer
                     player1InfoPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.96f;
                     break;
                 case "Hulk":
+                    hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    if(!isFirstPlayer)
+                    {
+                        audioSource = hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
+                        audioSource.PlayOneShot(hulk_sfx);
+                    }
                     selectedPlayer2Name = "Hulk";
                     // Health
                     player2InfoPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.85f;
@@ -113,8 +129,11 @@ namespace MortalKombat.ChoosePlayer
                     // Speed
                     player2InfoPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.5f;
                     break;
+                default:
+                    ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    break;
             }
         }
-
     }
 }
