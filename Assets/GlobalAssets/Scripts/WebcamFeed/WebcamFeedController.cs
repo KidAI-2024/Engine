@@ -18,6 +18,9 @@ namespace GlobalAssets.WebcamFeed
         private Socket.SocketUDP socketClient;
         // fps text
         public TMP_Text fpsText;
+        public Button UnityCameraSource;
+        public Button PythonCameraSource;
+        private bool cameraSourceUnity = true;
         void Start()
         {
             // get socket from SocketClient
@@ -29,48 +32,44 @@ namespace GlobalAssets.WebcamFeed
                 requestedWidth = 320,
                 requestedHeight = 180
             };
-            // rawImage.texture = webcamTexture;
-            // rawImage.material.mainTexture = webcamTexture;
-            // // set height and width of rawImage
-            // // rawImage.rectTransform.sizeDelta = new Vector2(webcamTexture.width, webcamTexture.height);
-            // webcamTexture.Play();
-            SendEvent_StartFeedHandPose();
+            // Start Camera from Unity
+            rawImage.texture = webcamTexture;
+            rawImage.material.mainTexture = webcamTexture;
+            webcamTexture.Play();
+            // Start Camera from Python
+            UnityCameraSource.onClick.AddListener(() =>
+            {
+                if (!cameraSourceUnity)
+                {
+                    SendEvent_StopFeedHandPose();
+                    webcamTexture.Play();
+                    cameraSourceUnity = true;
+                }
+            });
+            PythonCameraSource.onClick.AddListener(() =>
+            {
+                if (cameraSourceUnity)
+                {
+                    webcamTexture.Stop();
+                    // sleep for 1 second
+                    SendEvent_StartFeedHandPose();
+                    cameraSourceUnity = false;
+                }
+            });
         }
         // Update is called once per frame
         void Update()
         {
-            // ----------- Send the frame to the server -----------
-            // if (Input.GetKeyDown(KeyCode.Space))
-            // if (nextFrameReady)
-            // {
-            //     if (webcamTexture.isPlaying)
-            //     {
-            //         // Send the frame to the server
-            //         // Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
-            //         frame = webcamTexture.GetPixels32();
-            //         byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
-            //         // Encode the byte array to a Base64 string
-            //         string frameBase64 = Convert.ToBase64String(frameBytes);
-            //         // Construct dictionary to send to server
-            //         Dictionary<string, string> message = new Dictionary<string, string>
-            //         {
-            //             { "frame", frameBase64 },
-            //             { "width", webcamTexture.width.ToString() },
-            //             { "height", webcamTexture.height.ToString() },
-            //             // { "event", "predict_frame" }
-            //             { "event", "preprocess_hand_pose" }
-            //         };
-            //         socketClient.SendMessage(message);
-            //         nextFrameReady = false;
-            //     }
-            // }
-            // get feed request
-            if (nextFrameReady)
+            // ----------- Send the frame from Unity to Python server -----------
+            if (cameraSourceUnity)
             {
-
-                SendEvent_GetFeedFrameHandPose();
-                nextFrameReady = false;
+                SendFrameFromUnityCamera();
             }
+            else
+            {
+                RequestFrameFromPythonCamera();
+            }
+            // Request Next frame from Python
             // --------- Receive the response from the server ---------
             if (socketClient.isDataAvailable())
             {
@@ -83,10 +82,7 @@ namespace GlobalAssets.WebcamFeed
                 //     Debug.Log(kvp.Key + ": " + v);
                 // }
                 // Debug.Log("----------------------");
-                if (fpsText != null)
-                {
-                    fpsText.text = "FPS: " + response["FPS"];
-                }
+                SetFPSText(response["FPS"]);
                 if (response["event"] == "predict_frame")
                 {
                     Debug.Log("Prediction: " + response["prediction"]);
@@ -129,6 +125,47 @@ namespace GlobalAssets.WebcamFeed
                     Debug.Log("Result: " + response["message"]);
                 }
                 nextFrameReady = true;
+            }
+        }
+        void SetFPSText(string fps)
+        {
+            if (fpsText != null)
+            {
+                fpsText.text = "FPS: " + fps;
+            }
+        }
+        void RequestFrameFromPythonCamera()
+        {
+            if (nextFrameReady)
+            {
+                SendEvent_GetFeedFrameHandPose();
+                nextFrameReady = false;
+            }
+        }
+        void SendFrameFromUnityCamera()
+        {
+            if (nextFrameReady)
+            {
+                if (webcamTexture.isPlaying)
+                {
+                    // Send the frame to the server
+                    // Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
+                    frame = webcamTexture.GetPixels32();
+                    byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
+                    // Encode the byte array to a Base64 string
+                    string frameBase64 = Convert.ToBase64String(frameBytes);
+                    // Construct dictionary to send to server
+                    Dictionary<string, string> message = new Dictionary<string, string>
+                    {
+                        { "frame", frameBase64 },
+                        { "width", webcamTexture.width.ToString() },
+                        { "height", webcamTexture.height.ToString() },
+                        // { "event", "predict_frame" }
+                        { "event", "preprocess_hand_pose" }
+                    };
+                    socketClient.SendMessage(message);
+                    nextFrameReady = false;
+                }
             }
         }
         void SendEvent_StartFeedHandPose()
