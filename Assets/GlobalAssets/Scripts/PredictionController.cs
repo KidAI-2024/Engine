@@ -10,6 +10,7 @@ public class PredictionController : MonoBehaviour
     public RawImage webcamDisplay;
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
+    public GameObject predictButton;
 
     private bool nextFrameReady = true;
     private bool startPrediction = false;
@@ -17,6 +18,7 @@ public class PredictionController : MonoBehaviour
     private Dictionary<string, string> classMap = new Dictionary<string, string>();
     private GlobalAssets.Socket.SocketUDP socketClient;
     private WebCamTexture webcamTexture;
+    private bool togglePredicting = false;
 
     void Start()
     {
@@ -32,17 +34,31 @@ public class PredictionController : MonoBehaviour
     }
     public void StartPrediction()
     {
-        CreateClassMap();
-        startPrediction = true;
-        // Check if the device supports webcam
-        if (WebCamTexture.devices.Length == 0)
+        togglePredicting = !togglePredicting;
+        if (togglePredicting)
         {
-            Debug.LogError("No webcam found!");
-            return;
+            predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stop";
+            CreateClassMap();
+            startPrediction = true;
+            // Check if the device supports webcam
+            if (WebCamTexture.devices.Length == 0)
+            {
+                Debug.LogError("No webcam found!");
+                return;
+            }
+            webcamDisplay.texture = webcamTexture;
+            webcamDisplay.material.mainTexture = webcamTexture;
+            webcamTexture.Play();
         }
-        webcamDisplay.texture = webcamTexture;
-        webcamDisplay.material.mainTexture = webcamTexture;
-        webcamTexture.Play();
+        else
+        {
+            predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Predict";
+            startPrediction = false;
+            webcamTexture.Stop();
+            webcamDisplay.texture = null;
+            webcamDisplay.material.mainTexture = null;
+            predictionText.text = "Predict";
+        }
     }
     void Update()
     {

@@ -21,7 +21,6 @@ public class ProjectName : MonoBehaviour
     {
         nextSceneName = scene;
     }
-
     public void CreateProject()
     {
         string projectName = ProjectNameTextField.GetComponentInChildren<TMP_InputField>().text;
@@ -39,13 +38,14 @@ public class ProjectName : MonoBehaviour
         // create new button prefab instance and add it to ProjectListPanel children
         GameObject newProjectBtn = Instantiate(ProjectBtnPrefab, ProjectListPanel.transform);
         
-        // newProjectBtn has 3 children of text type, 
-        // the first one is the project name 
+        // newProjectBtn has 3 children of btn type, 
+        // the first one is the project name
         // second one is project type (get from the button that invoked this function) 
         // the third one is the date
-        newProjectBtn.GetComponentInChildren<TextMeshProUGUI>().text = projectName;
-        newProjectBtn.GetComponentsInChildren<TextMeshProUGUI>()[1].text = projectType; 
-        newProjectBtn.GetComponentsInChildren<TextMeshProUGUI>()[2].text = System.DateTime.Now.ToString("dd/MM/yyyy");
+        // each button has a child that has text component
+        newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = projectName;
+        newProjectBtn.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = projectType;
+        newProjectBtn.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = System.DateTime.Now.ToString("dd/MM/yyyy");
 
         // Add a listener to the button
         // newProjectBtn.GetComponentInChildren<Button>().onClick.AddListener(() => LoadProject(projectName));

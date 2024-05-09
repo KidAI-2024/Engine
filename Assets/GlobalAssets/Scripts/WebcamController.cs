@@ -99,14 +99,17 @@ public class WebcamController : MonoBehaviour
         // Add the captured photo to the list
         capturedImages.Add(photo);
 
-        Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
+        Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
         newImageObject.transform.localPosition = newPosition;
         newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
         
         // get the imageContainer and increase its height
         if (col == 0 && capturedImages.Count > 8)
         {
-            imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(imageContainer.GetComponent<RectTransform>().sizeDelta.x, imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
+            imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                imageContainer.GetComponent<RectTransform>().sizeDelta.x,
+                imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70
+            );
         }
     }
 
@@ -140,7 +143,7 @@ public class WebcamController : MonoBehaviour
             int col = i % maxColumns; // Calculate the column index
 
 
-            Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
+            Vector3 newPosition = new Vector3(col * spacingX + 5, -row * spacingY - 5, 0);
             newImageObject.transform.localPosition = newPosition;
             
             // get the imageContainer and increase its height
