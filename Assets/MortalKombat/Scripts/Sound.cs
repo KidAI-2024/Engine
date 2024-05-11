@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Sound : MonoBehaviour
+namespace MortalKombat
 {
-    AudioSource audioSource;
-    public AudioClip whoofSound;
-    public AudioClip headHitSound;
-    void Awake()
+    public class Sound : MonoBehaviour
     {
-        audioSource = GetComponent<AudioSource>();
-    }
+        AudioSource audioSource;
+        public AudioClip whoofSound;
+        public AudioClip headHitSound;
+        void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
-    public void PlayWhoofSound()
-    {
-        audioSource.PlayOneShot(whoofSound);
-    }
+        public void PlayWhoofSound()
+        {
+            audioSource.PlayOneShot(whoofSound);
+        }
 
-    public void PlayHeadHitSound()
-    {
-        audioSource.PlayOneShot(headHitSound);
+        public void PlayHeadHitSound()
+        {
+            audioSource.PlayOneShot(headHitSound);
+        }
     }
 }

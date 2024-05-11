@@ -2,50 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct Controls
+{
+    public string forward;
+    public string backward;
+    public string jump;
+    public string primaryHit;
+    public string secondaryHit;
+    public string block;
+}
 public class Player2Controller : MonoBehaviour
 {
     public int health;
-    public int legPower = 15;
-    public int weaponPower = 20;
+    public int primaryPower;
+    public int secondaryPower;
+    public float speed; // Adjust the speed as needed
+    public Controls controls;
 
 
     Animator animator;
     int isWalkingHash;
     int isWalkingBackHash;
-    int legPunshHash;
-    int boxPunshHash;
+    int secondaryHitHash;
+    int primaryHitHash;
     // int jumpHash;
-    public float moveSpeed = 0.5f; // Adjust the speed as needed
-
-    void Start()
+    void OnEnable() // instead of start to make sure the health is set when the game is starts
     {
         health = 150;
+        primaryPower = 20;
+        secondaryPower = 15;
+        speed = 1.5f;
+        controls = new Controls();
+        controls.forward = "left";
+        controls.backward = "right";
+        controls.jump = "up";
+        controls.primaryHit = "/";
+        controls.secondaryHit = ".";
+        controls.block = "down";
+        
         // Assuming the Animator component is attached to the child GameObject as this script
         animator  = GetComponentInChildren<Animator>();
         isWalkingHash = Animator.StringToHash("isWalking");
         isWalkingBackHash = Animator.StringToHash("back");
-        legPunshHash = Animator.StringToHash("legPunsh");
-        boxPunshHash = Animator.StringToHash("box");
+        secondaryHitHash = Animator.StringToHash("secondary");
+        primaryHitHash = Animator.StringToHash("primary");
         // jumpHash = Animator.StringToHash("jump");
     }
 
     void Update()
     {
         // Disable input if the 3..2..1 countdown is still running
-        if(!UI.IsInputEnabled){
+        if(!MortalKombat.UI.IsInputEnabled){
             return;
         }
 
         bool isWalking = animator.GetBool(isWalkingHash);
         bool isWalkingBack = animator.GetBool(isWalkingBackHash);
-        bool legPunsh = animator.GetBool(legPunshHash);
-        bool boxPunsh = animator.GetBool(boxPunshHash);
+        bool legPunsh = animator.GetBool(secondaryHitHash);
+        bool boxPunsh = animator.GetBool(primaryHitHash);
         // bool jump = animator.GetBool(jumpHash);
 
         // check the name of the current animation and its state
+        bool forwardPressed = Input.GetKey(controls.forward);
+        bool backwardPressed = Input.GetKey(controls.backward);
+        bool jumpPressed = Input.GetKeyDown(controls.jump);
+        bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit);
+        bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit);
+        bool blockPressed = Input.GetKeyDown(controls.block);
 
-        bool forwardPressed = Input.GetKey("left");
-        bool backwardPressed = Input.GetKey("right");
 
         // Walking
         if (!isWalking && (forwardPressed || backwardPressed))
@@ -69,31 +93,31 @@ public class Player2Controller : MonoBehaviour
         }   
 
         // Leg Punsh 
-        if (Input.GetKeyDown("/"))
+        if (secondaryHitPressed)
         {
-            animator.SetBool(legPunshHash, true);
+            animator.SetBool(secondaryHitHash, true);
         }
-        ResetAnimation(legPunshHash,"kick");
+        ResetAnimation(secondaryHitHash,"secondary");
 
         // Melee Punsh
-        if (Input.GetKeyDown("."))
+        if (primaryHitPressed)
         {
-            animator.SetBool(boxPunshHash, true);
+            animator.SetBool(primaryHitHash, true);
         }
-        ResetAnimation(boxPunshHash,"melee");
+        ResetAnimation(primaryHitHash,"primary");
         
         // Move the character forward if walking
-        if (transform.position.z < 33.8f && transform.position.z >= 28.9f)
+        if (transform.position.z < 33.8f && transform.position.z >= 28.2f)
         {
             if (isWalking)
             {
                 if (forwardPressed)
                 {
-                    transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
                 }
                 else if (backwardPressed)
                 {
-                    transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+                    transform.Translate(Vector3.back * speed * Time.deltaTime);
                 }
             }
         }

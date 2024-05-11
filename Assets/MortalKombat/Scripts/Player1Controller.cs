@@ -1,125 +1,141 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Player1Controller : MonoBehaviour
+namespace MortalKombat
 {
-    public int health;
-    public int legPower = 10;
-    public int boxPower = 15;
-
-    Animator animator;
-    int isWalkingHash;
-    int legPunshHash;
-    int boxPunshHash;
-    int jumpHash;
-    int jumpKickHash;
-    int blockHash;
-    public float moveSpeed = 0.5f; // Adjust the speed as needed
-
-    void Start()
+    public struct Controls
     {
-        health = 100;
-        // Assuming the Animator component is attached to the child GameObject as this script
-        animator  = GetComponentInChildren<Animator>();
-        isWalkingHash = Animator.StringToHash("isWalking");
-        legPunshHash = Animator.StringToHash("legPunsh");
-        boxPunshHash = Animator.StringToHash("box");
-        jumpHash = Animator.StringToHash("jump");
-        jumpKickHash = Animator.StringToHash("JumpKick");
-        blockHash = Animator.StringToHash("block");
+        public string forward;
+        public string backward;
+        public string jump;
+        public string primaryHit;
+        public string secondaryHit;
+        public string block;
+        public bool isEnabled;
     }
-
-    void Update()
+    public class Player1Controller : MonoBehaviour
     {
-        // Disable input if the 3..2..1 countdown is still running
-        if(!UI.IsInputEnabled){
-            return;
-        }
+        public int health;
+        public int primaryPower;
+        public int secondaryPower;
+        public float speed; // Adjust the speed as needed
+        public Controls controls;   
 
-        bool isWalking = animator.GetBool(isWalkingHash);
-        bool legPunsh = animator.GetBool(legPunshHash);
-        bool boxPunsh = animator.GetBool(boxPunshHash);
-        bool jump = animator.GetBool(jumpHash);
-        bool block = animator.GetBool(blockHash);
+        Animator animator;
+        int isWalkingHash;
+        int secondaryHitHash;
+        int primaryHitHash;
+        int jumpHash;
+        int jumpKickHash;
+        int blockHash;
+        public float startLimit;
+        public float endLimit;
 
-        bool forwardPressed = Input.GetKey("d");
-        bool backwardPressed = Input.GetKey("a");
-        bool jumpPressed = Input.GetKeyDown(KeyCode.W);
-        bool legKickPressed = Input.GetKeyDown(KeyCode.Space);
-
-        // Walking
-        if (!isWalking && (forwardPressed || backwardPressed))
-        {
-            animator.SetBool(isWalkingHash, true);
-        }
-        if (isWalking && !(forwardPressed || backwardPressed))
-        {
-            animator.SetBool(isWalkingHash, false);
-        }
         
-        // Block
-        if (Input.GetKeyDown(KeyCode.Q))
+
+        void OnEnable() // instead of start to make sure the health is set when the game is starts
         {
-            animator.SetBool(blockHash, true);
-        }
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            animator.SetBool(blockHash, false);
+            // Assuming the Animator component is attached to the child GameObject as this script
+            animator  = GetComponentInChildren<Animator>();
+            isWalkingHash = Animator.StringToHash("isWalking");
+            secondaryHitHash = Animator.StringToHash("secondary");
+            primaryHitHash = Animator.StringToHash("primary");
+            jumpHash = Animator.StringToHash("jump");
+            jumpKickHash = Animator.StringToHash("JumpKick");
+            blockHash = Animator.StringToHash("block");
         }
 
-        // Jump & Kick
-        if (jumpPressed && legKickPressed)
+        void Update()
         {
-            animator.SetBool(jumpKickHash, true);
-        }
-        ResetAnimation(jumpKickHash,"JumpKick");
+            // Disable input if the 3..2..1 countdown is still running
+            if(!UI.IsInputEnabled || !controls.isEnabled){
+                return;
+            }
 
-        // Jump
-        if (jumpPressed && !legKickPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
-        {
-            animator.SetBool(jumpHash, true);
-        }
-        ResetAnimation(jumpHash,"Jumping");
+            bool isWalking = animator.GetBool(isWalkingHash);
+            bool legPunsh = animator.GetBool(secondaryHitHash);
+            bool boxPunsh = animator.GetBool(primaryHitHash);
+            bool jump = animator.GetBool(jumpHash);
+            bool block = animator.GetBool(blockHash);
 
-        // Leg Punsh
-        if (legKickPressed && !jumpPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
-        {
-            animator.SetBool(legPunshHash, true);
-        }
-        ResetAnimation(legPunshHash,"legPunsh");
+            bool forwardPressed = Input.GetKey(controls.forward);
+            bool backwardPressed = Input.GetKey(controls.backward);
+            bool jumpPressed = Input.GetKeyDown(controls.jump);
+            bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit);
+            bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit);
+            bool blockPressed = Input.GetKeyDown(controls.block);
+
+            // Walking
+            if (!isWalking && (forwardPressed || backwardPressed))
+            {
+                animator.SetBool(isWalkingHash, true);
+            }
+            if (isWalking && !(forwardPressed || backwardPressed))
+            {
+                animator.SetBool(isWalkingHash, false);
+            }
+            
+            // Block
+            if (blockPressed)
+            {
+                animator.SetBool(blockHash, true);
+            }
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                animator.SetBool(blockHash, false);
+            }
+
+            // Jump & Kick
+            if (jumpPressed && secondaryHitPressed)
+            {
+                animator.SetBool(jumpKickHash, true);
+            }
+            ResetAnimation(jumpKickHash,"JumpKick");
+
+            // Jump
+            if (jumpPressed && !secondaryHitPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
+            {
+                animator.SetBool(jumpHash, true);
+            }
+            ResetAnimation(jumpHash,"Jumping");
+
+            // Leg Punsh
+            if (secondaryHitPressed && !jumpPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
+            {
+                animator.SetBool(secondaryHitHash, true);
+            }
+            ResetAnimation(secondaryHitHash,"secondary");
 
 
-        // Box Punsh
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            animator.SetBool(boxPunshHash, true);
-        }
-        ResetAnimation(boxPunshHash,"Boxing");
+            // Box Punsh
+            if (primaryHitPressed)
+            {
+                animator.SetBool(primaryHitHash, true);
+            }
+            ResetAnimation(primaryHitHash,"primary");
 
-        // check if the player is not at the end of the screen
-        if (transform.position.z < 33.8f && transform.position.z >= 28.9f)
-        {
             // Move the character forward if walking
             if (isWalking)
             {
-                if (forwardPressed)
+                bool isInForwardLimit = gameObject.name == "Player1" ? transform.position.z > endLimit : transform.position.z < endLimit;
+                bool isInBackwardLimit = gameObject.name == "Player1" ? transform.position.z < startLimit : transform.position.z > startLimit;
+                if (forwardPressed && isInForwardLimit && !backwardPressed)
                 {
-                    transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
                 }
-                else if (backwardPressed)
+                else if (backwardPressed && isInBackwardLimit && !forwardPressed)
                 {
-                    transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+                    transform.Translate(Vector3.back * speed * Time.deltaTime);
                 }
             }
         }
-    }
 
-    void ResetAnimation(int hash, string animationName = "")
-    {
-        if(animator.GetBool(hash) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.2f && animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+        void ResetAnimation(int hash, string animationName = "")
         {
-            animator.SetBool(hash, false);
+            if(animator.GetBool(hash) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+            {
+                animator.SetBool(hash, false);
+            }
         }
     }
 }
