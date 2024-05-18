@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class WebcamController : MonoBehaviour
 {
@@ -9,10 +10,30 @@ public class WebcamController : MonoBehaviour
     public Transform imageContainer; // Parent transform for instantiated RawImages
     public Transform finalImagesContainer; // Parent transform for instantiated RawImages
     public Button captureButton;
+    public Button autoCaptureButton;
+    public GameObject autoCaptureGO;
+    public TextMeshProUGUI numCapturedText;
 
+    private int autoCaptureTime = 1;
     private WebCamTexture webcamTexture;
-    private List<Texture2D> capturedImages = new List<Texture2D>();
+    private TMP_Dropdown autoCaptureDDL;
+    public List<Texture2D> capturedImages = new List<Texture2D>();
 
+
+    void Start()
+    {
+        // Add a listener to the capture button
+        autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
+        captureButton.onClick.AddListener(CapturePhoto);
+        autoCaptureButton.onClick.AddListener(AutoCapture);
+        autoCaptureDDL.onValueChanged.AddListener(delegate {
+            AutoCaptureTimeValueChanged(autoCaptureDDL.options[autoCaptureDDL.value].text);
+        });
+    }
+    void Update()
+    {
+        numCapturedText.text = "Captured: " + capturedImages.Count + " images";
+    }
     public void OpenCamera()
     {   
         // Check if the device supports webcam
@@ -23,14 +44,37 @@ public class WebcamController : MonoBehaviour
         }
 
         // Get the default webcam and start streaming
-        webcamTexture = new WebCamTexture();
+        // webcamTexture = new WebCamTexture();
+        webcamTexture = new WebCamTexture
+        {
+            // reduce the resolution of the webcam
+            requestedWidth = 320,
+            requestedHeight = 180
+        };
         webcamDisplay.texture = webcamTexture;
         webcamTexture.Play();
-
-        // Attach the capturePhoto method to the captureButton's onClick event
-        captureButton.onClick.AddListener(CapturePhoto);
+    }
+    public void AutoCaptureTimeValueChanged(string value)
+    {
+        autoCaptureTime = int.Parse(value);
     }
 
+    public void AutoCapture()
+    {
+        // change autoCaptureButton text mesh pro to stop
+        autoCaptureButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stop";
+        InvokeRepeating("CapturePhoto", autoCaptureTime, autoCaptureTime);
+        autoCaptureButton.onClick.RemoveAllListeners();
+        autoCaptureButton.onClick.AddListener(StopAutoCapture);
+    }
+    public void StopAutoCapture()
+    {
+        // change autoCaptureButton text mesh pro to stop
+        CancelInvoke("CapturePhoto");
+        autoCaptureButton.GetComponentInChildren<TextMeshProUGUI>().text = "Auto capture";
+        autoCaptureButton.onClick.RemoveAllListeners();
+        autoCaptureButton.onClick.AddListener(AutoCapture);
+    }
     public void CapturePhoto()
     {
         // Create a texture with the same dimensions as the webcam feed
@@ -45,9 +89,6 @@ public class WebcamController : MonoBehaviour
         RawImage newImage = newImageObject.GetComponent<RawImage>();
         newImage.texture = photo;
 
-
-
-
         // Set the position of the new RawImage to stack horizontally in a grid
         float spacingX = 70f; // Adjust the horizontal spacing between images
         float spacingY = 70f; // Adjust the vertical spacing between rows
@@ -60,20 +101,25 @@ public class WebcamController : MonoBehaviour
 
         Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
         newImageObject.transform.localPosition = newPosition;
+        newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
         
         // get the imageContainer and increase its height
         if (col == 0 && capturedImages.Count > 8)
         {
             imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(imageContainer.GetComponent<RectTransform>().sizeDelta.x, imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
         }
-
-
-        // Optionally, you can save the photo or do further processing here
-        // For simplicity, let's log the photo's dimensions
     }
 
     public void CloseCamera()
     {
+        // stop the InvokeRepeating
+        CancelInvoke("CapturePhoto");
+
+        // clear finalImagesContainer content
+        foreach (Transform child in finalImagesContainer)
+        {
+            Destroy(child.gameObject);
+        }
         // Stop webcam feed when the object is destroyed
         if (webcamTexture != null)
             webcamTexture.Stop();
@@ -85,9 +131,7 @@ public class WebcamController : MonoBehaviour
             GameObject newImageObject = Instantiate(imagePrefab, finalImagesContainer);
             RawImage newImage = newImageObject.GetComponent<RawImage>();
             newImage.texture = image;
-            // reduce its size and set its position as in the imageContainer
-            // newImageObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-
+            
             // Set the position of the new RawImage to stack horizontally in a grid
             float spacingX = 70f; // Adjust the horizontal spacing between images
             float spacingY = 70f; // Adjust the vertical spacing between rows
@@ -107,4 +151,5 @@ public class WebcamController : MonoBehaviour
             i++;
         }
     }
+     
 }

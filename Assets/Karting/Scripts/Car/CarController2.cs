@@ -14,6 +14,8 @@ namespace Karting.Car
         private float speed;
         private Rigidbody playerRB;
         public AnimationCurve steeringCurve;
+        private float Gforce;
+        private float lastVelocity;
         // Start is called before the first frame update
         void Start()
         {
@@ -29,6 +31,17 @@ namespace Karting.Car
             Brake();
             Steer();
             ApplyWheelPositions();
+            LimitRotation();
+        }
+        void FixedUpdate()
+        {
+            float currVelocity = playerRB.velocity.magnitude;
+            Gforce = (currVelocity - lastVelocity) / (Time.fixedDeltaTime * Physics.gravity.magnitude);
+            lastVelocity = currVelocity;
+        }
+        public float GetGforce()
+        {
+            return Gforce;
         }
         void GetInput()
         {
@@ -98,6 +111,30 @@ namespace Karting.Car
             // set the wheel rotation to the rotation of the wheel collider
             wheelMesh.transform.rotation = quat;
         }
+        void LimitRotation()
+        {
+            // Limit the rotation of the car, so it doesn't flip over to the side
+            if (transform.localEulerAngles.z > 10 && transform.localEulerAngles.z < 180)
+            {
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 10);
+            }
+            else if (transform.localEulerAngles.z < 350 && transform.localEulerAngles.z > 180)
+            {
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 350);
+            }
+            // Limit the rotation of the car, so it doesn't flip over to the front or back
+            if (transform.localEulerAngles.x > 15 && transform.localEulerAngles.x < 180)
+            {
+                transform.localEulerAngles = new Vector3(15, transform.localEulerAngles.y, transform.localEulerAngles.z);
+            }
+            else if (transform.localEulerAngles.x < 345 && transform.localEulerAngles.x > 180)
+            {
+                transform.localEulerAngles = new Vector3(345, transform.localEulerAngles.y, transform.localEulerAngles.z);
+            }
+
+        }
+
+
         [System.Serializable]
         public struct WheelColliders
         {
