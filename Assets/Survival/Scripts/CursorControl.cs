@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 namespace Survival
 {
-
-
     public class CursorControl : MonoBehaviour
     {
         private void Start()

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 namespace Survival
 {
-
     public class MainMenu : MonoBehaviour
     {
         public void B_LoadScene()

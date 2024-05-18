@@ -5,9 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - enemy
-  - player
   - leg
   - hand
+  - Reach
   - weapon
   layers:
   - Default
