@@ -17,11 +17,15 @@ public class WebcamController : MonoBehaviour
     private int autoCaptureTime = 1;
     private WebCamTexture webcamTexture;
     private TMP_Dropdown autoCaptureDDL;
+    public GameObject EmptyImage;
+    private GameObject EmptyImageCaptureImages;
     public List<Texture2D> capturedImages = new List<Texture2D>();
 
 
     void Start()
     {
+        EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
+        EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
         // Add a listener to the capture button
         autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
         captureButton.onClick.AddListener(CapturePhoto);
@@ -33,11 +37,14 @@ public class WebcamController : MonoBehaviour
     void Update()
     {
         numCapturedText.text = "Captured: " + capturedImages.Count + " images";
+        EmptyImageCaptureImages.SetActive(capturedImages.Count == 0);
     }
     public void OpenCamera(GameObject outsideImagesContainer)
     {   
         // get the gameobject of the button that opens the camera
         finalImagesContainer = outsideImagesContainer.transform;
+        EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
+        EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
         // Check if the device supports webcam
         if (WebCamTexture.devices.Length == 0)
         {
@@ -157,6 +164,7 @@ public class WebcamController : MonoBehaviour
             }
             i++;
         }
+        EmptyImage.SetActive(capturedImages.Count == 0);
     }
 
     // This function is called by the popup activate to show the captured images of the class clicked
