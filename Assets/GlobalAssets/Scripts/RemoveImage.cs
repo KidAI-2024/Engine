@@ -12,9 +12,11 @@ public class RemoveImage : MonoBehaviour
     void Start()
     {
         GrandParentObject = transform.parent.parent.parent.parent;
+        // if true => initialize remove image of the outside panel 
+        // so we want to get the captured images from the inside panel ()
         if (GrandParentObject.name != "CameraPanel")
         {
-            GrandParentObject = GrandParentObject.parent.GetChild(1);
+            GrandParentObject = GrandParentObject.parent.parent.parent.parent.GetChild(1);
         }
         capturedImages = GrandParentObject.GetComponent<WebcamController>().capturedImages;
     }

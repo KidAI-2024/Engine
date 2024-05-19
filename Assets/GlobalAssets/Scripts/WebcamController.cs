@@ -34,8 +34,10 @@ public class WebcamController : MonoBehaviour
     {
         numCapturedText.text = "Captured: " + capturedImages.Count + " images";
     }
-    public void OpenCamera()
+    public void OpenCamera(GameObject outsideImagesContainer)
     {   
+        // get the gameobject of the button that opens the camera
+        finalImagesContainer = outsideImagesContainer.transform;
         // Check if the device supports webcam
         if (WebCamTexture.devices.Length == 0)
         {
@@ -149,10 +151,46 @@ public class WebcamController : MonoBehaviour
             // get the imageContainer and increase its height
             if (col == 0 && capturedImages.Count > 8)
             {
-                finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
+                finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
             }
             i++;
         }
     }
+
+    // This function is called by the popup activate to show the captured images of the class clicked
+    public void InstantiateCapturedImages()
+    {
+        
+        int i = 0;
+        foreach (Texture2D image in capturedImages)
+        {
+            GameObject newImageObject = Instantiate(imagePrefab, imageContainer);
+            RawImage newImage = newImageObject.GetComponent<RawImage>();
+            newImage.texture = image;
+            
+            // Set the position of the new RawImage to stack horizontally in a grid
+            float spacingX = 70f; // Adjust the horizontal spacing between images
+            float spacingY = 70f; // Adjust the vertical spacing between rows
+            int maxColumns = 3; // Number of columns in the grid
+            int row = i / maxColumns; // Calculate the row index
+            int col = i % maxColumns; // Calculate the column index
+
+            Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
+            newImageObject.transform.localPosition = newPosition;
+            newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
+            
+            // get the imageContainer and increase its height
+            if (col == 0 && capturedImages.Count > 8)
+            {
+                imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    imageContainer.GetComponent<RectTransform>().sizeDelta.x,
+                    imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70
+                );
+            }
+            i++;
+        }
+    } 
      
 }
