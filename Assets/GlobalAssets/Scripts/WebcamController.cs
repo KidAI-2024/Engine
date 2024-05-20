@@ -17,11 +17,15 @@ public class WebcamController : MonoBehaviour
     private int autoCaptureTime = 1;
     private WebCamTexture webcamTexture;
     private TMP_Dropdown autoCaptureDDL;
+    public GameObject EmptyImage;
+    private GameObject EmptyImageCaptureImages;
     public List<Texture2D> capturedImages = new List<Texture2D>();
 
 
     void Start()
     {
+        EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
+        EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
         // Add a listener to the capture button
         autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
         captureButton.onClick.AddListener(CapturePhoto);
@@ -33,9 +37,14 @@ public class WebcamController : MonoBehaviour
     void Update()
     {
         numCapturedText.text = "Captured: " + capturedImages.Count + " images";
+        EmptyImageCaptureImages.SetActive(capturedImages.Count == 0);
     }
-    public void OpenCamera()
+    public void OpenCamera(GameObject outsideImagesContainer)
     {   
+        // get the gameobject of the button that opens the camera
+        finalImagesContainer = outsideImagesContainer.transform;
+        EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
+        EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
         // Check if the device supports webcam
         if (WebCamTexture.devices.Length == 0)
         {
@@ -99,14 +108,17 @@ public class WebcamController : MonoBehaviour
         // Add the captured photo to the list
         capturedImages.Add(photo);
 
-        Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
+        Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
         newImageObject.transform.localPosition = newPosition;
         newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
         
         // get the imageContainer and increase its height
         if (col == 0 && capturedImages.Count > 8)
         {
-            imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(imageContainer.GetComponent<RectTransform>().sizeDelta.x, imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
+            imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                imageContainer.GetComponent<RectTransform>().sizeDelta.x,
+                imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70
+            );
         }
     }
 
@@ -140,16 +152,53 @@ public class WebcamController : MonoBehaviour
             int col = i % maxColumns; // Calculate the column index
 
 
-            Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
+            Vector3 newPosition = new Vector3(col * spacingX + 5, -row * spacingY - 5, 0);
             newImageObject.transform.localPosition = newPosition;
             
             // get the imageContainer and increase its height
             if (col == 0 && capturedImages.Count > 8)
             {
-                finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
+                finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
             }
             i++;
         }
+        EmptyImage.SetActive(capturedImages.Count == 0);
     }
+
+    // This function is called by the popup activate to show the captured images of the class clicked
+    public void InstantiateCapturedImages()
+    {
+        
+        int i = 0;
+        foreach (Texture2D image in capturedImages)
+        {
+            GameObject newImageObject = Instantiate(imagePrefab, imageContainer);
+            RawImage newImage = newImageObject.GetComponent<RawImage>();
+            newImage.texture = image;
+            
+            // Set the position of the new RawImage to stack horizontally in a grid
+            float spacingX = 70f; // Adjust the horizontal spacing between images
+            float spacingY = 70f; // Adjust the vertical spacing between rows
+            int maxColumns = 3; // Number of columns in the grid
+            int row = i / maxColumns; // Calculate the row index
+            int col = i % maxColumns; // Calculate the column index
+
+            Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
+            newImageObject.transform.localPosition = newPosition;
+            newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
+            
+            // get the imageContainer and increase its height
+            if (col == 0 && capturedImages.Count > 8)
+            {
+                imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    imageContainer.GetComponent<RectTransform>().sizeDelta.x,
+                    imageContainer.GetComponent<RectTransform>().sizeDelta.y + 70
+                );
+            }
+            i++;
+        }
+    } 
      
 }
