@@ -87,7 +87,7 @@ namespace GlobalAssets.WebcamFeed
                 {
                     Debug.Log("Prediction: " + response["prediction"]);
                 }
-                else if (response["event"] == "preprocess_hand_pose")
+                else if (response["event"] == "preprocess_body_pose")
                 {
                     string image = response["preprocessed_image"];
                     byte[] imageBytes = Convert.FromBase64String(image);
@@ -99,7 +99,7 @@ namespace GlobalAssets.WebcamFeed
                         preprocessedImage.material.mainTexture = texture;
                     }
                 }
-                else if (response["event"] == "get_feed_frame_handpose")
+                else if (response["event"] == "get_feed_frame_bodypose")
                 {
                     if (response["frame"] != null)
                     {
@@ -114,14 +114,14 @@ namespace GlobalAssets.WebcamFeed
                         }
                     }
                 }
-                else if (response["event"] == "start_feed_hand_pose")
+                else if (response["event"] == "start_feed_body_pose")
                 {
-                    Debug.Log("Response of: " + "start_feed_hand_pose");
+                    Debug.Log("Response of: " + "start_feed_body_pose");
                     Debug.Log("Result: " + response["message"]);
                 }
-                else if (response["event"] == "stop_feed_hand_pose")
+                else if (response["event"] == "stop_feed_body_pose")
                 {
-                    Debug.Log("Response of: " + "stop_feed_hand_pose");
+                    Debug.Log("Response of: " + "stop_feed_body_pose");
                     Debug.Log("Result: " + response["message"]);
                 }
                 nextFrameReady = true;
@@ -161,7 +161,7 @@ namespace GlobalAssets.WebcamFeed
                         { "width", webcamTexture.width.ToString() },
                         { "height", webcamTexture.height.ToString() },
                         // { "event", "predict_frame" }
-                        { "event", "preprocess_hand_pose" }
+                        { "event", "preprocess_body_pose" }
                     };
                     socketClient.SendMessage(message);
                     nextFrameReady = false;
@@ -172,7 +172,7 @@ namespace GlobalAssets.WebcamFeed
         {
             Dictionary<string, string> message = new Dictionary<string, string>
                 {
-                    { "event", "start_feed_hand_pose" }
+                    { "event", "start_feed_body_pose" }
                 };
             socketClient.SendMessage(message);
         }
@@ -188,7 +188,7 @@ namespace GlobalAssets.WebcamFeed
         {
             Dictionary<string, string> message = new Dictionary<string, string>
                 {
-                    { "event", "stop_feed_hand_pose" }
+                    { "event", "stop_feed_body_pose" }
                 };
             socketClient.SendMessage(message);
         }
