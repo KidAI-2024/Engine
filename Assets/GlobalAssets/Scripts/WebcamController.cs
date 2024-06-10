@@ -9,7 +9,6 @@ namespace GlobalAssets.UI
 {
     public class WebcamController : MonoBehaviour
     {
-        public RawImage webcamDisplay;
         public GameObject imagePrefab; // Prefab of RawImage to instantiate
         public Transform imageContainer; // Parent transform for instantiated RawImages
         public Transform finalImagesContainer; // Parent transform for instantiated RawImages
@@ -24,16 +23,14 @@ namespace GlobalAssets.UI
         private WebCamTexture webcamTexture;
         private TMP_Dropdown autoCaptureDDL;
         private GameObject EmptyImageCaptureImages;
-
+        
         // For camera stream preprocessing
-        private bool nextFrameReady = false;
+        private bool nextFrameReady = true;
         private Color32[] frame;
 
-        private Socket.SocketUDP socketClient;
         void Start()
         {
             // Add a listener to the capture button
-            socketClient = Socket.SocketUDP.Instance;
             autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
             captureButton.onClick.AddListener(CapturePhoto);
             autoCaptureButton.onClick.AddListener(AutoCapture);
@@ -41,37 +38,14 @@ namespace GlobalAssets.UI
                 AutoCaptureTimeValueChanged(autoCaptureDDL.options[autoCaptureDDL.value].text);
             });
         }
-        void Update()
-        {
-            PreprocessFrames();
-            numCapturedText.text = "Captured: " + capturedImages.Count + " images";
-            EmptyImageCaptureImages.SetActive(capturedImages.Count == 0);
-        }
+        
         public void OpenCamera(GameObject outsideImagesContainer)
         {   
             // get the gameobject of the button that opens the camera
             finalImagesContainer = outsideImagesContainer.transform;
             EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
             EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
-            EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
-            // Check if the device supports webcam
-            if (WebCamTexture.devices.Length == 0)
-            {
-                Debug.LogError("No webcam found!");
-                return;
-            }
-
-            // Get the default webcam and start streaming
-            // webcamTexture = new WebCamTexture();
-            webcamTexture = new WebCamTexture
-            {
-                // reduce the resolution of the webcam
-                requestedWidth = 320,
-                requestedHeight = 180
-            };
-            webcamDisplay.texture = webcamTexture;
-            webcamTexture.Play();
-            nextFrameReady = true;
+            EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;          
         }
         public void AutoCaptureTimeValueChanged(string value)
         {
@@ -97,9 +71,9 @@ namespace GlobalAssets.UI
         public void CapturePhoto()
         {
             // Create a texture with the same dimensions as the webcam feed
-            Texture2D photo = new Texture2D(webcamTexture.width, webcamTexture.height);
+            Texture2D photo = new Texture2D(320, 180);
             // Read pixels from the webcam feed into the texture
-            photo.SetPixels(webcamTexture.GetPixels());
+            photo.SetPixels(this.gameObject.GetComponent<CameraPreprocessing>().GetCameraFrame());
             // Apply changes
             photo.Apply();
 
@@ -209,80 +183,6 @@ namespace GlobalAssets.UI
                 }
                 i++;
             }
-        } 
-        void PreprocessFrames()
-        {
-            SendFrameFromUnityCamera();
-            // CheckForServerResponse();
         }
-        void CheckForServerResponse()
-        {
-            try
-            {
-                if (socketClient.isDataAvailable())
-                {
-                    Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-                    if (response["event"] == "preprocess_body_pose")
-                    {
-                        string image = response["preprocessed_image"];
-                        Debug.Log("Received preprocessed image :" + image);
-                        // byte[] imageBytes = Convert.FromBase64String(image);
-                        // Texture2D texture = new Texture2D(webcamTexture.width, webcamTexture.height);
-                        // texture.LoadImage(imageBytes);
-                        // if (webcamDisplay != null)
-                        // {
-                        //     webcamDisplay.texture = texture;
-                        //     webcamDisplay.material.mainTexture = texture;
-                        // }
-                    }
-                    nextFrameReady = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("Error while checking server response: " + ex.Message);
-                nextFrameReady = true;
-            }
-        }
-        void SendFrameFromUnityCamera()
-        {
-            if (nextFrameReady)
-            {
-                if (webcamTexture.isPlaying)
-                {
-                    // Send the frame to the server
-                    // frame = webcamTexture.GetPixels32();
-                    // byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
-                    // // Encode the byte array to a Base64 string
-                    // string frameBase64 = Convert.ToBase64String(frameBytes);
-                    // // Construct dictionary to send to server
-                    Dictionary<string, string> message = new Dictionary<string, string>
-                    {
-                        { "frame", "ana aslan gamed" },
-                        { "width", "320" },
-                        { "height", "180" },
-                        // { "event", "predict_frame" }
-                        { "event", "preprocess_body_pose" }
-                    };
-                    socketClient.SendMessage(message);
-                    
-                    nextFrameReady = false;
-                }
-            }
-        }
-        private byte[] Color32ArrayToByteArrayWithoutAlpha(Color32[] colors)
-        {
-            if (colors == null || colors.Length == 0)
-                return null;
-            byte[] bytes = new byte[colors.Length * 3];
-            for (int i = 0; i < colors.Length; i++)
-            {
-                bytes[i * 3] = colors[i].r;
-                bytes[i * 3 + 1] = colors[i].g;
-                bytes[i * 3 + 2] = colors[i].b;
-            }
-            return bytes;
-        }
-        
     }
 }

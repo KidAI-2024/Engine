@@ -379,6 +379,7 @@ GameObject:
   - component: {fileID: 5561672452587941417}
   - component: {fileID: 3260007556748906770}
   - component: {fileID: 8375741578191782174}
+  - component: {fileID: 7691096648111616034}
   m_Layer: 5
   m_Name: ClassesContainer
   m_TagString: Untagged
@@ -476,6 +477,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7691096648111616034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028538769302733655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb65494c9efaabe499d5e1f8168cd120, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 1021631110374400562}
 --- !u!1 &1468554339530479581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3619,7 +3633,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ba3fb4e440eef4da59e9d58f9f8693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webcamDisplay: {fileID: 1021631110374400562}
   imagePrefab: {fileID: 6111039542854650643, guid: 5a9ca548f14413d40a3383a231221cf2, type: 3}
   imageContainer: {fileID: 602559174158058004}
   finalImagesContainer: {fileID: 0}
@@ -3627,6 +3640,7 @@ MonoBehaviour:
   autoCaptureButton: {fileID: 5218060155967876984}
   autoCaptureGO: {fileID: 3567705763919689556}
   numCapturedText: {fileID: 104892566259470874}
+  EmptyImage: {fileID: 0}
   capturedImages: []
 --- !u!1 &7442072719808626330
 GameObject:
