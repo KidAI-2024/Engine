@@ -10,7 +10,23 @@ namespace Karting.UI
         public List<GameObject> carPrefabs;
         private int currentCarIndex = 0;
         public Transform carSpawnPoint;
+        public Slider speedSlider;
+        public Slider accelerationSlider;
+        public Slider handlingSlider;
+        public Slider brakingSlider;
+        public TMPro.TextMeshProUGUI carNameText;
+
         private GameObject instantiatedCar;
+        [Serializable]
+        public struct CarInfo
+        {
+            public string name;
+            public float speed;
+            public float acceleration;
+            public float handling;
+            public float braking;
+        }
+        public List<CarInfo> carInfos;
 
         void Start()
         {
@@ -22,6 +38,12 @@ namespace Karting.UI
             // if this is the scene before the match, start the match
             selectButton.onClick.AddListener(() => gameManager.StartCustomMatch());
             InstantiateCurrentCar();
+            carNameText.text = carInfos[currentCarIndex].name;
+            speedSlider.value = carInfos[currentCarIndex].speed;
+            accelerationSlider.value = carInfos[currentCarIndex].acceleration;
+            handlingSlider.value = carInfos[currentCarIndex].handling;
+            brakingSlider.value = carInfos[currentCarIndex].braking;
+
         }
 
         private void SelectCurrentCar(Game.GameManager gameManager)
@@ -54,6 +76,11 @@ namespace Karting.UI
                 currentCarIndex = 0;
             }
             InstantiateCurrentCar();
+            carNameText.text = carInfos[currentCarIndex].name;
+            speedSlider.value = carInfos[currentCarIndex].speed;
+            accelerationSlider.value = carInfos[currentCarIndex].acceleration;
+            handlingSlider.value = carInfos[currentCarIndex].handling;
+            brakingSlider.value = carInfos[currentCarIndex].braking;
         }
         public void PreviousCar()
         {
@@ -64,6 +91,12 @@ namespace Karting.UI
                 currentCarIndex = carPrefabs.Count - 1;
             }
             InstantiateCurrentCar();
+            carNameText.text = carInfos[currentCarIndex].name;
+            speedSlider.value = carInfos[currentCarIndex].speed;
+            accelerationSlider.value = carInfos[currentCarIndex].acceleration;
+            handlingSlider.value = carInfos[currentCarIndex].handling;
+            brakingSlider.value = carInfos[currentCarIndex].braking;
+
         }
         void ondestroy()
         {
