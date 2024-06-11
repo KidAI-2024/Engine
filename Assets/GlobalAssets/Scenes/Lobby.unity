@@ -1279,6 +1279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialog: {fileID: 525166823}
+  IscaptureCameraPanel: 0
   captureImageCanvas: {fileID: 0}
 --- !u!114 &548694578
 MonoBehaviour:
@@ -3115,6 +3116,63 @@ MonoBehaviour:
   audioSource: {fileID: 120653456}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 1
+--- !u!1001 &1668866187
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 434.48065
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 250.53922
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.9622189
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251559, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_Name
+      value: ProjectController
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c0188b562e1f03941b10859a667af07f, type: 3}
 --- !u!1 &1674587677
 GameObject:
   m_ObjectHideFlags: 0
@@ -4078,6 +4136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialog: {fileID: 525166823}
+  IscaptureCameraPanel: 0
   captureImageCanvas: {fileID: 0}
 --- !u!114 &2008412766
 MonoBehaviour:

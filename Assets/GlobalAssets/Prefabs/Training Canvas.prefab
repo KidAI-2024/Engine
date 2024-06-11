@@ -3627,6 +3627,7 @@ MonoBehaviour:
   autoCaptureButton: {fileID: 5218060155967876984}
   autoCaptureGO: {fileID: 3567705763919689556}
   numCapturedText: {fileID: 104892566259470874}
+  EmptyImage: {fileID: 0}
   capturedImages: []
 --- !u!1 &7442072719808626330
 GameObject:
@@ -4087,7 +4088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b7f3492030138479f41ca3ebe395d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetGameObject: {fileID: 0}
+  targetGameObject: {fileID: 5658957460829990127}
   folderPath: Projects
 --- !u!114 &957079022398751654
 MonoBehaviour:

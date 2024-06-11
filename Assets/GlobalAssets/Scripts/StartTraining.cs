@@ -12,6 +12,7 @@ public class StartTraining : MonoBehaviour
     private string projectName;
     private List<ClassData> ImagesData = new List<ClassData>();
     private GlobalAssets.Socket.SocketUDP socketClient;
+    private ProjectController projectController;
 
     private struct ClassData
     {
@@ -21,7 +22,8 @@ public class StartTraining : MonoBehaviour
 
     void Start()
     {
-        projectName = PlayerPrefs.GetString("ProjectName", ""); 
+        projectController = ProjectController.Instance;
+        projectName = projectController.projectName; 
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
@@ -99,11 +101,12 @@ public class StartTraining : MonoBehaviour
         foreach (Transform child in targetTransform)
         {
             // from each child, find the input field and get its value
-            TMP_InputField className = child.GetComponentInChildren<TMP_InputField>();
+            TMP_InputField className = child.GetChild(0).GetChild(1).GetComponentInChildren<TMP_InputField>();
             if (className != null)
             {
                 // Create a new ClassData object and add it to the list
                 string classNameText = className.text;
+                projectController.classes.Add(classNameText); // add the class to the project controller
                 ImagesData.Add(new ClassData { className = classNameText, images = new List<byte[]>() });
                 
                 // from each child, find "Content" object and get the images inside it

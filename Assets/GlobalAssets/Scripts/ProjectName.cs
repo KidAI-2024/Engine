@@ -13,6 +13,13 @@ public class ProjectName : MonoBehaviour
     public string projectType;
     public string nextSceneName;
     
+
+    private ProjectController projectController;
+    void Start()
+    {
+        projectController = ProjectController.Instance;
+    }
+
     public void SetProjectType(string type)
     {
         projectType = type;
@@ -33,7 +40,7 @@ public class ProjectName : MonoBehaviour
         }
         ErrorMessageText.text = "";
         // Pass it to the next screen (save to shared pref)
-        PlayerPrefs.SetString("ProjectName", projectName);
+        projectController.projectName = projectName;
 
         // create new button prefab instance and add it to ProjectListPanel children
         GameObject newProjectBtn = Instantiate(ProjectBtnPrefab, ProjectListPanel.transform);
