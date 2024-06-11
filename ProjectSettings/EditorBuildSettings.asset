@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MortalKombat/Scenes/CharacterSelect.unity
     guid: b6cd0d51bc545644a9fcf16f16397611
+  - enabled: 1
+    path: Assets/MortalKombat/Scenes/MapContoller.unity
+    guid: 09d2387e76f1db14ca0b10c83ccc8b74
   m_configObjects: {}
