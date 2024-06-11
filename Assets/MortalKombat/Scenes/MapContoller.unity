@@ -290,6 +290,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: Mortal Kombat
       objectReference: {fileID: 0}
+    - target: {fileID: 2470262055049152637, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -140
+      objectReference: {fileID: 0}
     - target: {fileID: 5212531471160102664, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
