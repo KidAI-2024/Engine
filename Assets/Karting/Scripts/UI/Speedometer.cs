@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 namespace Karting.UI
 {
 
@@ -8,6 +9,7 @@ namespace Karting.UI
         public Rigidbody carRigidbody;
         public TextMeshProUGUI speedText;
         public TextMeshProUGUI gearText;
+        public Slider speedSlider;
 
         private void Update()
         {
@@ -19,9 +21,11 @@ namespace Karting.UI
 
             // Update speedometer display
             speedText.text = Mathf.RoundToInt(speed).ToString();
+            speedSlider.value = speed / 220;
 
             // Update direction display
             gearText.text = isMovingForward ? "D" : "R";
+            gearText.text = speed > 1 ? gearText.text : "N";
         }
         void ondestroy()
         {
