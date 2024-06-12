@@ -11,6 +11,7 @@ namespace Karting.UI
         public GameObject settingsPanel;
         public Button backButton;
         public Button exitButton;
+        public Button settingsButton;
         void Start()
         {
             // Hide the settings panel initially
@@ -39,6 +40,14 @@ namespace Karting.UI
             else
             {
                 Debug.Log("Exit Button is null in SettingsPanelController");
+            }
+            if (settingsButton != null)
+            {
+                settingsButton.onClick.AddListener(ToggleSettingsPanel);
+            }
+            else
+            {
+                Debug.Log("Settings Button is null in SettingsPanelController");
             }
         }
 
