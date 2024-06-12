@@ -28,10 +28,24 @@ public class StartTraining : MonoBehaviour
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
-
+    void Update()
+    {
+        // Receive the response from the server
+        if (socketClient.isDataAvailable())
+        {
+            Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+            Debug.Log("Received: " + response["status"]);
+            if (response["status"] == "success")
+            {
+                projectController.isTrained = true;
+                projectController.savedModelFileName = response["saved_model_name"];
+                projectController.Save();
+            }
+        }
+    }
     public void StartSocketTraining(){
         GetImages();
-        if (!Validate()) return;
+        // if (!Validate()) return;
         SaveImagesToPath();
         SocketTrain();
     }
@@ -92,15 +106,6 @@ public class StartTraining : MonoBehaviour
         socketClient.SendMessage(message);
         Debug.Log("Training Started");
     } 
-    void Update()
-    {
-        // Receive the response from the server
-        if (socketClient.isDataAvailable())
-        {
-            string message = socketClient.ReceiveMessage();
-            Debug.Log("Received: " + message);
-        }
-    }
     private void SaveImagesToPath()
     {
         // Define the base folder path
@@ -134,6 +139,7 @@ public class StartTraining : MonoBehaviour
     private void GetImages()
     {
         ImagesData.Clear();
+        projectController.classes.Clear(); // clear the classes list
 
         // Check if the targetGameObject is provided
         if (targetGameObject == null)
@@ -144,7 +150,6 @@ public class StartTraining : MonoBehaviour
         int j = 0;
         // Get the transform of the targetGameObject
         Transform targetTransform = targetGameObject.transform;
-        projectController.classes.Clear(); // clear the classes list
         // Iterate through all direct children of the targetGameObject
         foreach (Transform child in targetTransform)
         {
@@ -173,7 +178,6 @@ public class StartTraining : MonoBehaviour
                         // Add the byte array to the list of images
                         ImagesData[j].images.Add(bytes);
                     }
-                    // Debug.Log("ImagesData['"+ImagesData[j].className+"'].images.Count: " + ImagesData[j].images.Count);
                 }
                 j++;
             }

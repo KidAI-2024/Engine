@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.IO;
+
 
 public class ProjectName : MonoBehaviour
 {
@@ -13,13 +15,38 @@ public class ProjectName : MonoBehaviour
     public string projectType;
     public string nextSceneName;
     
+    [System.Serializable]
+    public class ProjectData
+    {
+        public string projectName;
+        public string createdAt;
+        public string projectType;
+        public string sceneName;
+    }
 
     private ProjectController projectController;
     void Start()
     {
         projectController = ProjectController.Instance;
+        LoadProjectsList();
     }
-
+    void LoadProjectsList()
+    {
+        string projectsPath = Application.dataPath.Replace("/Assets", "/Projects") + "/";
+        string[] projectFolders = System.IO.Directory.GetDirectories(projectsPath);
+        foreach (string projectFolder in projectFolders)
+        {
+            // inside each folder read file project.json that contains projectName, createdAt, projectType
+            string projectJsonPath = projectFolder + "/project.json";
+            if (System.IO.File.Exists(projectJsonPath))
+            {
+                string json = System.IO.File.ReadAllText(projectJsonPath);
+                // read json as dictionary
+                ProjectData projectData = JsonUtility.FromJson<ProjectData>(json);
+                InstentiateProjectBtn(projectData.projectName, projectData.projectType, projectData.createdAt, projectData.sceneName);
+            }
+        }
+    }
     public void SetProjectType(string type)
     {
         projectType = type;
@@ -39,32 +66,43 @@ public class ProjectName : MonoBehaviour
             return;
         }
         ErrorMessageText.text = "";
-        // Pass it to the next screen (save to shared pref)
-        projectController.projectName = projectName;
-
-        // create new button prefab instance and add it to ProjectListPanel children
-        GameObject newProjectBtn = Instantiate(ProjectBtnPrefab, ProjectListPanel.transform);
+        string createdAt = System.DateTime.Now.ToString("yyyy-MM-dd");
         
-        // newProjectBtn has 3 children of btn type, 
-        // the first one is the project name
-        // second one is project type (get from the button that invoked this function) 
-        // the third one is the date
-        // each button has a child that has text component
-        newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = projectName;
-        newProjectBtn.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = projectType;
-        newProjectBtn.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = System.DateTime.Now.ToString("dd/MM/yyyy");
+        InstentiateProjectBtn(projectName, projectType, createdAt, nextSceneName);
+        // Create project folder
+        string basePath = Application.dataPath.Replace("/Assets", "/Projects");
+        string classFolderPath = Path.Combine(basePath, projectName);
+        if (!Directory.Exists(classFolderPath))
+        {
+            Directory.CreateDirectory(classFolderPath);
+        }
+        projectController.projectName = projectName;
+        projectController.createdAt = createdAt;
+        projectController.projectType = projectType;
+        projectController.sceneName = nextSceneName;
+        projectController.Save();
 
-        // Add a listener to the button
-        // newProjectBtn.GetComponentInChildren<Button>().onClick.AddListener(() => LoadProject(projectName));
 
-        // Change its position (add -70 in the y axes) depending on the count of the projects till now
+        SceneManager.LoadScene(nextSceneName);
+    }
+
+    void InstentiateProjectBtn(string ProjectName, string ProjectType, string CreatedAt, string nextSceneName)
+    {
+        GameObject newProjectBtn = Instantiate(ProjectBtnPrefab, ProjectListPanel.transform);
+        newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectName;
+        newProjectBtn.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectType;
+        newProjectBtn.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = CreatedAt;
+        newProjectBtn.GetComponentInChildren<Button>().onClick.AddListener(() => LoadProject(ProjectName, nextSceneName));
+
         int projectCount = ProjectListPanel.transform.childCount;
-        // newProjectBtn.transform.localPosition = new Vector3(0, -70 * projectCount, 0);
         RectTransform newProjectBtnRectTransform = newProjectBtn.GetComponent<RectTransform>();
         float buttonHeight = newProjectBtnRectTransform.rect.height;
         float offsetY = -65 * (projectCount - 1) - 10;
         newProjectBtnRectTransform.anchoredPosition = new Vector2(0, offsetY);
-
-        SceneManager.LoadScene(nextSceneName);
+    }
+    void LoadProject(string projectName, string sceneName)
+    {
+        projectController.Load(projectName);
+        SceneManager.LoadScene(sceneName);
     }
 }
