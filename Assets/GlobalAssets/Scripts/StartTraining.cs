@@ -8,6 +8,7 @@ public class StartTraining : MonoBehaviour
 {
     public GameObject targetGameObject; // The GameObject whose children contain ScrollView components
     public string folderPath = "Projects"; // Folder path to save the images
+    public GameObject warningPanel;
     private string savePath;
     private string projectName;
     private List<ClassData> ImagesData = new List<ClassData>();
@@ -30,8 +31,55 @@ public class StartTraining : MonoBehaviour
 
     public void StartSocketTraining(){
         GetImages();
+        if (!Validate()) return;
         SaveImagesToPath();
         SocketTrain();
+    }
+    private bool Validate()
+    {
+        // check if number of classes is greater than 0
+        if (ImagesData.Count < 1)
+        {
+            DisplayWarning("Add classes to start training", "OK");
+            return false;
+        }
+        // check empty class names
+        for (int i = 0; i < ImagesData.Count; i++)
+        {
+            if (ImagesData[i].className == "")
+            {
+                DisplayWarning("Class " + (i+1) +" name cannot be empty", "OK");
+                return false;
+            }
+        }
+        // check number of images in each class is greater than 0
+        for (int i = 0; i < ImagesData.Count; i++)
+        {
+            if (ImagesData[i].images.Count == 0)
+            {
+                DisplayWarning("Add images to the class " + ImagesData[i].className, "OK");
+                return false;
+            }
+        }
+        // check if number if image a class is less than 10
+        for (int i = 0; i < ImagesData.Count; i++)
+        {
+            if (ImagesData[i].images.Count < 10)
+            {
+                DisplayWarning("Add more than 10 images to the class " + ImagesData[i].className, "OK");
+                return false;
+            }
+        }
+        return true;
+    }
+    private void DisplayWarning(string message, string buttonText)
+    {
+        // enable warning panel
+        warningPanel.SetActive(true);
+        // warning message
+        warningPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
+        // warning button text
+        warningPanel.transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = buttonText;
     }
     private void SocketTrain()
     {    
@@ -96,7 +144,7 @@ public class StartTraining : MonoBehaviour
         int j = 0;
         // Get the transform of the targetGameObject
         Transform targetTransform = targetGameObject.transform;
-
+        projectController.classes.Clear(); // clear the classes list
         // Iterate through all direct children of the targetGameObject
         foreach (Transform child in targetTransform)
         {
