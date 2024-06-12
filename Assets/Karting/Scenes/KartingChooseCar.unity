@@ -6978,6 +6978,7 @@ MonoBehaviour:
   carPrefabs:
   - {fileID: 5600988111247552909, guid: 4034997214d5d20459779b25b1385505, type: 3}
   - {fileID: 4411833538550719209, guid: d1cfe12c44b36394681fa476cc3b068e, type: 3}
+  - {fileID: 8098898119272641021, guid: dd34c24ce58237545b50bb9dba7603e5, type: 3}
   carSpawnPoint: {fileID: 2017363951}
   speedSlider: {fileID: 1814645142039764772}
   accelerationSlider: {fileID: 380608546}
@@ -6991,6 +6992,11 @@ MonoBehaviour:
     handling: 0.5
     braking: 0.6
   - name: Lada Granta
+    speed: 0.5
+    acceleration: 0.4
+    handling: 0.3
+    braking: 0.6
+  - name: BMW
     speed: 0.5
     acceleration: 0.4
     handling: 0.3
