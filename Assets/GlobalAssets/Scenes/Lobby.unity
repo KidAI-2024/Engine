@@ -3123,6 +3123,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2708333914105251552, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: projectName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251552, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: classes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
       propertyPath: m_RootOrder
       value: 5

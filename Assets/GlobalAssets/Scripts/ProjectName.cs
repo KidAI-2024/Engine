@@ -22,6 +22,12 @@ public class ProjectName : MonoBehaviour
         public string createdAt;
         public string projectType;
         public string sceneName;
+        public int numberOfClasses;
+        public bool isTrained;
+        public string savedModelFileName;
+        public List<string> classes;
+        public Dictionary<string, int> imagesPerClass;
+        public Dictionary<string, string> classesToControlsMap; // Class : ControlName
     }
 
     private ProjectController projectController;
@@ -89,16 +95,48 @@ public class ProjectName : MonoBehaviour
     void InstentiateProjectBtn(string ProjectName, string ProjectType, string CreatedAt, string nextSceneName)
     {
         GameObject newProjectBtn = Instantiate(ProjectBtnPrefab, ProjectListPanel.transform);
-        newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectName;
+        // newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectName;
+        // newProjectBtn.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectName;
+        // newProjectBtn.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+        TMP_InputField projectNameInputField = newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TMP_InputField>();
+        projectNameInputField.text = ProjectName;
         newProjectBtn.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectType;
         newProjectBtn.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = CreatedAt;
-        newProjectBtn.GetComponentInChildren<Button>().onClick.AddListener(() => LoadProject(ProjectName, nextSceneName));
+        newProjectBtn.GetComponentInChildren<Button>().onClick.AddListener(() => LoadProject (projectNameInputField.text, nextSceneName));
+
+        // add listener to the project name input field to rename the project
+        projectNameInputField.onEndEdit.AddListener((string newProjectName) => RenameProject(ProjectName, newProjectName));
+        
 
         int projectCount = ProjectListPanel.transform.childCount;
         RectTransform newProjectBtnRectTransform = newProjectBtn.GetComponent<RectTransform>();
         float buttonHeight = newProjectBtnRectTransform.rect.height;
         float offsetY = -65 * (projectCount - 1) - 10;
         newProjectBtnRectTransform.anchoredPosition = new Vector2(0, offsetY);
+    }
+    public void RenameProject(string oldProjectName, string newProjectName)
+    {
+        Debug.Log("Rename project from " + oldProjectName + " to " + newProjectName);
+        string basePath = Application.dataPath.Replace("/Assets", "/Projects");
+        string oldProjectFolderPath = Path.Combine(basePath, oldProjectName);
+        string newProjectFolderPath = Path.Combine(basePath, newProjectName);
+        if (!Directory.Exists(newProjectFolderPath))
+        {
+            Directory.Move(oldProjectFolderPath, newProjectFolderPath);
+            string projectJsonPath = newProjectFolderPath + "/project.json";
+            if (System.IO.File.Exists(projectJsonPath))
+            {
+                string json = System.IO.File.ReadAllText(projectJsonPath);
+                ProjectData projectData = JsonUtility.FromJson<ProjectData>(json);
+                projectData.projectName = newProjectName;
+                json = JsonUtility.ToJson(projectData);
+                System.IO.File.WriteAllText(projectJsonPath, json);
+            }
+        }
+        else
+        {
+            Debug.Log("Project already exists");
+        }   
     }
     void LoadProject(string projectName, string sceneName)
     {
