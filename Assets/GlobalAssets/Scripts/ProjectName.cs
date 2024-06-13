@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
-
+using System;
 
 public class ProjectName : MonoBehaviour
 {
@@ -36,23 +36,32 @@ public class ProjectName : MonoBehaviour
         projectController = ProjectController.Instance;
         LoadProjectsList();
     }
+    // sort by createdAt
     void LoadProjectsList()
     {
         string projectsPath = Application.dataPath.Replace("/Assets", "/Projects") + "/";
-        string[] projectFolders = System.IO.Directory.GetDirectories(projectsPath);
+        string[] projectFolders = Directory.GetDirectories(projectsPath);
+        List<ProjectData> projectDataList = new List<ProjectData>();
+
         foreach (string projectFolder in projectFolders)
         {
-            // inside each folder read file project.json that contains projectName, createdAt, projectType
             string projectJsonPath = projectFolder + "/project.json";
-            if (System.IO.File.Exists(projectJsonPath))
+            if (File.Exists(projectJsonPath))
             {
-                string json = System.IO.File.ReadAllText(projectJsonPath);
-                // read json as dictionary
+                string json = File.ReadAllText(projectJsonPath);
                 ProjectData projectData = JsonUtility.FromJson<ProjectData>(json);
-                InstentiateProjectBtn(projectData.projectName, projectData.projectType, projectData.createdAt, projectData.sceneName);
+                projectDataList.Add(projectData);
             }
         }
+
+        projectDataList.Sort((x, y) => DateTime.Parse(x.createdAt).CompareTo(DateTime.Parse(y.createdAt)));
+
+        foreach (ProjectData projectData in projectDataList)
+        {
+            InstantiateProjectBtn(projectData.projectName, projectData.projectType, projectData.createdAt, projectData.sceneName);
+        }
     }
+
     public void SetProjectType(string type)
     {
         projectType = type;
@@ -74,7 +83,7 @@ public class ProjectName : MonoBehaviour
         ErrorMessageText.text = "";
         string createdAt = System.DateTime.Now.ToString("yyyy-MM-dd");
         
-        InstentiateProjectBtn(projectName, projectType, createdAt, nextSceneName);
+        InstantiateProjectBtn(projectName, projectType, createdAt, nextSceneName);
         // Create project folder
         string basePath = Application.dataPath.Replace("/Assets", "/Projects");
         string classFolderPath = Path.Combine(basePath, projectName);
@@ -92,7 +101,7 @@ public class ProjectName : MonoBehaviour
         SceneManager.LoadScene(nextSceneName);
     }
 
-    void InstentiateProjectBtn(string ProjectName, string ProjectType, string CreatedAt, string nextSceneName)
+    void InstantiateProjectBtn(string ProjectName, string ProjectType, string CreatedAt, string nextSceneName)
     {
         GameObject newProjectBtn = Instantiate(ProjectBtnPrefab, ProjectListPanel.transform);
         TMP_InputField projectNameInputField = newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TMP_InputField>();

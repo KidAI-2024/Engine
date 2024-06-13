@@ -28,8 +28,7 @@ namespace GlobalAssets.UI
             {
                 // get the last child of this.gameObject and get the first child of that child and get the first child of that child and get the first child of that child
                 GameObject content = this.gameObject.transform.GetChild(this.gameObject.transform.childCount - 1).GetChild(0).GetChild(0).gameObject;
-                Debug.Log("Count : " + content.transform.childCount);
-                Debug.Log("Name : " + this.gameObject.transform.GetChild(this.gameObject.transform.childCount - 1).name);
+                
                 // capturedImages = the raw images children of the content object
                 List<Texture2D> capturedImages = new List<Texture2D>();
                 for (int i = 0; i < content.transform.childCount; i++)
