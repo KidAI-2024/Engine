@@ -5284,7 +5284,7 @@ GameObject:
   - component: {fileID: 1284822878487562097}
   - component: {fileID: 4538464131152980049}
   - component: {fileID: 7927717415107758594}
-  - component: {fileID: 925059451499990724}
+  - component: {fileID: 1118973967304101842}
   m_Layer: 5
   m_Name: SaveButton
   m_TagString: Untagged
@@ -5411,7 +5411,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
---- !u!114 &925059451499990724
+--- !u!114 &1118973967304101842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5420,9 +5420,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7757605288314992324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 254a96b8a76803e45a6cbcc2855bb6d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ae3b48dda051554ab056a7a5aec652d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetGameObject: {fileID: 5658957460829990127}
+  AddNewClassButton: {fileID: 8230324481204049160}
+  CameraController: {fileID: 7055515263572593785}
+  folderPath: Projects
+  imagePrefab: {fileID: 6111039542854650643, guid: 5a9ca548f14413d40a3383a231221cf2, type: 3}
 --- !u!1 &7918128846013183474
 GameObject:
   m_ObjectHideFlags: 0
@@ -5942,8 +5947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b7f3492030138479f41ca3ebe395d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetGameObject: {fileID: 5658957460829990127}
-  folderPath: Projects
+  saveProjectButton: {fileID: 7757605288314992324}
   warningPanel: {fileID: 4262488912688447590}
 --- !u!114 &957079022398751654
 MonoBehaviour:
@@ -7827,7 +7831,7 @@ GameObject:
   - component: {fileID: 8230324481204049162}
   - component: {fileID: 8230324481204049161}
   - component: {fileID: 5186708545887740307}
-  - component: {fileID: 637109862051617808}
+  - component: {fileID: 3121602321630880016}
   m_Layer: 5
   m_Name: AddClassButton
   m_TagString: Untagged
@@ -7954,7 +7958,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
---- !u!114 &637109862051617808
+--- !u!114 &3121602321630880016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7963,10 +7967,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8230324481204049160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3955110f69a762439c28758d437ea4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 39aa437f60e52524aab56648d6e57b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ClassPrefab: {fileID: 8230324479376756124}
+  ClassPrefab: {fileID: 3990965805350471347, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
   ClassesContainer: {fileID: 5658957460829990127}
   CameraPanel: {fileID: 7055515263572593785}
 --- !u!1 &8531333067791578977

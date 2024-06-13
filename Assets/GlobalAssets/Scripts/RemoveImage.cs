@@ -14,7 +14,11 @@ public class RemoveImage : MonoBehaviour
         GrandParentObject = transform.parent.parent.parent.parent;
         // if true => initialize remove image of the outside panel 
         // so we want to get the captured images from the inside panel ()
-        if (GrandParentObject.name != "CameraPanel")
+        if (GrandParentObject.GetChild(0).name == "TrainClassBox") // in case the load project of the save project instentiate images
+        {
+            GrandParentObject = GrandParentObject.parent.parent.GetChild(1);
+        }
+        else if (GrandParentObject.name != "CameraPanel") // in case remove image from outside panel
         {
             GrandParentObject = GrandParentObject.parent.parent.parent.parent.GetChild(1);
         }

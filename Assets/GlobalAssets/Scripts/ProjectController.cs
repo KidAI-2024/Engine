@@ -16,7 +16,8 @@ public class ProjectController : MonoBehaviour
     public bool isTrained = false;
     public string savedModelFileName;
     public List<string> classes = new List<string>();
-    public Dictionary<string, string> classesToControlsMap = new Dictionary<string, string>();
+    public Dictionary<string, int> imagesPerClass = new Dictionary<string, int>();  // Class : ImageCount
+    public Dictionary<string, string> classesToControlsMap = new Dictionary<string, string>(); // Class : ControlName
 
     // Ensure only one instance of ProjectController exists
     private void Awake()
