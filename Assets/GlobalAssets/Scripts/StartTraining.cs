@@ -7,6 +7,7 @@ using GlobalAssets.UI;
 
 public class StartTraining : MonoBehaviour
 {
+    public string trainingEvent;
     public GameObject saveProjectButton;
     public GameObject warningPanel;
     private GlobalAssets.Socket.SocketUDP socketClient;
@@ -94,7 +95,7 @@ public class StartTraining : MonoBehaviour
         Dictionary<string, string> message = new Dictionary<string, string>
         {
             { "path",  "Projects/"+ projectController.projectName },
-            { "event", "start_body_pose_train" }
+            { "event", trainingEvent }
         };
         socketClient.SendMessage(message);
         Debug.Log("Training Started");

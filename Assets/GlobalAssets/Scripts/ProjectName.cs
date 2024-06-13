@@ -95,9 +95,6 @@ public class ProjectName : MonoBehaviour
     void InstentiateProjectBtn(string ProjectName, string ProjectType, string CreatedAt, string nextSceneName)
     {
         GameObject newProjectBtn = Instantiate(ProjectBtnPrefab, ProjectListPanel.transform);
-        // newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectName;
-        // newProjectBtn.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectName;
-        // newProjectBtn.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
         TMP_InputField projectNameInputField = newProjectBtn.transform.GetChild(0).GetChild(0).GetComponent<TMP_InputField>();
         projectNameInputField.text = ProjectName;
         newProjectBtn.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = ProjectType;
