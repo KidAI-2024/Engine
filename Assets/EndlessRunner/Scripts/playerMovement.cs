@@ -19,6 +19,7 @@ public class playerMovement : MonoBehaviour
     void Start()
     {
         current_position = 1;
+        Physics.gravity = new Vector3(0, -50f, 0);
     }
  
     private void OnTriggerEnter(Collider other)
@@ -54,7 +55,10 @@ public class playerMovement : MonoBehaviour
 
 
     }
-    
+    void OnDestroy()
+    {
+        Physics.gravity = new Vector3(0,-9.81f,0);
+    }
     void Update()
     {
         
