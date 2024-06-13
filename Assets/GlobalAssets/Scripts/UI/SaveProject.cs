@@ -42,6 +42,7 @@ namespace GlobalAssets.UI
             // Loop over classes in the projectController.classes list folders and load the images
             // Modify the classBox's input field to have the class name
             // Load the images into the classBox   
+            
             for (int i = 0; i < projectController.classes.Count; i++)
             {
                 capturedImages.Clear();
@@ -71,6 +72,11 @@ namespace GlobalAssets.UI
         }
         public void LoadImages()
         {
+            
+            foreach (Transform child in finalImagesContainer)
+            {
+                Destroy(child.gameObject);
+            }
             int i = 0;
             // add all the captured images to the finalImagesContainer
             foreach (Texture2D image in capturedImages)
@@ -89,7 +95,9 @@ namespace GlobalAssets.UI
 
                 Vector3 newPosition = new Vector3(col * spacingX + 5, -row * spacingY - 5, 0);
                 newImageObject.transform.localPosition = newPosition;
-                
+                newImageObject.GetComponent<RemoveImage>().ImageIndex = i;
+                newImageObject.GetComponent<RemoveImage>().capturedImages = capturedImages;
+                newImageObject.GetComponent<RemoveImage>().isLoad = true;
                 // get the imageContainer and increase its height
                 if (col == 0 && capturedImages.Count > 8)
                 {

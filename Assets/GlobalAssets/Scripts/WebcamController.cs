@@ -186,7 +186,7 @@ public class WebcamController : MonoBehaviour
 
             Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
             newImageObject.transform.localPosition = newPosition;
-            newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
+            newImageObject.GetComponent<RemoveImage>().ImageIndex = i;
             
             // get the imageContainer and increase its height
             if (col == 0 && capturedImages.Count > 8)
