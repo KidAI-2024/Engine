@@ -87,7 +87,7 @@ namespace GlobalAssets.WebcamFeed
                 {
                     Debug.Log("Prediction: " + response["prediction"]);
                 }
-                else if (response["event"] == "preprocess_hand_pose")
+                else if (response["event"] == "preprocess_body_pose")
                 {
                     string image = response["preprocessed_image"];
                     byte[] imageBytes = Convert.FromBase64String(image);
@@ -161,7 +161,7 @@ namespace GlobalAssets.WebcamFeed
                         { "width", webcamTexture.width.ToString() },
                         { "height", webcamTexture.height.ToString() },
                         // { "event", "predict_frame" }
-                        { "event", "preprocess_hand_pose" }
+                        { "event", "preprocess_body_pose" }
                     };
                     socketClient.SendMessage(message);
                     nextFrameReady = false;
