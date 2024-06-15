@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Survival
 {
-
-
     // This Will Auto Add Character Controller To Gameobject If It's Not Already Applied:
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
+        // // Public Variables
+
         // Camera:
         public Camera playerCam;
 
@@ -30,10 +30,6 @@ namespace Survival
         public Transform footstepAudioPosition;
         public AudioSource audioSource;
 
-        private bool isWalking = false;
-        private bool isFootstepCoroutineRunning = false;
-        private AudioClip[] currentFootstepSounds;
-
         Vector3 moveDirection = Vector3.zero;
         float rotationX = 0;
         float rotationY = 0;
@@ -43,6 +39,12 @@ namespace Survival
         public int initialFOV;
         public float cameraZoomSmooth = 1;
 
+        // // Private Variables
+        private bool isWalking = false;
+        private bool isFootstepCoroutineRunning = false;
+        private AudioClip[] currentFootstepSounds;
+
+
         private bool isZoomed = false;
 
         // Can The Player Move?:
@@ -50,6 +52,7 @@ namespace Survival
 
         CharacterController characterController;
 
+        // //Initialization
         void Start()
         {
             // Ensure We Are Using The Character Controller Component:
@@ -65,7 +68,7 @@ namespace Survival
 
         void Update()
         {
-            // Walking/Running In Action:
+            // Walking / Running In Action:
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
 

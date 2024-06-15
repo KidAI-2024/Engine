@@ -5,16 +5,22 @@ namespace Survival
 {
     public class Sway : MonoBehaviour
     {
-        public float swayAmount = 0.5f;      // The amount of sway to apply to the pistol
-        public float smoothFactor = 2f;      // The smooth factor for the sway movement
+        // Determines how much the object (e.g., a pistol) will sway in response to mouse movement.
+        public float swayAmount = 0.5f;
 
-        private Quaternion initialRotation;  // The initial rotation of the pistol
-        private Transform playerCamera;      // Reference to the player's camera
+        // Controls how smoothly the sway motion transitions.
+        public float smoothFactor = 2f;      
+
+        // Stores the initial rotation of the object to which the script is attached.
+        private Quaternion initialRotation;
+        // A reference to the player's camera transform.
+        private Transform playerCamera;
 
         void Start()
         {
-            playerCamera = Camera.main.transform;
-            initialRotation = transform.localRotation;
+            playerCamera = Camera.main.transform; //MAIN CAMERA
+            
+            initialRotation = transform.localRotation; //initial rotation is the current rotation of the object
         }
 
         void Update()
