@@ -544,8 +544,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287072135
-  m_fontColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+    rgba: 4292730333
+  m_fontColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -854,8 +854,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287072135
-  m_fontColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+    rgba: 4292730333
+  m_fontColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -22.511871, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1279,6 +1279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialog: {fileID: 525166823}
+  IscaptureCameraPanel: 0
   captureImageCanvas: {fileID: 0}
 --- !u!114 &548694578
 MonoBehaviour:
@@ -1370,8 +1371,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 20.148485, y: 154}
-  m_SizeDelta: {x: -162.6481, y: -321.141}
+  m_AnchoredPosition: {x: 20.148499, y: 148.61143}
+  m_SizeDelta: {x: -162.6481, y: -310.3639}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &743426500
 GameObject:
@@ -1575,8 +1576,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287072135
-  m_fontColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+    rgba: 4292730333
+  m_fontColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3115,6 +3116,71 @@ MonoBehaviour:
   audioSource: {fileID: 120653456}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 1
+--- !u!1001 &1668866187
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2708333914105251552, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: projectName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251552, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: classes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 434.48065
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 250.53922
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.9622189
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251553, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2708333914105251559, guid: c0188b562e1f03941b10859a667af07f, type: 3}
+      propertyPath: m_Name
+      value: ProjectController
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c0188b562e1f03941b10859a667af07f, type: 3}
 --- !u!1 &1674587677
 GameObject:
   m_ObjectHideFlags: 0
@@ -4078,6 +4144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialog: {fileID: 525166823}
+  IscaptureCameraPanel: 0
   captureImageCanvas: {fileID: 0}
 --- !u!114 &2008412766
 MonoBehaviour:

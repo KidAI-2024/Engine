@@ -26,9 +26,9 @@ namespace GlobalAssets.UI
             // to choose list of images of same class
             if(captureImageCanvas != null)
             {
-                // get the script component of the canvas called AlwaysOnTopUI and manipulate the property sortingOrder make it 11
                 // get the last child of this.gameObject and get the first child of that child and get the first child of that child and get the first child of that child
                 GameObject content = this.gameObject.transform.GetChild(this.gameObject.transform.childCount - 1).GetChild(0).GetChild(0).gameObject;
+                
                 // capturedImages = the raw images children of the content object
                 List<Texture2D> capturedImages = new List<Texture2D>();
                 for (int i = 0; i < content.transform.childCount; i++)
@@ -37,7 +37,6 @@ namespace GlobalAssets.UI
                 }           
                 dialog.GetComponent<WebcamController>().capturedImages = new List<Texture2D>(capturedImages);
                 dialog.GetComponent<WebcamController>().InstantiateCapturedImages();
-
             }
         }
 
