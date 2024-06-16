@@ -7,7 +7,11 @@ namespace MortalKombat
         public static GameManager Instance { get; private set; }
 
         public GameObject ninjaPrefab;
+        public GameObject archerPrefab;
+        public GameObject cannonPrefab;
+        
         public GameObject hulkPrefab;
+        public GameObject cryptoPrefab;
 
         GameObject player1;
         GameObject player2;
@@ -59,7 +63,34 @@ namespace MortalKombat
                 player1Controller.endLimit = 28.3f;
                 player1Controller.controls = SetPlayer1Controls();
             }
-
+            else if (player1Name == "Archer")
+            {
+                player1 = Instantiate(archerPrefab);
+                player1.name = "Player1";
+                var player1Controller = player1.GetComponent<Player1Controller>();
+                player1Controller.health = 120;
+                player1Controller.primaryPower = 15;
+                player1Controller.secondaryPower = 10;
+                player1Controller.speed = 2.0f;
+                // constants for  first player
+                player1Controller.startLimit = 33.8f;
+                player1Controller.endLimit = 28.3f;
+                player1Controller.controls = SetPlayer1Controls();
+            }
+            else if (player1Name == "Cannon")
+            {
+                player1 = Instantiate(cannonPrefab);
+                player1.name = "Player1";
+                var player1Controller = player1.GetComponent<Player1Controller>();
+                player1Controller.health = 155;
+                player1Controller.primaryPower = 25;
+                player1Controller.secondaryPower = 5;
+                player1Controller.speed = 1.3f;
+                // constants for  first player
+                player1Controller.startLimit = 33.8f;
+                player1Controller.endLimit = 28.3f;
+                player1Controller.controls = SetPlayer1Controls();
+            }
 
 
             if (player2Name == "Hulk")
@@ -71,6 +102,20 @@ namespace MortalKombat
                 player2Controller.primaryPower = 20;
                 player2Controller.secondaryPower = 15;
                 player2Controller.speed = 1.5f;
+                // constants for  second player
+                player2Controller.startLimit = 28.3f;
+                player2Controller.endLimit = 33.8f;
+                player2Controller.controls = SetPlayer2Controls();
+            }
+            else if (player2Name == "Crypto")
+            {
+                player2 = Instantiate(cryptoPrefab);
+                player2.name = "Player2";
+                var player2Controller = player2.GetComponent<Player1Controller>();
+                player2Controller.health = 110;
+                player2Controller.primaryPower = 12;
+                player2Controller.secondaryPower = 10;
+                player2Controller.speed = 2.3f;
                 // constants for  second player
                 player2Controller.startLimit = 28.3f;
                 player2Controller.endLimit = 33.8f;
