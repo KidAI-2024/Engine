@@ -9,15 +9,22 @@ namespace MortalKombat
     {
         public RawImage webcamDisplay;
         public TextMeshProUGUI predictionText;
+        public int framePredicitonRate = 5; // predict every 5 frames
 
+
+        private GameObject player1;
+        private GameObject player2;
         private bool nextFrameReady = true;
         private Color32[] frame;
         private GlobalAssets.Socket.SocketUDP socketClient;
         private WebCamTexture webcamTexture;
-
+        private int frameCounter = 0;
         void Start()
         {
             socketClient = GlobalAssets.Socket.SocketUDP.Instance;
+            // search game object called PLayer1
+            // player1 = GameObject.Find("Player1");
+            // player2 = GameObject.Find("Player2");
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
             {
@@ -38,9 +45,10 @@ namespace MortalKombat
         }
         void Update()
         {
-            // if (Input.GetKeyDown(KeyCode.Space))
-            if (nextFrameReady)
+            frameCounter++;
+            if (nextFrameReady && frameCounter % framePredicitonRate == 0)
             {
+                frameCounter = 0;
                 if (webcamTexture.isPlaying)
                 {
                     // Send the frame to the server
@@ -67,6 +75,7 @@ namespace MortalKombat
                 string message = socketClient.ReceiveMessage();
                 // predictionText.text = message;
                 Debug.Log("Received: " + message);
+                player1.GetComponent<Player1Controller>().prediction = message;
                 nextFrameReady = true;
             }
 

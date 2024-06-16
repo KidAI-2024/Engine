@@ -36,7 +36,8 @@ namespace MortalKombat
         // Start with Round 1
         public static int Round = 1;
         public static int RoundScore = 0; // Round score is calculated +1 for each round win for player 1 and -1 for each round win for player 2
-
+        public static int Player1ScoreValue = 0;
+        public static int Player2ScoreValue = 0;
         private bool flag;
         // Property to get the input status
         public static bool IsInputEnabled
@@ -51,6 +52,10 @@ namespace MortalKombat
             // Load the Round value from Player Preferences
             Round = gameManager.Round;
             RoundScore = gameManager.RoundScore;
+            Player1ScoreValue = gameManager.Player1ScoreValue;
+            Player2ScoreValue = gameManager.Player2ScoreValue;
+            
+            Debug.Log("Round: " + Round + " RoundScore: " + RoundScore);
             PlayerPrefs.DeleteAll();
             flag = true;
 
@@ -61,8 +66,30 @@ namespace MortalKombat
             RoundOverText.gameObject.SetActive(false);
             for (int i = 0; i < 3; i++)
             {
-                Player1Score.transform.GetChild(i).gameObject.SetActive(false);
-                Player2Score.transform.GetChild(i).gameObject.SetActive(false);
+                // if is enables then bring the animation to its end else disable it
+                string animeName = "";
+                if (i < Player1ScoreValue)
+                {
+                    Player1Score.transform.GetChild(i).gameObject.SetActive(true);
+                    // skip the default animation and go to the end
+                    animeName = i > 0 ? "star_intro" + i : "star_intro";
+                    Animator animator = Player1Score.transform.GetChild(i).GetComponent<Animator>();
+                    animator.Play(animeName, 0, 1);
+                }
+                else if (i < Player2ScoreValue)
+                {
+                    Player2Score.transform.GetChild(i).gameObject.SetActive(true);
+                    // skip the default animation and go to the end
+                    animeName = "star_intro" + (i+4);
+                    Animator animator = Player2Score.transform.GetChild(i).GetComponent<Animator>();
+                    animator.Play(animeName, 0, 1);
+                }
+                else
+                {
+                    Player1Score.transform.GetChild(i).gameObject.SetActive(false);
+                    Player2Score.transform.GetChild(i).gameObject.SetActive(false);
+                }
+
             }
             if (EnableTimer)
             {
@@ -93,9 +120,11 @@ namespace MortalKombat
                 
                 // Increment the Round variable
                 Round++;
+                Player1ScoreValue = player1.health <= 0 ? Player1ScoreValue : Player1ScoreValue + 1;
+                Player2ScoreValue = player1.health <= 0 ? Player2ScoreValue + 1 : Player2ScoreValue;
                 RoundScore = player1.health <= 0 ? RoundScore - 1 : RoundScore + 1;
                 UpdateRoundScoreUI();
-                if (Round > 3 || RoundScore > 1 ||  RoundScore < -1) // 3 rounds finished = game over
+                if (Player1ScoreValue > 2 ||  Player2ScoreValue > 2) // 3 rounds finished = game over
                 {
                     PlayerPrefs.DeleteAll();
                     GameOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = RoundScore > 0 ? "Player 1 Wins!" : "Player 2 Wins!"; // +ve means player 1 wins, -ve means player 2 wins
@@ -105,6 +134,8 @@ namespace MortalKombat
                     // Save the Round value to Player Preferences
                     gameManager.Round = Round;
                     gameManager.RoundScore = RoundScore;
+                    gameManager.Player1ScoreValue = Player1ScoreValue;
+                    gameManager.Player2ScoreValue = Player2ScoreValue;
                     RoundOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = player1.health <= 0 ? "Player 2 Wins!" : "Player 1 Wins!";
                     RoundOverText.SetActive(true);
                     Invoke("RestartGame", 8);   
@@ -180,13 +211,13 @@ namespace MortalKombat
         }
         void UpdateRoundScoreUI()
         {
-            if (RoundScore > 0)
+            if (Player1ScoreValue > 0)
             {
-                Player1Score.transform.GetChild(RoundScore - 1).gameObject.SetActive(true);
+                Player1Score.transform.GetChild(Player1ScoreValue - 1).gameObject.SetActive(true);
             }
-            if (RoundScore < 0)
+            if (Player2ScoreValue > 0)
             {
-                Player2Score.transform.GetChild(-RoundScore -1).gameObject.SetActive(true);
+                Player2Score.transform.GetChild(Player2ScoreValue -1).gameObject.SetActive(true);
             }
         }
         void PlayRoundSound(int Round)

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace MortalKombat
 {
@@ -20,6 +21,8 @@ namespace MortalKombat
         public string player2Name;
         public int Round = 1;
         public int RoundScore = 0;
+        public int Player1ScoreValue = 0;
+        public int Player2ScoreValue = 0;
 
         private ProjectController projectController;
 
@@ -127,8 +130,8 @@ namespace MortalKombat
         {
             return new Controls
             {
-                forward = "d",
-                backward = "a",
+                forward = new List<string>{"d", projectController.ControlsToclassesMap["Right"]},
+                backward = new List<string>{"a", projectController.ControlsToclassesMap["Left"]},
                 jump = "w",
                 primaryHit = "e",
                 secondaryHit = "space",
@@ -140,8 +143,8 @@ namespace MortalKombat
         {
             return new Controls
             {
-                forward = "left",
-                backward = "right",
+                forward = new List<string>{"left","_"},
+                backward = new List<string>{"right","_"},
                 jump = "up",
                 primaryHit = "/",
                 secondaryHit = ".",
