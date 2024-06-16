@@ -16,6 +16,9 @@ namespace MortalKombat
         public string player2Name;
         public int Round = 1;
         public int RoundScore = 0;
+
+        private ProjectController projectController;
+
         void Awake()
         {   
             if (Instance == null)
@@ -28,7 +31,18 @@ namespace MortalKombat
                 Destroy(gameObject);
                 return;
             }
+            projectController = ProjectController.Instance;
+            InverseClassToCtrlMapping();
         }
+        void InverseClassToCtrlMapping()
+        {
+            foreach (var item in projectController.classesToControlsMap)
+            {
+                projectController.ControlsToclassesMap[item.Value] = item.Key;
+                Debug.Log("Control: " + item.Value + " Class: " + item.Key);
+            }
+        }
+
         public void InstantiateCharacters()
         {
             if (player1Name == "Ninja")
