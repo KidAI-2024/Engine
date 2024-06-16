@@ -51,6 +51,7 @@ namespace GlobalAssets.Socket
         {
             byte[] messageBytes = DictToBytes(message);
             SendMessageBytesInChuncks(messageBytes);
+            // SendMessageBytesCompletely(messageBytes);
         }
         public void SendMessageSync(Dictionary<string, string> message)
         {
