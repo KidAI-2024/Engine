@@ -13,6 +13,7 @@ public class StartTraining : MonoBehaviour
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
     private bool isTrainingFinished = false;
+    private bool isTrainingStarted = false;
     private GameObject TrainingButton;
 
     void Start()
@@ -24,7 +25,7 @@ public class StartTraining : MonoBehaviour
     }
     void Update()
     {
-        if(!isTrainingFinished)
+        if(!isTrainingFinished && isTrainingStarted)
         {
             if (socketClient.isDataAvailable())
             {
@@ -45,6 +46,7 @@ public class StartTraining : MonoBehaviour
     public void StartSocketTraining(){
         TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
         TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
+        isTrainingStarted = true;
         CreateClassMap();
         saveProjectButton.GetComponent<SaveProject>().Save();
         if (!Validate()) return;

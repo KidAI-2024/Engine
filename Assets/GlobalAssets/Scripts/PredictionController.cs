@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class PredictionController : MonoBehaviour
 {
     public string PredictEventName = "";
+    public string LoadModelEventName = "";
     public RawImage webcamDisplay;
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
@@ -34,6 +35,8 @@ public class PredictionController : MonoBehaviour
             requestedWidth = 320,
             requestedHeight = 180
         };
+        LoadModelToML();
+        predictButton.GetComponent<Button>().interactable = false;
     }
     public void StartPrediction()
     {
@@ -61,6 +64,17 @@ public class PredictionController : MonoBehaviour
             webcamDisplay.material.mainTexture = null;
             predictionText.text = "Predict";
         }
+    }
+    void LoadModelToML()
+    {
+        // Construct dictionary to send to server
+        Dictionary<string, string> message = new Dictionary<string, string>
+        {
+            { "project_name", projectController.projectName},
+            { "saved_model_name", projectController.savedModelFileName},
+            { "event", LoadModelEventName }
+        };
+        socketClient.SendMessage(message);
     }
     void Update()
     {
@@ -91,11 +105,38 @@ public class PredictionController : MonoBehaviour
         if (socketClient.isDataAvailable())
         {
             Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-            string pred = response["prediction"];
-            Debug.Log("Received: " + pred);
-            predictionText.text = MapToClassName(pred);
+            if (response["event"] == PredictEventName)
+            {
+                string pred = response["prediction"];
+                Debug.Log("Received: " + pred);
+                predictionText.text = MapToClassName(pred);
+            }
+            else if (response["event"] == LoadModelEventName)
+            {
+                if (response["status"] == "success") // Model loaded successfully
+                {
+                    CreateClassMap();
+                    predictButton.GetComponent<Button>().interactable = true;
+                }
+                else // Model loading failed.. lock the predict button
+                {
+                    predictButton.GetComponent<Button>().interactable = false;
+                }
+            }
             nextFrameReady = true;
             // Invoke("ResetNextFrameReady", 1.0f);
+        }
+    }
+    // This function creates a map of class names to class indices
+    void CreateClassMap()
+    {
+        projectController.PythonClassesToUnityClassesMap.Clear();
+        int j = 0;
+        foreach (string className in projectController.classes)
+        {
+            projectController.PythonClassesToUnityClassesMap.Add(j.ToString(), className);
+            Debug.Log("Class: " + j.ToString() + " Name: " + className);
+            j++;
         }
     }
     // This function maps the prediction to the class name text

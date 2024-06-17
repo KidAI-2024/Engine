@@ -738,6 +738,10 @@ PrefabInstance:
       propertyPath: PredictEventName
       value: predict_body_pose
       objectReference: {fileID: 0}
+    - target: {fileID: 8230324479376756114, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: LoadModelEventName
+      value: load_body_pose_model
+      objectReference: {fileID: 0}
     - target: {fileID: 8230324479376756124, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_Name
       value: Training Canvas
