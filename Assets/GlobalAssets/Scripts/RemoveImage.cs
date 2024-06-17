@@ -6,15 +6,21 @@ public class RemoveImage : MonoBehaviour
 {
     public List<Texture2D> capturedImages;
     public int ImageIndex;
-
+    public bool isLoad = false;
     private Transform GrandParentObject;
 
     void Start()
     {
         GrandParentObject = transform.parent.parent.parent.parent;
-        if (GrandParentObject.name != "CameraPanel")
+        // if true => initialize remove image of the outside panel 
+        // so we want to get the captured images from the inside panel ()
+        if (GrandParentObject.name == "ClassesBox" && isLoad) // in case the load of the saved project instentiate images
         {
-            GrandParentObject = GrandParentObject.parent.GetChild(1);
+            return;
+        }
+        else if (GrandParentObject.name != "CameraPanel") // in case remove image from outside panel
+        {
+            GrandParentObject = GrandParentObject.parent.parent.parent.parent.GetChild(1);
         }
         capturedImages = GrandParentObject.GetComponent<WebcamController>().capturedImages;
     }
@@ -27,6 +33,7 @@ public class RemoveImage : MonoBehaviour
         // Shift the positions of the prefabs after the removed one
         for (int i = parent.childCount - 1; i > ImageIndex; i--)
         {
+            Debug.Log(parent.GetChild(i).name);
             // Get the RectTransform of the child
             RectTransform childRectTransform = parent.GetChild(i).GetComponent<RectTransform>();
 
@@ -41,8 +48,9 @@ public class RemoveImage : MonoBehaviour
 
         // Remove the last child (empty space)
         Destroy(gameObject);
-
         // Update the capturedImages list
+        Debug.Log("ImageIndex: " + ImageIndex + " capturedImages.Count: " + capturedImages.Count);
+
         capturedImages.RemoveAt(ImageIndex);
     }
 }

@@ -6,15 +6,31 @@ public class ButtonHoverController : MonoBehaviour, IPointerEnterHandler, IPoint
     private Button button;
     private Color originalColor;
     public Color hoverColor; // Set this color in the Inspector
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     public AudioClip hoverSound;
+    public bool isSelectable = false;
     bool isSelected = false;
 
     void Start()
     {
         button = GetComponent<Button>();
-        audioSource = GetComponent<AudioSource>();
+        audioSource = audioSource == null ? GetComponent<AudioSource>(): audioSource;
         originalColor = button.image.color;
+
+        if (isSelectable)
+        {
+            button.onClick.AddListener(() =>
+            {
+                // get all brothers of this button
+                ButtonHoverController[] brothers = transform.parent.GetComponentsInChildren<ButtonHoverController>();
+                foreach (ButtonHoverController brother in brothers)
+                {
+                    brother.ButtonDeselected();
+                    brother.isSelected = false;
+                }
+                ButtonSelected();
+            });
+        }
     }
 
     public void ButtonSelected()
