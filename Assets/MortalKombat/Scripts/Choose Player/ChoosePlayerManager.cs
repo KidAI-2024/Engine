@@ -91,8 +91,16 @@ namespace MortalKombat.ChoosePlayer
         {
             if(player1Ready && player2Ready)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Mortal Kombat");
+                // lock the 2 buttons and change the scene after 3 seconds
+                player1Button.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                player2Button.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                StartCoroutine(LoadGameScene());
             }
+        }
+        IEnumerator LoadGameScene()
+        {
+            yield return new WaitForSeconds(1);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MapContoller");
         }
 
         void OnCharacterPlayerChange(string characterName, bool isFirstPlayer = false)
