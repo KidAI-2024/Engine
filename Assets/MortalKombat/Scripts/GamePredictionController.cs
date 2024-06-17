@@ -19,11 +19,13 @@ namespace MortalKombat
         private GlobalAssets.Socket.SocketUDP socketClient;
         private WebCamTexture webcamTexture;
         private int frameCounter = 0;
+        private ProjectController projectController;
         void Start()
         {
             socketClient = GlobalAssets.Socket.SocketUDP.Instance;
+            projectController = ProjectController.Instance;
             // search game object called PLayer1
-            // player1 = GameObject.Find("Player1");
+            player1 = GameObject.Find("Player1");
             // player2 = GameObject.Find("Player2");
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
@@ -51,8 +53,6 @@ namespace MortalKombat
                 frameCounter = 0;
                 if (webcamTexture.isPlaying)
                 {
-                    // Send the frame to the server
-                    Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
                     frame = webcamTexture.GetPixels32();
                     byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
                     // Encode the byte array to a Base64 string
@@ -63,7 +63,7 @@ namespace MortalKombat
                         { "frame", frameBase64 },
                         { "width", webcamTexture.width.ToString() },
                         { "height", webcamTexture.height.ToString() },
-                        { "event", "predict_frame" }
+                        { "event", "predict_body_pose" }
                     };
                     socketClient.SendMessage(message);
                     nextFrameReady = false;
@@ -72,15 +72,23 @@ namespace MortalKombat
             // Receive the response from the server
             if (socketClient.isDataAvailable())
             {
-                string message = socketClient.ReceiveMessage();
-                // predictionText.text = message;
-                Debug.Log("Received: " + message);
-                player1.GetComponent<Player1Controller>().prediction = message;
+                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                string pred = response["prediction"];
+                string unityPredictedClass = MapToClassName(pred); // ML code returns 1,2,3 we want "class x", "class y", "class z"
+                player1.GetComponent<Player1Controller>().prediction = unityPredictedClass;
+                predictionText.text = unityPredictedClass;
                 nextFrameReady = true;
             }
 
         }
-        
+        string MapToClassName(string message)
+        {
+            if (projectController.PythonClassesToUnityClassesMap.ContainsKey(message))
+            {
+                return projectController.PythonClassesToUnityClassesMap[message];
+            }
+            return message;
+        }
         void OnDestroy()
         {
             // Stop the webcam

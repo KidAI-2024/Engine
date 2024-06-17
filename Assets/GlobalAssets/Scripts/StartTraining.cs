@@ -12,34 +12,56 @@ public class StartTraining : MonoBehaviour
     public GameObject warningPanel;
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
+    private bool isTrainingFinished = false;
+    private GameObject TrainingButton;
 
     void Start()
     {
         projectController = ProjectController.Instance;
+        TrainingButton = this.gameObject;
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
     void Update()
     {
-        // Receive the response from the server
-        if (socketClient.isDataAvailable())
+        if(!isTrainingFinished)
         {
-            Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-            Debug.Log("Received: " + response["status"]);
-            if (response["status"] == "success")
+            if (socketClient.isDataAvailable())
             {
-                projectController.isTrained = true;
-                projectController.savedModelFileName = response["saved_model_name"];
-                projectController.Save();
+                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                // Debug.Log("Received: " + response["status"]);
+                if (response["status"] == "success")
+                {
+                    projectController.isTrained = true;
+                    projectController.savedModelFileName = response["saved_model_name"];
+                    projectController.Save();
+                    isTrainingFinished = true;
+                    TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
+                    TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
+                }
             }
         }
     }
     public void StartSocketTraining(){
+        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
+        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
+        CreateClassMap();
         saveProjectButton.GetComponent<SaveProject>().Save();
         if (!Validate()) return;
         SocketTrain();
     }
-    
+    // This function creates a map of class names to class indices
+    void CreateClassMap()
+    {
+        projectController.PythonClassesToUnityClassesMap.Clear();
+        int j = 0;
+        foreach (string className in projectController.classes)
+        {
+            projectController.PythonClassesToUnityClassesMap.Add(j.ToString(), className);
+            Debug.Log("Class: " + j.ToString() + " Name: " + className);
+            j++;
+        }
+    }
     private bool Validate()
     {
         // check if number of classes is greater than 0

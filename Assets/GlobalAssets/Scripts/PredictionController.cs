@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class PredictionController : MonoBehaviour
 {
+    public string PredictEventName = "";
     public RawImage webcamDisplay;
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
@@ -19,11 +20,13 @@ public class PredictionController : MonoBehaviour
     private GlobalAssets.Socket.SocketUDP socketClient;
     private WebCamTexture webcamTexture;
     private bool togglePredicting = false;
+    private ProjectController projectController;
 
     void Start()
     {
         predictionText.text = "Predict";
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
+        projectController = ProjectController.Instance;
         // Get the default webcam and start streaming
         webcamTexture = new WebCamTexture
         {
@@ -38,7 +41,6 @@ public class PredictionController : MonoBehaviour
         if (togglePredicting)
         {
             predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stop";
-            CreateClassMap();
             startPrediction = true;
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
@@ -79,7 +81,7 @@ public class PredictionController : MonoBehaviour
                     { "frame", frameBase64 },
                     { "width", webcamTexture.width.ToString() },
                     { "height", webcamTexture.height.ToString() },
-                    { "event", "predict_frame" }
+                    { "event", PredictEventName }
                 };
                 socketClient.SendMessage(message);
                 nextFrameReady = false;
@@ -88,34 +90,20 @@ public class PredictionController : MonoBehaviour
         // Receive the response from the server
         if (socketClient.isDataAvailable())
         {
-            string message = socketClient.ReceiveMessage();
-            predictionText.text = MapToClassName(message);
-            Invoke("ResetNextFrameReady", 1.0f);
-        }
-    }
-    // This function creates a map of class names to class indices
-    void CreateClassMap()
-    {
-        // Get the classes container to map the prediction to the class name
-        if (classesContainer == null)
-        {
-            Debug.LogError("Please assign the target GameObject!");
-            return;
-        }
-        int j = 0;
-        Transform targetTransform = classesContainer.transform;
-        foreach (Transform child in targetTransform)
-        {
-            classMap.Add(j.ToString(), child.GetComponentInChildren<TMP_InputField>().text);
-            j++;
+            Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+            string pred = response["prediction"];
+            Debug.Log("Received: " + pred);
+            predictionText.text = MapToClassName(pred);
+            nextFrameReady = true;
+            // Invoke("ResetNextFrameReady", 1.0f);
         }
     }
     // This function maps the prediction to the class name text
     string MapToClassName(string message)
     {
-        if (classMap.ContainsKey(message))
+        if (projectController.PythonClassesToUnityClassesMap.ContainsKey(message))
         {
-            return classMap[message];
+            return projectController.PythonClassesToUnityClassesMap[message];
         }
         return message;
     }
