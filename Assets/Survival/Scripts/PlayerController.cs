@@ -172,14 +172,20 @@ namespace Survival
         {
             if (other.CompareTag("Wood"))
             {
+                Debug.Log("Wood");
+                
                 currentFootstepSounds = woodFootstepSounds;
             }
             else if (other.CompareTag("Tile"))
             {
+                Debug.Log("Tile");
+                
                 currentFootstepSounds = tileFootstepSounds;
             }
             else if (other.CompareTag("Carpet"))
             {
+                Debug.Log("Carpet");
+                
                 currentFootstepSounds = carpetFootstepSounds;
             }
         }
