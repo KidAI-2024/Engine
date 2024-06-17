@@ -193,7 +193,7 @@ namespace Karting.Car
             UpdateSuspensionParams(wheelColliders.RearRightWheel);
         }
 
-        public float GetGforce()
+        public virtual float GetGforce()
         {
             return Gforce;
         }

@@ -9,7 +9,7 @@ namespace Karting.Camera
         private float accelerationEffect;
 
         public GameObject attachedVehicle;
-        private int locationIndicator = 0;
+        public int locationIndicator = 0;
         private Karting.Car.CarController3 controllerRef;
 
         private Vector3 newPos;
@@ -19,13 +19,16 @@ namespace Karting.Camera
         public float distance = 2;
 
         public Vector2[] cameraPos;
-        void Start()
+        public void Start()
         {
-            attachedVehicle = GameObject.Find("PlayerCar");
             if (attachedVehicle == null)
             {
-                Debug.LogError("No car selected in GameManager");
-                return;
+                attachedVehicle = GameObject.Find("PlayerCar");
+                if (attachedVehicle == null)
+                {
+                    Debug.LogError("No car selected in GameManager");
+                    return;
+                }
             }
             cameraPos = new Vector2[4];
             // cameraPos[0] = new Vector2(2, 0);
