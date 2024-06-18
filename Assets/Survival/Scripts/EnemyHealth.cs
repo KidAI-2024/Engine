@@ -32,6 +32,12 @@ namespace Survival
         {
             // Perform any death-related actions here, such as playing death animations, spawning effects, or removing the enemy from the scene.
             // You can customize this method based on your game's requirements.
+            // disable all the colliders of the enemy
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider col in colliders)
+            {
+                col.enabled = false;
+            }
 
             // For example, you might destroy the enemy GameObject:
             gameObject.GetComponent<Animator>().SetBool("Death", true);

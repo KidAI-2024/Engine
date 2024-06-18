@@ -10,7 +10,8 @@ namespace Survival
     {
         public GameObject handUI;
         public GameObject UIText;
-
+        public GameObject exitText;
+        
         public GameObject invKey;
         public GameObject fadeFX;
 
@@ -29,7 +30,8 @@ namespace Survival
 
             fadeFX.SetActive(false);
 
-
+            exitText.SetActive(false);
+        
         }
 
         void OnTriggerEnter(Collider other)
@@ -38,6 +40,8 @@ namespace Survival
             {
                 inReach = true;
                 handUI.SetActive(true);
+                // show the child object of the door
+                exitText.SetActive(true);
             }
 
         }
@@ -49,6 +53,8 @@ namespace Survival
                 inReach = false;
                 handUI.SetActive(false);
                 UIText.SetActive(false);
+                exitText.SetActive(false);
+            
             }
         }
 
