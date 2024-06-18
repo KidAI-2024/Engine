@@ -48,6 +48,18 @@ EditorBuildSettings:
     path: Assets/MortalKombat/Scenes/CharacterSelect.unity
     guid: b6cd0d51bc545644a9fcf16f16397611
   - enabled: 1
+    path: Assets/Survival/Scenes/MainMenuScene.unity
+    guid: 50ef2bc80f047d2419105ddccf5aee46
+  - enabled: 1
+    path: Assets/Survival/Scenes/SampleScene.unity
+    guid: 4ed95038d7f2d784a94eeb4a6b7cd8a5
+  - enabled: 1
+    path: Assets/Survival/Scenes/DeathScene.unity
+    guid: f9816b24e825c8a4a94231031e278a2b
+  - enabled: 1
+    path: Assets/Survival/Scenes/WinScene.unity
+    guid: c2eb0a327a7083243aa8bed4a66c1165
+  - enabled: 1
     path: Assets/MortalKombat/Scenes/MapContoller.unity
     guid: 09d2387e76f1db14ca0b10c83ccc8b74
   m_configObjects: {}
