@@ -19,6 +19,8 @@ namespace Karting.WebcamFeed
 
         // fps text
         public TMP_Text fpsText;
+
+        public int predictedClass { get; private set; }
         void Start()
         {
             // get socket from SocketClient
@@ -55,6 +57,7 @@ namespace Karting.WebcamFeed
                 SetFPSText(response["FPS"]);
                 if (response["event"] == "predict_hand_pose")
                 {
+                    predictedClass = int.Parse(response["prediction"]);
                     Debug.Log("Prediction: " + response["prediction"]);
                 }
                 else if (response["event"] == "preprocess_hand_pose")

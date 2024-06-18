@@ -100,6 +100,8 @@ namespace Karting.Car
         public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
         public void SetCanMove(bool move) => m_CanMove = move;
         public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
+
+        private GameObject webcamFeedController;
         void Awake()
         {
             Rigidbody = GetComponent<Rigidbody>();
@@ -110,6 +112,7 @@ namespace Karting.Car
                 brakeLights.LeftLight.SetActive(false);
                 brakeLights.RightLight.SetActive(false);
             }
+            webcamFeedController = GameObject.Find("WebcamFeedController");
         }
 
         void FixedUpdate()
@@ -476,8 +479,8 @@ namespace Karting.Car
         InputData GenerateInput()
         {
             InputData input = new InputData();
-            input.Accelerate = UnityEngine.Input.GetAxis("Vertical") > 0.0f;
-            input.Brake = UnityEngine.Input.GetAxis("Vertical") < 0.0f || UnityEngine.Input.GetKey(KeyCode.Space);
+            input.Accelerate = UnityEngine.Input.GetAxis("Vertical") > 0.0f || webcamFeedController.GetComponent<WebcamFeed.KartingWebcamFeedController>().predictedClass == 0;
+            input.Brake = UnityEngine.Input.GetAxis("Vertical") < 0.0f || UnityEngine.Input.GetKey(KeyCode.Space) || webcamFeedController.GetComponent<WebcamFeed.KartingWebcamFeedController>().predictedClass == 1;
             input.TurnInput = UnityEngine.Input.GetAxis("Horizontal");
             return input;
         }
