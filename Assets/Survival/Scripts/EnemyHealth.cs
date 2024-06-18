@@ -1,36 +1,46 @@
 ﻿using UnityEngine;
-
-public class EnemyHealth : MonoBehaviour
+namespace Survival
 {
-    public int maxHealth = 100; // Maximum health of the enemy.
-    private int currentHealth; // Current health of the enemy.
 
-    // Called when the enemy is initialized.
-    private void Start()
+
+    public class EnemyHealth : MonoBehaviour
     {
-        currentHealth = maxHealth; // Set the initial health to the maximum health.
-    }
+        public int maxHealth = 100; // Maximum health of the enemy.
+        private int currentHealth; // Current health of the enemy.
 
-    // Function to apply damage to the enemy.
-    public void TakeDamage(int damageAmount)
-    {
-        // Reduce the current health by the damage amount.
-        currentHealth -= damageAmount;
-
-        // Check if the enemy's health has reached zero or below.
-        if (currentHealth <= 0)
+        // Called when the enemy is initialized.
+        private void Start()
         {
-            Die(); // Call the function to handle the enemy's death.
+            currentHealth = maxHealth; // Set the initial health to the maximum health.
         }
-    }
 
-    // Function to handle the enemy's death.
-    private void Die()
-    {
-        // Perform any death-related actions here, such as playing death animations, spawning effects, or removing the enemy from the scene.
-        // You can customize this method based on your game's requirements.
+        // Function to apply damage to the enemy.
+        public void TakeDamage(int damageAmount)
+        {
+            // Reduce the current health by the damage amount.
+            currentHealth -= damageAmount;
 
-        // For example, you might destroy the enemy GameObject:
-        gameObject.GetComponent<Animator>().SetBool("Death", true);
+            // Check if the enemy's health has reached zero or below.
+            if (currentHealth <= 0)
+            {
+                Die(); // Call the function to handle the enemy's death.
+            }
+        }
+
+        // Function to handle the enemy's death.
+        private void Die()
+        {
+            // Perform any death-related actions here, such as playing death animations, spawning effects, or removing the enemy from the scene.
+            // You can customize this method based on your game's requirements.
+            // disable all the colliders of the enemy
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider col in colliders)
+            {
+                col.enabled = false;
+            }
+
+            // For example, you might destroy the enemy GameObject:
+            gameObject.GetComponent<Animator>().SetBool("Death", true);
+        }
     }
 }
