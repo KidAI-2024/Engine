@@ -479,8 +479,9 @@ namespace Karting.Car
         InputData GenerateInput()
         {
             InputData input = new InputData();
-            input.Accelerate = UnityEngine.Input.GetAxis("Vertical") > 0.0f || webcamFeedController.GetComponent<WebcamFeed.KartingWebcamFeedController>().predictedClass == 0;
-            input.Brake = UnityEngine.Input.GetAxis("Vertical") < 0.0f || UnityEngine.Input.GetKey(KeyCode.Space) || webcamFeedController.GetComponent<WebcamFeed.KartingWebcamFeedController>().predictedClass == 1;
+            WebcamFeed.KartingWebcamFeedController webcamControllerObj = webcamFeedController.GetComponent<WebcamFeed.KartingWebcamFeedController>();
+            input.Accelerate = UnityEngine.Input.GetAxis("Vertical") > 0.0f || webcamControllerObj.predictedClass == 0;
+            input.Brake = UnityEngine.Input.GetAxis("Vertical") < 0.0f || UnityEngine.Input.GetKey(KeyCode.Space) || webcamControllerObj.predictedClass == 1;
             input.TurnInput = UnityEngine.Input.GetAxis("Horizontal");
             return input;
         }

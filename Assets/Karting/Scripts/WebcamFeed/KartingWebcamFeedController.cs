@@ -20,7 +20,7 @@ namespace Karting.WebcamFeed
         // fps text
         public TMP_Text fpsText;
 
-        public int predictedClass { get; private set; }
+        public int predictedClass { get; private set; } = -1;
         void Start()
         {
             // get socket from SocketClient
