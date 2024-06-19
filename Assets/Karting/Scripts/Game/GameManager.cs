@@ -7,8 +7,8 @@ namespace Karting.Game
         public static GameManager instance;
 
         // Store selected data
-        public string selectedGameMode;
-        public string selectedRaceTrack;
+        public string selectedGameMode = "Timed";
+        public string selectedRaceTrack = "KartingTrack2";
         public GameObject selectedCarPrefab;
 
         private void Awake()

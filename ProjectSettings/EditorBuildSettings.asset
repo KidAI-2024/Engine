@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/GlobalAssets/Scenes/Lobby.unity
+    path: Assets/Karting/AddOns/Simple Garage/Scenes/Garage Scene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/GlobalAssets/Scenes/Training/Bodypose.unity
@@ -27,23 +27,23 @@ EditorBuildSettings:
     path: Assets/Karting/Scenes/KartingIntro.unity
     guid: dff6b5a5e053a2d40867edd5449ef4c6
   - enabled: 1
-    path: Assets/Karting/Scenes/KartingChooseMode.unity
-    guid: ac625741769fb564cafd6b157ce8ea0b
-  - enabled: 1
     path: Assets/Karting/Scenes/KartingChooseTrack.unity
     guid: 3be7247771235554e89c01bffef4dd3d
   - enabled: 1
     path: Assets/Karting/Scenes/KartingChooseCar.unity
     guid: 233071afe303cc044aacbac766166a34
   - enabled: 1
-    path: Assets/Karting/Scenes/KartingMain.unity
+    path: Assets/Karting/Scenes/RacingTracks/KartingMain.unity
     guid: 2a5da18706f703f4f828adf36e62bee8
   - enabled: 1
-    path: Assets/Karting/Scenes/KartingTrack1.unity
+    path: Assets/Karting/Scenes/RacingTracks/KartingTrack1.unity
     guid: 7d2a518a833dafc418754d62abf1e309
   - enabled: 1
-    path: Assets/Karting/Scenes/KartingTrack2.unity
+    path: Assets/Karting/Scenes/RacingTracks/KartingTrack2.unity
     guid: aade33ef1596ff24cb19602ec4928844
+  - enabled: 1
+    path: Assets/Karting/Scenes/KartingControlMap.unity
+    guid: e6f76d4a2065a324586d331cdedf7908
   - enabled: 1
     path: Assets/MortalKombat/Scenes/CharacterSelect.unity
     guid: b6cd0d51bc545644a9fcf16f16397611
