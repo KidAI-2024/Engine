@@ -19,12 +19,16 @@ namespace Karting.WebcamFeed
 
         // fps text
         public TMP_Text fpsText;
+        private ProjectController projectController;
 
-        public int predictedClass { get; private set; } = -1;
+
+        public int pythonPredictedClass { get; private set; } = -1;
+        public string UnityPredictedClass { get; private set; } = "";
         void Start()
         {
             // get socket from SocketClient
             socketClient = GlobalAssets.Socket.SocketUDP.Instance;
+            projectController = ProjectController.Instance;
             // Start the webcam
             webcamTexture = new WebCamTexture
             {
@@ -57,8 +61,10 @@ namespace Karting.WebcamFeed
                 SetFPSText(response["FPS"]);
                 if (response["event"] == "predict_hand_pose")
                 {
-                    predictedClass = int.Parse(response["prediction"]);
-                    Debug.Log("Prediction: " + response["prediction"]);
+                    pythonPredictedClass = int.Parse(response["prediction"]);
+                    UnityPredictedClass = PythonToUnityClassName(response["prediction"]);
+                    // Debug.Log("Python Prediction: " + pythonPredictedClass);
+                    // Debug.Log("Unity Prediction: " + UnityPredictedClass);
                 }
                 else if (response["event"] == "preprocess_hand_pose")
                 {
@@ -75,6 +81,14 @@ namespace Karting.WebcamFeed
 
                 nextFrameReady = true;
             }
+        }
+        string PythonToUnityClassName(string message)
+        {
+            if (projectController.PythonClassesToUnityClassesMap.ContainsKey(message))
+            {
+                return projectController.PythonClassesToUnityClassesMap[message];
+            }
+            return message;
         }
         void SetFPSText(string fps)
         {

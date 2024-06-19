@@ -102,6 +102,8 @@ namespace Karting.Car
         public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
 
         private GameObject webcamFeedController;
+        private ProjectController projectController;
+
         void Awake()
         {
             Rigidbody = GetComponent<Rigidbody>();
@@ -113,6 +115,7 @@ namespace Karting.Car
                 brakeLights.RightLight.SetActive(false);
             }
             webcamFeedController = GameObject.Find("WebcamFeedController");
+            projectController = ProjectController.Instance;
         }
 
         void FixedUpdate()
@@ -489,8 +492,15 @@ namespace Karting.Car
             Karting.WebcamFeed.KartingWebcamFeedController webcamControllerObj = webcamFeedController.GetComponent<Karting.WebcamFeed.KartingWebcamFeedController>();
             if (webcamControllerObj != null)
             {
-                input.Accelerate = input.Accelerate || webcamControllerObj.predictedClass == 0;
-                input.Brake = input.Brake || webcamControllerObj.predictedClass == 1;
+                int pythonPredictedClass = webcamControllerObj.pythonPredictedClass;
+                if (pythonPredictedClass != -1)
+                {
+                    string predictedClass = webcamControllerObj.UnityPredictedClass;
+                    string predictedControl = projectController.classesToControlsMap[predictedClass];
+                    input.Accelerate = input.Accelerate || predictedControl == "Forward";
+                    input.Brake = input.Brake || predictedControl == "Backward";
+                    input.TurnInput = input.TurnInput + (predictedControl == "Left" ? -1 : 0) + (predictedControl == "Right" ? 1 : 0);
+                }
             }
             return input;
         }
