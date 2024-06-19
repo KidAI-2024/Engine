@@ -13,10 +13,8 @@ namespace MortalKombat
         
         public GameObject hulkPrefab;
         public GameObject cryptoPrefab;
-
-        GameObject player1;
-        GameObject player2;
         
+
         public string player1Name;
         public string player2Name;
         public int Round = 1;
@@ -24,7 +22,9 @@ namespace MortalKombat
         public int Player1ScoreValue = 0;
         public int Player2ScoreValue = 0;
 
-        private ProjectController projectController;
+        GameObject player1;
+        GameObject player2;
+        ProjectController projectController;
 
         void Awake()
         {   
@@ -49,7 +49,6 @@ namespace MortalKombat
                 Debug.Log("Control: " + item.Value + " Class: " + item.Key);
             }
         }
-
         public void InstantiateCharacters()
         {
             if (player1Name == "Ninja")

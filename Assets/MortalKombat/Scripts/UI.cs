@@ -10,7 +10,8 @@ namespace MortalKombat
 
         private static bool isInputEnabled = false;
         public bool EnableTimer;
-
+        
+        public GameObject settingsPanel;
         public Slider Player1HealthSlider;
         public Slider Player2HealthSlider; 
         public GameObject Player1Score;
@@ -108,6 +109,21 @@ namespace MortalKombat
         }
         void Update()
         {
+            // if escape button is clicked open settings panel and pause the scene, if it is already open close it and resume the scene
+            bool escapePressed = Input.GetKeyDown(KeyCode.Escape);
+            if (escapePressed)
+            {
+                if (settingsPanel.activeSelf)
+                {
+                    settingsPanel.SetActive(false);
+                    Time.timeScale = 1;
+                }
+                else
+                {
+                    settingsPanel.SetActive(true);
+                    Time.timeScale = 0;
+                }
+            }
             Player1HealthSlider.value = player1.health;
             Player2HealthSlider.value = player2.health;
             // Round over
@@ -129,6 +145,7 @@ namespace MortalKombat
                     PlayerPrefs.DeleteAll();
                     GameOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = RoundScore > 0 ? "Player 1 Wins!" : "Player 2 Wins!"; // +ve means player 1 wins, -ve means player 2 wins
                     GameOverText.SetActive(true);
+                    Invoke("BackToCharacterSelect", 6);
                 }
                 else{
                     // Save the Round value to Player Preferences
@@ -208,6 +225,10 @@ namespace MortalKombat
         {
             // Reload the scene to restart the game with a new round
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
+        void BackToCharacterSelect()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("CharacterSelect");
         }
         void UpdateRoundScoreUI()
         {
