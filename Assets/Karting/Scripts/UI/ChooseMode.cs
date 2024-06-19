@@ -12,7 +12,7 @@ namespace Karting.UI
         void Start()
         {
             Game.GameManager gameManager = FindObjectOfType<Game.GameManager>();
-            TimedButton.onClick.AddListener(() => gameManager.SelectGameMode_Timed());
+            TimedButton.onClick.AddListener(() => gameManager.SelectGameMode("Timed"));
             TimedButton.onClick.AddListener(() => SceneManager.LoadScene(nextSceneName));
         }
     }
