@@ -5,8 +5,8 @@ namespace MortalKombat
 {
     public struct Controls
     {
-        public string forward;
-        public string backward;
+        public List<string> forward;
+        public List<string> backward;
         public string jump;
         public string primaryHit;
         public string secondaryHit;
@@ -19,6 +19,7 @@ namespace MortalKombat
         public int primaryPower;
         public int secondaryPower;
         public float speed; // Adjust the speed as needed
+        public string prediction = "";
         public Controls controls;   
 
         Animator animator;
@@ -58,8 +59,8 @@ namespace MortalKombat
             bool jump = animator.GetBool(jumpHash);
             bool block = animator.GetBool(blockHash);
 
-            bool forwardPressed = Input.GetKey(controls.forward);
-            bool backwardPressed = Input.GetKey(controls.backward);
+            bool forwardPressed = Input.GetKey(controls.forward[0]) || prediction == controls.forward[1];
+            bool backwardPressed = Input.GetKey(controls.backward[0]) || prediction == controls.backward[1];
             bool jumpPressed = Input.GetKeyDown(controls.jump);
             bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit);
             bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit);

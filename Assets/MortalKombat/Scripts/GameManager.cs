@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace MortalKombat
 {
@@ -7,15 +8,24 @@ namespace MortalKombat
         public static GameManager Instance { get; private set; }
 
         public GameObject ninjaPrefab;
-        public GameObject hulkPrefab;
-
-        GameObject player1;
-        GameObject player2;
+        public GameObject archerPrefab;
+        public GameObject cannonPrefab;
         
+        public GameObject hulkPrefab;
+        public GameObject cryptoPrefab;
+        
+
         public string player1Name;
         public string player2Name;
         public int Round = 1;
         public int RoundScore = 0;
+        public int Player1ScoreValue = 0;
+        public int Player2ScoreValue = 0;
+
+        GameObject player1;
+        GameObject player2;
+        ProjectController projectController;
+
         void Awake()
         {   
             if (Instance == null)
@@ -27,6 +37,16 @@ namespace MortalKombat
             {
                 Destroy(gameObject);
                 return;
+            }
+            projectController = ProjectController.Instance;
+            InverseClassToCtrlMapping();
+        }
+        void InverseClassToCtrlMapping()
+        {
+            foreach (var item in projectController.classesToControlsMap)
+            {
+                projectController.ControlsToclassesMap[item.Value] = item.Key;
+                Debug.Log("Control: " + item.Value + " Class: " + item.Key);
             }
         }
         public void InstantiateCharacters()
@@ -45,7 +65,34 @@ namespace MortalKombat
                 player1Controller.endLimit = 28.3f;
                 player1Controller.controls = SetPlayer1Controls();
             }
-
+            else if (player1Name == "Archer")
+            {
+                player1 = Instantiate(archerPrefab);
+                player1.name = "Player1";
+                var player1Controller = player1.GetComponent<Player1Controller>();
+                player1Controller.health = 120;
+                player1Controller.primaryPower = 15;
+                player1Controller.secondaryPower = 10;
+                player1Controller.speed = 2.0f;
+                // constants for  first player
+                player1Controller.startLimit = 33.8f;
+                player1Controller.endLimit = 28.3f;
+                player1Controller.controls = SetPlayer1Controls();
+            }
+            else if (player1Name == "Cannon")
+            {
+                player1 = Instantiate(cannonPrefab);
+                player1.name = "Player1";
+                var player1Controller = player1.GetComponent<Player1Controller>();
+                player1Controller.health = 155;
+                player1Controller.primaryPower = 25;
+                player1Controller.secondaryPower = 5;
+                player1Controller.speed = 1.3f;
+                // constants for  first player
+                player1Controller.startLimit = 33.8f;
+                player1Controller.endLimit = 28.3f;
+                player1Controller.controls = SetPlayer1Controls();
+            }
 
 
             if (player2Name == "Hulk")
@@ -62,14 +109,28 @@ namespace MortalKombat
                 player2Controller.endLimit = 33.8f;
                 player2Controller.controls = SetPlayer2Controls();
             }
+            else if (player2Name == "Crypto")
+            {
+                player2 = Instantiate(cryptoPrefab);
+                player2.name = "Player2";
+                var player2Controller = player2.GetComponent<Player1Controller>();
+                player2Controller.health = 110;
+                player2Controller.primaryPower = 12;
+                player2Controller.secondaryPower = 10;
+                player2Controller.speed = 2.3f;
+                // constants for  second player
+                player2Controller.startLimit = 28.3f;
+                player2Controller.endLimit = 33.8f;
+                player2Controller.controls = SetPlayer2Controls();
+            }
         }
 
         Controls SetPlayer1Controls()
         {
             return new Controls
             {
-                forward = "d",
-                backward = "a",
+                forward = new List<string>{"d", projectController.ControlsToclassesMap["Right"]},
+                backward = new List<string>{"a", projectController.ControlsToclassesMap["Left"]},
                 jump = "w",
                 primaryHit = "e",
                 secondaryHit = "space",
@@ -81,8 +142,8 @@ namespace MortalKombat
         {
             return new Controls
             {
-                forward = "left",
-                backward = "right",
+                forward = new List<string>{"left","_"},
+                backward = new List<string>{"right","_"},
                 jump = "up",
                 primaryHit = "/",
                 secondaryHit = ".",
