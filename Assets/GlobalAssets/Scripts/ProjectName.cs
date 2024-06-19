@@ -54,7 +54,7 @@ public class ProjectName : MonoBehaviour
             }
         }
 
-        projectDataList.Sort((x, y) => DateTime.Parse(x.createdAt).CompareTo(DateTime.Parse(y.createdAt)));
+        projectDataList.Sort((x, y) => DateTime.Parse(y.createdAt).CompareTo(DateTime.Parse(x.createdAt)));
 
         foreach (ProjectData projectData in projectDataList)
         {

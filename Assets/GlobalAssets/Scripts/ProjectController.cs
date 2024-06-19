@@ -18,6 +18,8 @@ public class ProjectController : MonoBehaviour
     public List<string> classes = new List<string>();
     public Dictionary<string, int> imagesPerClass = new Dictionary<string, int>();  // Class : ImageCount
     public Dictionary<string, string> classesToControlsMap = new Dictionary<string, string>(); // Class : ControlName
+    public Dictionary<string, string> ControlsToclassesMap = new Dictionary<string, string>(); // ControlName : Class
+    public Dictionary<string, string> PythonClassesToUnityClassesMap = new Dictionary<string, string>(); // Python Predicted Class : Unity Class
 
     // Ensure only one instance of ProjectController exists
     private void Awake()
