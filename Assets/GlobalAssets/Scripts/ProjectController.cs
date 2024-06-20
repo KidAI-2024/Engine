@@ -56,4 +56,19 @@ public class ProjectController : MonoBehaviour
             Debug.Log("Loaded project data from: " + path);
         }
     }
+
+    public void Reset()
+    {
+        projectName = "";
+        createdAt = "";
+        projectType = "";
+        sceneName = "";
+        isTrained = false;
+        savedModelFileName = "";
+        classes.Clear();
+        imagesPerClass.Clear();
+        classesToControlsMap.Clear();
+        ControlsToclassesMap.Clear();
+        PythonClassesToUnityClassesMap.Clear();
+    }
 }

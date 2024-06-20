@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aea09f37350da4429c641c6491de42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectName: mark
-  classes:
-  - Class A
-  - Class B
-  - Class C
+  projectName: 
+  createdAt: 
+  projectType: 
+  sceneName: 
+  isTrained: 0
+  savedModelFileName: 
+  classes: []

@@ -34,6 +34,7 @@ public class ProjectName : MonoBehaviour
     void Start()
     {
         projectController = ProjectController.Instance;
+        projectController.Reset();
         LoadProjectsList();
     }
     // sort by createdAt
