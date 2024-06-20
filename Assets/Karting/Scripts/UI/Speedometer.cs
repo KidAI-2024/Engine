@@ -6,13 +6,48 @@ namespace Karting.UI
 
     public class Speedometer : MonoBehaviour
     {
-        public Rigidbody carRigidbody;
+        Rigidbody carRigidbody;
+        GameObject attachedVehicle;
+
         public TextMeshProUGUI speedText;
         public TextMeshProUGUI gearText;
         public Slider speedSlider;
 
+        void start()
+        {
+            attachedVehicle = GameObject.Find("PlayerCar");
+            if (attachedVehicle != null)
+            {
+                carRigidbody = attachedVehicle.GetComponent<Rigidbody>();
+                if (carRigidbody == null)
+                {
+                    Debug.Log("Car Rigidbody not found");
+                }
+            }
+            else
+            {
+                Debug.Log("Car not found");
+            }
+        }
+
         private void Update()
         {
+            if (carRigidbody == null)
+            {
+                attachedVehicle = GameObject.Find("PlayerCar");
+                if (attachedVehicle != null)
+                {
+                    carRigidbody = attachedVehicle.GetComponent<Rigidbody>();
+                    if (carRigidbody == null)
+                    {
+                        Debug.Log("Car Rigidbody not found");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Car not found");
+                }
+            }
             // get speed and convert to km/h
             float speed = carRigidbody.velocity.magnitude * 3.6f;
 

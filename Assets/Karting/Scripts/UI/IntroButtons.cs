@@ -28,7 +28,7 @@ namespace Karting.UI
             }
             if (customMatchButton != null)
             {
-                customMatchButton.onClick.AddListener(() => SceneManager.LoadScene("KartingChooseMode"));
+                customMatchButton.onClick.AddListener(() => SceneManager.LoadScene("KartingChooseTrack"));
             }
             else
             {
