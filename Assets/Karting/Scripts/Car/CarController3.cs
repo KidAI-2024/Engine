@@ -100,6 +100,10 @@ namespace Karting.Car
         public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
         public void SetCanMove(bool move) => m_CanMove = move;
         public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
+
+        private GameObject webcamFeedController;
+        private ProjectController projectController;
+
         void Awake()
         {
             Rigidbody = GetComponent<Rigidbody>();
@@ -110,6 +114,8 @@ namespace Karting.Car
                 brakeLights.LeftLight.SetActive(false);
                 brakeLights.RightLight.SetActive(false);
             }
+            webcamFeedController = GameObject.Find("WebcamFeedController");
+            projectController = ProjectController.Instance;
         }
 
         void FixedUpdate()
@@ -193,7 +199,7 @@ namespace Karting.Car
             UpdateSuspensionParams(wheelColliders.RearRightWheel);
         }
 
-        public float GetGforce()
+        public virtual float GetGforce()
         {
             return Gforce;
         }
@@ -297,8 +303,9 @@ namespace Karting.Car
         {
             // manual acceleration curve coefficient scalar
             float accelerationCurveCoeff = 5;
+            // get the acceleration for the direction we are going
             float accelPower = accelDirectionIsFwd ? m_FinalStats.Acceleration : m_FinalStats.ReverseAcceleration;
-
+            // calculate the acceleration ramp based on the current speed and maximum speed
             float accelRampT = currentSpeed / maxSpeed;
             float multipliedAccelerationCurve = m_FinalStats.AccelerationCurve * accelerationCurveCoeff;
             float accelRamp = Mathf.Lerp(multipliedAccelerationCurve, 1, accelRampT * accelRampT);
@@ -306,34 +313,42 @@ namespace Karting.Car
             // use the braking accleration instead
             float finalAccelPower = isBraking ? m_FinalStats.Braking : accelPower;
 
+            // calculate the final acceleration by multiplying the acceleration power with the acceleration ramp
             float finalAcceleration = finalAccelPower * accelRamp;
 
+            // calculate the turning angle based on the turning power and the car's transform
             Quaternion turnAngle = Quaternion.AngleAxis(turningPower, transform.up);
+
+            // calculate the forward direction based on the turning angle and the car's forward vector
             Vector3 fwd = turnAngle * transform.forward;
+            // calculate the movement vector by combining the forward direction, acceleration input, final acceleration,
+            // and a multiplier based on whether the car has collision or is on the ground
             Vector3 movement = fwd * accelInput * finalAcceleration * ((m_HasCollision || GroundPercent > 0.0f) ? 1.0f : 0.0f);
             // FrontRightWheel.steerAngle = turnAngle.eulerAngles.y;
             // FrontLeftWheel.steerAngle = turnAngle.eulerAngles.y;
+            // check if the current speed is over the maximum speed and the car is not braking
             bool wasOverMaxSpeed = currentSpeed >= maxSpeed;
 
             // if over max speed, cannot accelerate faster.
             if (wasOverMaxSpeed && !isBraking)
                 movement *= 0.0f;
 
+            // calculate the new velocity by adding the movement vector to the current velocity
             Vector3 newVelocity = Rigidbody.velocity + movement * Time.fixedDeltaTime;
             newVelocity.y = Rigidbody.velocity.y;
 
-            //  clamp max speed if we are on ground
+            // clamp the max speed if the car is on the ground and not already over the max speed
             if (GroundPercent > 0.0f && !wasOverMaxSpeed)
             {
                 newVelocity = Vector3.ClampMagnitude(newVelocity, maxSpeed);
             }
 
-            // coasting is when we aren't touching accelerate
+            // if the acceleration input is close to zero and the car is on the ground, apply coasting drag
             if (Mathf.Abs(accelInput) < k_NullInput && GroundPercent > 0.0f)
             {
                 newVelocity = Vector3.MoveTowards(newVelocity, new Vector3(0, Rigidbody.velocity.y, 0), Time.fixedDeltaTime * m_FinalStats.CoastingDrag);
             }
-
+            // update the car's velocity with the new velocity
             Rigidbody.velocity = newVelocity;
         }
 
@@ -470,6 +485,23 @@ namespace Karting.Car
             input.Accelerate = UnityEngine.Input.GetAxis("Vertical") > 0.0f;
             input.Brake = UnityEngine.Input.GetAxis("Vertical") < 0.0f || UnityEngine.Input.GetKey(KeyCode.Space);
             input.TurnInput = UnityEngine.Input.GetAxis("Horizontal");
+            if (webcamFeedController == null)
+            {
+                return input;
+            }
+            Karting.WebcamFeed.KartingWebcamFeedController webcamControllerObj = webcamFeedController.GetComponent<Karting.WebcamFeed.KartingWebcamFeedController>();
+            if (webcamControllerObj != null)
+            {
+                int pythonPredictedClass = webcamControllerObj.pythonPredictedClass;
+                if (pythonPredictedClass != -1)
+                {
+                    string predictedClass = webcamControllerObj.UnityPredictedClass;
+                    string predictedControl = projectController.classesToControlsMap[predictedClass];
+                    input.Accelerate = input.Accelerate || predictedControl == "Forward";
+                    input.Brake = input.Brake || predictedControl == "Backward";
+                    input.TurnInput = input.TurnInput + (predictedControl == "Left" ? -1 : 0) + (predictedControl == "Right" ? 1 : 0);
+                }
+            }
             return input;
         }
 

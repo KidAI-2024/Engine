@@ -7,8 +7,8 @@ namespace Karting.Game
         public static GameManager instance;
 
         // Store selected data
-        public GameMode selectedGameMode;
-        public RaceTrack selectedRaceTrack;
+        public string selectedGameMode = "Timed";
+        public string selectedRaceTrack = "KartingTrack2";
         public GameObject selectedCarPrefab;
 
         private void Awake()
@@ -24,15 +24,16 @@ namespace Karting.Game
             }
         }
 
-        public void SelectGameMode_Timed()
+        public void SelectGameMode(string mode)
         {
-            selectedGameMode = GameMode.Timed;
-            Debug.Log("Game mode selected: " + selectedGameMode);
+            selectedRaceTrack = mode;
+            Debug.Log("Game mode selected: " + selectedRaceTrack);
         }
 
-        public void SelectRaceTrack_Forest()
+
+        public void SelectRaceTrack(string sceneName)
         {
-            selectedRaceTrack = RaceTrack.KartingTrack2;
+            selectedRaceTrack = sceneName;
             Debug.Log("Track selected: " + selectedRaceTrack);
         }
 
@@ -50,21 +51,11 @@ namespace Karting.Game
         }
         public void StartQuickMatch()
         {
-            SelectGameMode_Timed();
-            SelectRaceTrack_Forest();
+            SelectGameMode("Timed");
+            SelectRaceTrack("KartingTrack2");
             StartCustomMatch();
         }
     }
 
     // Enum for different game modes
-    public enum GameMode
-    {
-        Timed
-    }
-
-    // Enum for different race tracks
-    public enum RaceTrack
-    {
-        KartingTrack2
-    }
 }
