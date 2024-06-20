@@ -131,9 +131,9 @@ namespace MortalKombat
             {
                 forward = new List<string>{"d", projectController.ControlsToclassesMap["Right"]},
                 backward = new List<string>{"a", projectController.ControlsToclassesMap["Left"]},
-                jump = "w",
-                primaryHit = "e",
-                secondaryHit = "space",
+                jump = "w", 
+                primaryHit = new List<string>{"e", projectController.ControlsToclassesMap["Primary"]},
+                secondaryHit = new List<string>{"space", projectController.ControlsToclassesMap["Secondary"]},
                 block = "q",
                 isEnabled = true
             };
@@ -145,8 +145,8 @@ namespace MortalKombat
                 forward = new List<string>{"left","_"},
                 backward = new List<string>{"right","_"},
                 jump = "up",
-                primaryHit = "/",
-                secondaryHit = ".",
+                primaryHit = new List<string>{"/","_"},
+                secondaryHit = new List<string>{".","_"},
                 block = "down",
                 isEnabled = true
             };

@@ -9321,6 +9321,10 @@ PrefabInstance:
       propertyPath: dialog
       value: 
       objectReference: {fileID: 7055515263572593785}
+    - target: {fileID: 4170738261297595936, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7980302461142135391, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
       propertyPath: sortingOrder
       value: 1

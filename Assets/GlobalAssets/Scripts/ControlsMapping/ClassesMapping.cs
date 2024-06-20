@@ -24,7 +24,7 @@ public class ClassesMapping : MonoBehaviour
         for (int i = 0; i < ControlsPanel.transform.childCount; i++)
         {
             GameObject control = ControlsPanel.transform.GetChild(i).gameObject;
-            controls.Add(control.name);
+            controls.Add(control.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text);
         }
     }
     void RenderClasses()

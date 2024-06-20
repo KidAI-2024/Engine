@@ -7,9 +7,9 @@ namespace MortalKombat
     {
         public List<string> forward;
         public List<string> backward;
+        public List<string> primaryHit;
+        public List<string> secondaryHit;
         public string jump;
-        public string primaryHit;
-        public string secondaryHit;
         public string block;
         public bool isEnabled;
     }
@@ -61,9 +61,9 @@ namespace MortalKombat
 
             bool forwardPressed = Input.GetKey(controls.forward[0]) || prediction == controls.forward[1];
             bool backwardPressed = Input.GetKey(controls.backward[0]) || prediction == controls.backward[1];
+            bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit[0]) || prediction == controls.primaryHit[1];
+            bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit[0]) || prediction == controls.secondaryHit[1];
             bool jumpPressed = Input.GetKeyDown(controls.jump);
-            bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit);
-            bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit);
             bool blockPressed = Input.GetKeyDown(controls.block);
 
             // Walking

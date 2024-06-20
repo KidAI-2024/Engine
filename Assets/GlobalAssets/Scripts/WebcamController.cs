@@ -19,6 +19,7 @@ public class WebcamController : MonoBehaviour
     private TMP_Dropdown autoCaptureDDL;
     public GameObject EmptyImage;
     private GameObject EmptyImageCaptureImages;
+    private GameObject numberOFImagesOutside;
     public List<Texture2D> capturedImages = new List<Texture2D>();
 
 
@@ -26,6 +27,7 @@ public class WebcamController : MonoBehaviour
     {
         EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
         EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
+        numberOFImagesOutside = finalImagesContainer.parent.parent.parent.gameObject.transform.GetChild(4).gameObject;
         // Add a listener to the capture button
         autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
         captureButton.onClick.AddListener(CapturePhoto);
@@ -165,6 +167,7 @@ public class WebcamController : MonoBehaviour
             i++;
         }
         EmptyImage.SetActive(capturedImages.Count == 0);
+        numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
     }
 
     // This function is called by the popup activate to show the captured images of the class clicked

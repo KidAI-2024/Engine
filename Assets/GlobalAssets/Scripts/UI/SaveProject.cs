@@ -52,7 +52,7 @@ namespace GlobalAssets.UI
                 Transform classBox = targetGameObject.transform.GetChild(i);
                 TMP_InputField className = classBox.GetChild(0).GetChild(1).GetComponentInChildren<TMP_InputField>();
                 className.text = projectController.classes[i];
-                finalImagesContainer = classBox.GetChild(0).GetChild(4).GetChild(0).GetChild(0).gameObject.transform; // ImagesContainer
+                finalImagesContainer = classBox.GetChild(0).GetChild(5).GetChild(0).GetChild(0).gameObject.transform; // ImagesContainer
                 EmptyImage = finalImagesContainer.parent.parent.transform.GetChild(2).gameObject;
                 string classFolderPath = Path.Combine(folderPath, projectController.projectName, i + "_" + projectController.classes[i]);
                 if (Directory.Exists(classFolderPath))
