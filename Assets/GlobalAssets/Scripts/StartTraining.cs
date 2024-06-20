@@ -4,22 +4,28 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 using GlobalAssets.UI;
+using GlobalAssets.Socket;
+using System;
 
 public class StartTraining : MonoBehaviour
 {
     public string trainingEvent;
     public GameObject saveProjectButton;
     public GameObject warningPanel;
+    public GameObject feebackPanel;
+
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
     private bool isTrainingFinished = false;
     private bool isTrainingStarted = false;
     private GameObject TrainingButton;
+    private GameObject GraphImage;
 
     void Start()
     {
         projectController = ProjectController.Instance;
         TrainingButton = this.gameObject;
+        GraphImage = feebackPanel.transform.GetChild(0).gameObject;
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
@@ -39,6 +45,15 @@ public class StartTraining : MonoBehaviour
                     isTrainingFinished = true;
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
+
+                    if (response.ContainsKey("feature_importance_graph"))
+                    {
+                        string graph = response["feature_importance_graph"];
+                        byte[] imageBytes = Convert.FromBase64String(graph);
+                        Texture2D texture = new Texture2D(1000, 600);
+                        texture.LoadImage(imageBytes);
+                        GraphImage.GetComponent<RawImage>().texture = texture;
+                    }
                 }
             }
         }
@@ -119,6 +134,9 @@ public class StartTraining : MonoBehaviour
         Dictionary<string, string> message = new Dictionary<string, string>
         {
             { "path",  "Projects/"+ projectController.projectName },
+            { "model", projectController.model },
+            { "feature_extraction_type", projectController.featureExtractionType },
+            { "features", string.Join(",", projectController.features) },
             { "event", trainingEvent }
         };
         socketClient.SendMessage(message);

@@ -20,6 +20,9 @@ public class ProjectController : MonoBehaviour
     public Dictionary<string, string> classesToControlsMap = new Dictionary<string, string>(); // Class : ControlName
     public Dictionary<string, string> ControlsToclassesMap = new Dictionary<string, string>(); // ControlName : Class
     public Dictionary<string, string> PythonClassesToUnityClassesMap = new Dictionary<string, string>(); // Python Predicted Class : Unity Class
+    public List<string> features = new List<string>();
+    public string model = "";
+    public string featureExtractionType = "";
 
     // Ensure only one instance of ProjectController exists
     private void Awake()
@@ -33,8 +36,27 @@ public class ProjectController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        DummyFill();
     }
-
+    private void DummyFill()
+    {
+        projectName = "DummyProject";
+        createdAt = DateTime.Now.ToString();
+        projectType = "Image Classification";
+        sceneName = "ImageClassification";
+        classes.Add("Class1");
+        classes.Add("Class2");
+        classes.Add("Class3");
+        classes.Add("Class4");
+        imagesPerClass.Add("Class1", 10);
+        imagesPerClass.Add("Class2", 20);
+        imagesPerClass.Add("Class3", 30);
+        imagesPerClass.Add("Class4", 20);
+        classesToControlsMap.Add("Class1", "Right");
+        classesToControlsMap.Add("Class2", "Left");
+        classesToControlsMap.Add("Class3", "Primary");
+        classesToControlsMap.Add("Class4", "Secondary");
+    }
     public void Save()
     {
         // save the Instance data to a file in the directory Engine/Projects/{projectName}
