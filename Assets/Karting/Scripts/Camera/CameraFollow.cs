@@ -8,9 +8,9 @@ namespace Karting.Camera
         [Range(2, 3.5f)] public float forwardDistance = 3;
         private float accelerationEffect;
 
-        public GameObject atachedVehicle;
-        private int locationIndicator = 0;
-        private Car.CarController3 controllerRef;
+        public GameObject attachedVehicle;
+        public int locationIndicator = 0;
+        private Karting.Car.CarController3 controllerRef;
 
         private Vector3 newPos;
         private Transform target;
@@ -19,17 +19,26 @@ namespace Karting.Camera
         public float distance = 2;
 
         public Vector2[] cameraPos;
-        void Start()
+        public void Start()
         {
+            if (attachedVehicle == null)
+            {
+                attachedVehicle = GameObject.Find("PlayerCar");
+                if (attachedVehicle == null)
+                {
+                    Debug.LogError("No car selected in GameManager");
+                    return;
+                }
+            }
             cameraPos = new Vector2[4];
             // cameraPos[0] = new Vector2(2, 0);
             cameraPos[0] = new Vector2(8.9f, 1.2f);
             cameraPos[1] = new Vector2(10.73f, 0.73f);
 
-            focusPoint = atachedVehicle.transform.Find("focus").gameObject;
+            focusPoint = attachedVehicle.transform.Find("focus").gameObject;
 
             target = focusPoint.transform;
-            controllerRef = atachedVehicle.GetComponent<Car.CarController3>();
+            controllerRef = attachedVehicle.GetComponent<Karting.Car.CarController3>();
         }
 
         private void FixedUpdate()

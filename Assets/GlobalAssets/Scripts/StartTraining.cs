@@ -3,129 +3,125 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 using System.IO;
+using GlobalAssets.UI;
 
 public class StartTraining : MonoBehaviour
 {
-    public GameObject targetGameObject; // The GameObject whose children contain ScrollView components
-    public string folderPath = "Projects"; // Folder path to save the images
-    private string savePath;
-    private string projectName;
-    private List<ClassData> ImagesData = new List<ClassData>();
+    public string trainingEvent;
+    public GameObject saveProjectButton;
+    public GameObject warningPanel;
     private GlobalAssets.Socket.SocketUDP socketClient;
-
-    private struct ClassData
-    {
-        public string className;
-        public List<byte[]> images;
-    }
+    private ProjectController projectController;
+    private bool isTrainingFinished = false;
+    private bool isTrainingStarted = false;
+    private GameObject TrainingButton;
 
     void Start()
     {
-        projectName = PlayerPrefs.GetString("ProjectName", ""); 
+        projectController = ProjectController.Instance;
+        TrainingButton = this.gameObject;
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
-
+    void Update()
+    {
+        if(!isTrainingFinished && isTrainingStarted)
+        {
+            if (socketClient.isDataAvailable())
+            {
+                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                // Debug.Log("Received: " + response["status"]);
+                if (response["status"] == "success")
+                {
+                    projectController.isTrained = true;
+                    projectController.savedModelFileName = response["saved_model_name"];
+                    projectController.Save();
+                    isTrainingFinished = true;
+                    TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
+                    TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
+                }
+            }
+        }
+    }
     public void StartSocketTraining(){
-        GetImages();
-        SaveImagesToPath();
+        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
+        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
+        isTrainingStarted = true;
+        CreateClassMap();
+        saveProjectButton.GetComponent<SaveProject>().Save();
+        if (!Validate()) return;
         SocketTrain();
+    }
+    // This function creates a map of class names to class indices
+    void CreateClassMap()
+    {
+        projectController.PythonClassesToUnityClassesMap.Clear();
+        int j = 0;
+        foreach (string className in projectController.classes)
+        {
+            projectController.PythonClassesToUnityClassesMap.Add(j.ToString(), className);
+            Debug.Log("Class: " + j.ToString() + " Name: " + className);
+            j++;
+        }
+    }
+    private bool Validate()
+    {
+        // check if number of classes is greater than 0
+        if (projectController.numberOfClasses < 1)
+        {
+            DisplayWarning("Add at least one class", "OK");
+            return false;
+        }
+
+        // check empty class names
+        foreach (string className in projectController.classes)
+        {
+            if (className == "")
+            {
+                DisplayWarning("Class name cannot be empty", "OK");
+                return false;
+            }
+        }
+
+        // check if number if image a class is less than 10
+        foreach (string className in projectController.classes)
+        {
+            if (projectController.imagesPerClass[className] < 10)
+            {
+                DisplayWarning("Add at least 10 images to each class", "OK");
+                return false;
+            }
+        }
+        // check number of images in each class is greater than 0
+        foreach (string className in projectController.classes)
+        {
+            if (projectController.imagesPerClass[className] < 1)
+            {
+                DisplayWarning("Add images to class " + className, "OK");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void DisplayWarning(string message, string buttonText)
+    {
+        // enable warning panel
+        warningPanel.SetActive(true);
+        // warning message
+        warningPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
+        // warning button text
+        warningPanel.transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = buttonText;
     }
     private void SocketTrain()
     {    
         // if (Input.GetKeyDown(KeyCode.Space))
         Dictionary<string, string> message = new Dictionary<string, string>
         {
-            { "path", savePath },
-            { "event", "start_body_pose_train" }
+            { "path",  "Projects/"+ projectController.projectName },
+            { "event", trainingEvent }
         };
         socketClient.SendMessage(message);
         Debug.Log("Training Started");
     } 
-    void Update()
-    {
-        // Receive the response from the server
-        if (socketClient.isDataAvailable())
-        {
-            string message = socketClient.ReceiveMessage();
-            Debug.Log("Received: " + message);
-        }
-    }
-    private void SaveImagesToPath()
-    {
-        // Define the base folder path
-        string basePath = folderPath;
-        savePath = basePath + "/" + projectName; // Project One be dynamic
-        // Save ImagesData to basePath/Project1/ImagesData.className/images[i].png
-        for (int i = 0; i < ImagesData.Count; i++)
-        {
-            // Construct the folder path for the current class
-            string classFolderPath = Path.Combine(basePath, projectName, i + "_" + ImagesData[i].className);
-
-            // Create the directory if it doesn't exist
-            if (!Directory.Exists(classFolderPath))
-            {
-                Directory.CreateDirectory(classFolderPath);
-            }
-
-            // Save each image
-            for (int j = 0; j < ImagesData[i].images.Count; j++)
-            {
-                // Construct the file path for the current image
-                string imagePath = Path.Combine(classFolderPath, i + "_" + ImagesData[i].className + "_" + j + ".png");
-
-                // Write the image bytes to the file
-                File.WriteAllBytes(imagePath, ImagesData[i].images[j]);
-            }
-            Debug.Log("Saved Class : " + ImagesData[i].className + " images to " + classFolderPath);
-        }
-    }
-
-    private void GetImages()
-    {
-        ImagesData.Clear();
-
-        // Check if the targetGameObject is provided
-        if (targetGameObject == null)
-        {
-            Debug.LogError("Please assign the target GameObject!");
-            return;
-        }
-        int j = 0;
-        // Get the transform of the targetGameObject
-        Transform targetTransform = targetGameObject.transform;
-
-        // Iterate through all direct children of the targetGameObject
-        foreach (Transform child in targetTransform)
-        {
-            // from each child, find the input field and get its value
-            TMP_InputField className = child.GetComponentInChildren<TMP_InputField>();
-            if (className != null)
-            {
-                // Create a new ClassData object and add it to the list
-                string classNameText = className.text;
-                ImagesData.Add(new ClassData { className = classNameText, images = new List<byte[]>() });
-                
-                // from each child, find "Content" object and get the images inside it
-                Transform content = child.GetComponentInChildren<Mask>().transform;
-                if (content != null)
-                {
-                    // Get all the Raw Images inside the Content object
-                    RawImage[] images = content.GetComponentsInChildren<RawImage>(true);
-                    // Loop through each image and save it
-                    for (int i = 0; i < images.Length; i++)
-                    {
-                        // Get the texture from the Raw Image
-                        Texture2D texture = images[i].texture as Texture2D;
-                        // Convert the texture to a byte array
-                        byte[] bytes = texture.EncodeToPNG();
-                        // Add the byte array to the list of images
-                        ImagesData[j].images.Add(bytes);
-                    }
-                    // Debug.Log("ImagesData['"+ImagesData[j].className+"'].images.Count: " + ImagesData[j].images.Count);
-                }
-                j++;
-            }
-        }
-    }
 }

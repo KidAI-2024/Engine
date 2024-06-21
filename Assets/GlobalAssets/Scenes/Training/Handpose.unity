@@ -302,6 +302,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.00091552734
       objectReference: {fileID: 0}
+    - target: {fileID: 8230324479330642381, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: trainingEvent
+      value: train_hand_pose
+      objectReference: {fileID: 0}
     - target: {fileID: 8230324479376756112, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -386,9 +390,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8230324479376756114, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: PredictEventName
+      value: predict_hand_pose
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230324479376756114, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: LoadModelEventName
+      value: load_hand_pose_model
+      objectReference: {fileID: 0}
     - target: {fileID: 8230324479376756124, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_Name
       value: Training Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230324479498613710, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: KartingMapContoller
       objectReference: {fileID: 0}
     - target: {fileID: 8230324479927702528, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_Color.a

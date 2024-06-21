@@ -159,8 +159,8 @@ public class WebcamController : MonoBehaviour
             if (col == 0 && capturedImages.Count > 8)
             {
                 finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
-                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
+                finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
+                finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
             }
             i++;
         }
@@ -170,7 +170,6 @@ public class WebcamController : MonoBehaviour
     // This function is called by the popup activate to show the captured images of the class clicked
     public void InstantiateCapturedImages()
     {
-        
         int i = 0;
         foreach (Texture2D image in capturedImages)
         {
@@ -187,7 +186,7 @@ public class WebcamController : MonoBehaviour
 
             Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
             newImageObject.transform.localPosition = newPosition;
-            newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
+            newImageObject.GetComponent<RemoveImage>().ImageIndex = i;
             
             // get the imageContainer and increase its height
             if (col == 0 && capturedImages.Count > 8)

@@ -21,7 +21,11 @@ namespace MortalKombat.ChoosePlayer
         public GameObject player2InfoPanel;
 
         public GameObject ninjaButton;
+        public GameObject archerButton;
+        public GameObject cannonButton;
+
         public GameObject hulkButton;
+        public GameObject cryptoButton;
 
         // 2 public game objects for player 1 and player 2
         public GameObject player1;
@@ -49,8 +53,12 @@ namespace MortalKombat.ChoosePlayer
             // initialize player 1 and player 2 info panel
             OnCharacterPlayerChange("Ninja",true);
             OnCharacterPlayerChange("Hulk",true);
+
             ninjaButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Ninja"));
+            archerButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Archer"));
+            cannonButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Cannon"));
             hulkButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Hulk"));
+            cryptoButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Crypto"));
         }
 
         public void Player1Ready()
@@ -91,8 +99,16 @@ namespace MortalKombat.ChoosePlayer
         {
             if(player1Ready && player2Ready)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Mortal Kombat");
+                // lock the 2 buttons and change the scene after 3 seconds
+                player1Button.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                player2Button.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                StartCoroutine(LoadGameScene());
             }
+        }
+        IEnumerator LoadGameScene()
+        {
+            yield return new WaitForSeconds(1);
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MapContoller");
         }
 
         void OnCharacterPlayerChange(string characterName, bool isFirstPlayer = false)
@@ -100,40 +116,92 @@ namespace MortalKombat.ChoosePlayer
             switch(characterName)
             {
                 case "Ninja":
+                    player1.transform.GetChild(0).gameObject.SetActive(true);
+                    player1.transform.GetChild(1).gameObject.SetActive(false);
+                    player1.transform.GetChild(2).gameObject.SetActive(false);
                     ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    archerButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    cannonButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
                     if(!isFirstPlayer)
                     {
                         audioSource = ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
                         audioSource.PlayOneShot(ninja_sfx);
                     }
                     selectedPlayer1Name = "Ninja";
-                    // Health
-                    player1InfoPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.7f;
-                    // Power
-                    player1InfoPanel.transform.GetChild(1).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.6f;
-                    // Speed
-                    player1InfoPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.96f;
+                    ChoosePlayer(player1InfoPanel, "NINJA", 0.7f, 0.6f, 0.96f);
+                    break;
+                case "Archer":
+                    player1.transform.GetChild(0).gameObject.SetActive(false);
+                    player1.transform.GetChild(1).gameObject.SetActive(true);
+                    player1.transform.GetChild(2).gameObject.SetActive(false);
+                    archerButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    cannonButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    if(!isFirstPlayer)
+                    {
+                        audioSource = archerButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
+                        audioSource.PlayOneShot(ninja_sfx);
+                    }
+                    selectedPlayer1Name = "Archer";
+                    ChoosePlayer(player1InfoPanel, "ARCHER", 0.8f, 0.7f, 0.75f);
+                    break;
+                case "Cannon":
+                    player1.transform.GetChild(0).gameObject.SetActive(false);
+                    player1.transform.GetChild(1).gameObject.SetActive(false);
+                    player1.transform.GetChild(2).gameObject.SetActive(true);
+                    cannonButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    archerButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    if(!isFirstPlayer)
+                    {
+                        audioSource = cannonButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
+                        audioSource.PlayOneShot(ninja_sfx);
+                    }
+                    selectedPlayer1Name = "Cannon";
+                    ChoosePlayer(player1InfoPanel, "CANNON", 0.9f, 0.8f, 0.45f);
                     break;
                 case "Hulk":
+                    player2.transform.GetChild(0).gameObject.SetActive(true);
+                    player2.transform.GetChild(1).gameObject.SetActive(false);
                     hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
                     if(!isFirstPlayer)
                     {
                         audioSource = hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
                         audioSource.PlayOneShot(hulk_sfx);
                     }
                     selectedPlayer2Name = "Hulk";
-                    // Health
-                    player2InfoPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.85f;
-                    // Power
-                    player2InfoPanel.transform.GetChild(1).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.78f;
-                    // Speed
-                    player2InfoPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = 0.5f;
+                    ChoosePlayer(player2InfoPanel, "HULK", 0.85f, 0.78f, 0.5f);
+                    break;
+                case "Crypto":
+                    player2.transform.GetChild(0).gameObject.SetActive(false);
+                    player2.transform.GetChild(1).gameObject.SetActive(true);
+                    cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+
+                    if(!isFirstPlayer)
+                    {
+                        audioSource = cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
+                        audioSource.PlayOneShot(hulk_sfx);
+                    }
+                    selectedPlayer2Name = "Crypto";
+                    ChoosePlayer(player2InfoPanel, "CRYPTO", 0.75f, 0.65f, 0.9f);
                     break;
                 default:
+                    archerButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
                     ninjaButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
                     hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    cannonButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
                     break;
             }
+        }
+        void ChoosePlayer(GameObject playerPanel, string charName, float health, float power, float speed)
+        {
+            playerPanel.transform.parent.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = charName;
+            playerPanel.transform.GetChild(0).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = health;
+            playerPanel.transform.GetChild(1).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = power;
+            playerPanel.transform.GetChild(2).GetChild(0).GetComponent<UnityEngine.UI.Slider>().value = speed;
         }
     }
 }
