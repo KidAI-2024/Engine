@@ -32,7 +32,11 @@ namespace MortalKombat
         public float startLimit;
         public float endLimit;
 
-        
+        // for automatic controlling the second player
+        public bool forwardAuto = false;
+        public bool backwardAuto = false;
+        public bool primaryHitAuto = false;
+        public bool secondaryHitAuto = false;
 
         void OnEnable() // instead of start to make sure the health is set when the game is starts
         {
@@ -59,10 +63,10 @@ namespace MortalKombat
             bool jump = animator.GetBool(jumpHash);
             bool block = animator.GetBool(blockHash);
 
-            bool forwardPressed = Input.GetKey(controls.forward[0]) || prediction == controls.forward[1];
-            bool backwardPressed = Input.GetKey(controls.backward[0]) || prediction == controls.backward[1];
-            bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit[0]) || prediction == controls.primaryHit[1];
-            bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit[0]) || prediction == controls.secondaryHit[1];
+            bool forwardPressed = Input.GetKey(controls.forward[0]) || prediction == controls.forward[1] || forwardAuto;
+            bool backwardPressed = Input.GetKey(controls.backward[0]) || prediction == controls.backward[1] || backwardAuto;
+            bool primaryHitPressed = Input.GetKeyDown(controls.primaryHit[0]) || prediction == controls.primaryHit[1] || primaryHitAuto;
+            bool secondaryHitPressed = Input.GetKeyDown(controls.secondaryHit[0]) || prediction == controls.secondaryHit[1] || secondaryHitAuto;
             bool jumpPressed = Input.GetKeyDown(controls.jump);
             bool blockPressed = Input.GetKeyDown(controls.block);
 
