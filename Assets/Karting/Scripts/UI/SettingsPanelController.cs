@@ -9,8 +9,6 @@ namespace Karting.UI
     public class SettingsPanelController : MonoBehaviour
     {
         public GameObject settingsPanel;
-        public Button backButton;
-        public Button exitButton;
         public Button settingsButton;
         void Start()
         {
@@ -24,23 +22,7 @@ namespace Karting.UI
             {
                 Debug.Log("Settings Panel is null in SettingsPanelController");
             }
-            if (backButton != null)
-            {
 
-                backButton.onClick.AddListener(ToggleSettingsPanel);
-            }
-            else
-            {
-                Debug.Log("Back Button is null in SettingsPanelController");
-            }
-            if (exitButton != null)
-            {
-                exitButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
-            }
-            else
-            {
-                Debug.Log("Exit Button is null in SettingsPanelController");
-            }
             if (settingsButton != null)
             {
                 settingsButton.onClick.AddListener(ToggleSettingsPanel);
@@ -60,14 +42,10 @@ namespace Karting.UI
             }
         }
 
-        void ToggleSettingsPanel()
+        public void ToggleSettingsPanel()
         {
             settingsPanel.SetActive(!settingsPanel.activeSelf);
         }
-        void ondestroy()
-        {
-            backButton.onClick.RemoveAllListeners();
-            exitButton.onClick.RemoveAllListeners();
-        }
+
     }
 }

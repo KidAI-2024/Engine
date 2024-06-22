@@ -22,5 +22,14 @@ namespace Karting.Game
 
             instantiatedCar.name = "PlayerCar";
         }
+        public void ResetCarToSpawnPoint()
+        {
+            // set speed to 0
+            instantiatedCar.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            instantiatedCar.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            // reset car position to spawn point
+            instantiatedCar.transform.position = carSpawnPoint.position;
+            instantiatedCar.transform.rotation = carSpawnPoint.rotation;
+        }
     }
 }
