@@ -18,6 +18,8 @@ public class ConfigureModel : MonoBehaviour
     private string mediapipeNote = "High performance, Accurate feature extraction, and Real-time processing.";
     private string classicalNote = "Traditional training mode, Time-consuming process.";
     private ProjectController ProjectController;
+    private GameObject mediapipeSkeleton;
+    private GameObject classicalWarning;
 
     void Start()
     {
@@ -26,6 +28,9 @@ public class ConfigureModel : MonoBehaviour
 
         mediaPipeToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => MediaPipeToggle(value));
         classicalToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => ClassicalToggle(value));
+
+        mediapipeSkeleton = features.transform.parent.gameObject;
+        classicalWarning = features.transform.parent.parent.GetChild(2).gameObject;
 
         ProjectController = ProjectController.Instance;
         LoadFeatures();
@@ -80,10 +85,14 @@ public class ConfigureModel : MonoBehaviour
         if (mediaPipeToggle.GetComponent<Toggle>().isOn)
         {
             model = "mediapipe";
+            mediapipeSkeleton.SetActive(true);
+            classicalWarning.SetActive(false);
         }
         else
         {
             model = "Classical";
+            mediapipeSkeleton.SetActive(false);
+            classicalWarning.SetActive(true);
         }
         Debug.Log("Training Type: " + model);
         return model;
@@ -94,6 +103,8 @@ public class ConfigureModel : MonoBehaviour
         {
             classicalToggle.GetComponent<Toggle>().isOn = false;
             featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
+            mediapipeSkeleton.SetActive(true);
+            classicalWarning.SetActive(false);
         }
     }
     void ClassicalToggle(bool value)
@@ -102,6 +113,8 @@ public class ConfigureModel : MonoBehaviour
         {
             mediaPipeToggle.GetComponent<Toggle>().isOn = false;
             featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = classicalNote;
+            mediapipeSkeleton.SetActive(false);
+            classicalWarning.SetActive(true);
         }
     }
     void LoadFeatures()

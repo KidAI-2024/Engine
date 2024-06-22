@@ -88,7 +88,6 @@ public class PredictionController : MonoBehaviour
             if (webcamTexture.isPlaying)
             {
                 // Send the frame to the server
-                Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
                 frame = webcamTexture.GetPixels32();
                 byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
                 // Encode the byte array to a Base64 string

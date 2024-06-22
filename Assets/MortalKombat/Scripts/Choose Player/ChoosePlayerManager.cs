@@ -40,6 +40,9 @@ namespace MortalKombat.ChoosePlayer
         private AudioSource audioSource;
         public AudioClip ninja_sfx;
         public AudioClip hulk_sfx;
+        public AudioClip cannon_sfx;
+        public AudioClip archer_sfx;
+        public AudioClip crypto_sfx;
         
         void Start(){
             gameManager = GameManager.Instance;
@@ -140,7 +143,7 @@ namespace MortalKombat.ChoosePlayer
                     if(!isFirstPlayer)
                     {
                         audioSource = archerButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
-                        audioSource.PlayOneShot(ninja_sfx);
+                        audioSource.PlayOneShot(archer_sfx);
                     }
                     selectedPlayer1Name = "Archer";
                     ChoosePlayer(player1InfoPanel, "ARCHER", 0.8f, 0.7f, 0.75f);
@@ -155,7 +158,7 @@ namespace MortalKombat.ChoosePlayer
                     if(!isFirstPlayer)
                     {
                         audioSource = cannonButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
-                        audioSource.PlayOneShot(ninja_sfx);
+                        audioSource.PlayOneShot(cannon_sfx);
                     }
                     selectedPlayer1Name = "Cannon";
                     ChoosePlayer(player1InfoPanel, "CANNON", 0.9f, 0.8f, 0.45f);
@@ -182,7 +185,7 @@ namespace MortalKombat.ChoosePlayer
                     if(!isFirstPlayer)
                     {
                         audioSource = cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
-                        audioSource.PlayOneShot(hulk_sfx);
+                        audioSource.PlayOneShot(crypto_sfx);
                     }
                     selectedPlayer2Name = "Crypto";
                     ChoosePlayer(player2InfoPanel, "CRYPTO", 0.75f, 0.65f, 0.9f);

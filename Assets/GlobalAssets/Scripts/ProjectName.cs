@@ -31,6 +31,7 @@ public class ProjectName : MonoBehaviour
     }
 
     private ProjectController projectController;
+    public GameObject LoadingPanel;
     void Start()
     {
         projectController = ProjectController.Instance;
@@ -73,6 +74,7 @@ public class ProjectName : MonoBehaviour
     }
     public void CreateProject()
     {
+        LoadingPanel.SetActive(true);
         string projectName = ProjectNameTextField.GetComponentInChildren<TMP_InputField>().text;
         TextMeshProUGUI ErrorMessageText = ErrorMessageTextField.GetComponentInChildren<TextMeshProUGUI>();
         if(projectName == "")
@@ -97,7 +99,6 @@ public class ProjectName : MonoBehaviour
         projectController.projectType = projectType;
         projectController.sceneName = nextSceneName;
         projectController.Save();
-
 
         SceneManager.LoadScene(nextSceneName);
     }
@@ -147,6 +148,7 @@ public class ProjectName : MonoBehaviour
     }
     void LoadProject(string projectName, string sceneName)
     {
+        LoadingPanel.SetActive(true);
         projectController.Load(projectName);
         SceneManager.LoadScene(sceneName);
     }
