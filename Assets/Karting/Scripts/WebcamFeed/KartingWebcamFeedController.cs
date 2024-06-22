@@ -11,8 +11,10 @@ namespace Karting.WebcamFeed
         private WebCamTexture webcamTexture;
         private Color32[] frame;
         public RawImage rawImage;
+        public GameObject WebcamFrame;
         // rawimage to display the preprocessed image
         public RawImage preprocessedImage;
+
         private bool nextFrameReady = true;
         // get socket from SocketClient
         private GlobalAssets.Socket.SocketUDP socketClient;
@@ -24,6 +26,8 @@ namespace Karting.WebcamFeed
 
         public int pythonPredictedClass { get; private set; } = -1;
         public string UnityPredictedClass { get; private set; } = "";
+
+        public bool isActive = true;
         void Start()
         {
             // get socket from SocketClient
@@ -44,6 +48,10 @@ namespace Karting.WebcamFeed
         // Update is called once per frame
         void Update()
         {
+            if (!isActive)
+            {
+                return;
+            }
             // ----------- Send the frame from Unity to Python server -----------
             SendFrameFromUnityCamera();
             // --------- Receive the response from the server ---------
@@ -97,6 +105,32 @@ namespace Karting.WebcamFeed
                 fpsText.text = "FPS: " + fps;
             }
         }
+        public void ToggleCamera()
+        {
+            if (isActive)
+            {
+                DeactivateCamera();
+            }
+            else
+            {
+                ActivateCamera();
+            }
+        }
+        public void ActivateCamera()
+        {
+            webcamTexture.Play();
+            WebcamFrame.SetActive(true);
+            rawImage.gameObject.SetActive(true);
+
+            isActive = true;
+        }
+        public void DeactivateCamera()
+        {
+            isActive = false;
+            rawImage.gameObject.SetActive(false);
+            WebcamFrame.SetActive(false);
+            webcamTexture.Stop();
+        }
 
         void SendFrameFromUnityCamera()
         {
@@ -119,8 +153,16 @@ namespace Karting.WebcamFeed
                         // { "event", "predict_frame" }
                         { "event", "predict_hand_pose" }
                     };
-                    socketClient.SendMessage(message);
-                    nextFrameReady = false;
+                    try
+                    {
+                        // Send the message to the server
+                        socketClient.SendMessage(message);
+                        nextFrameReady = false;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError("Error sending message: " + e.Message);
+                    }
                 }
             }
         }
