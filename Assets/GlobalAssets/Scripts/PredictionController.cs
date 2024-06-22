@@ -13,6 +13,7 @@ public class PredictionController : MonoBehaviour
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
     public GameObject predictButton;
+    public GameObject predAnalysisScrollView;
 
     private bool nextFrameReady = true;
     private bool startPrediction = false;
@@ -111,7 +112,6 @@ public class PredictionController : MonoBehaviour
             if (response["event"] == PredictEventName)
             {
                 string pred = response["prediction"];
-                Debug.Log("Received: " + pred);
                 predictionText.text = MapToClassName(pred);
             }
             else if (response["event"] == LoadModelEventName)
@@ -120,6 +120,8 @@ public class PredictionController : MonoBehaviour
                 {
                     CreateClassMap();
                     predictButton.GetComponent<Button>().interactable = true;
+                    // move the prediction analysis scroll view content to the end (most right) to show the predict button
+                    predAnalysisScrollView.GetComponent<ScrollRect>().normalizedPosition = new Vector2(1, 0);
                 }
                 else // Model loading failed.. lock the predict button
                 {

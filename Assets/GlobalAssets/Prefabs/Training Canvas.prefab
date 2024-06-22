@@ -1803,7 +1803,7 @@ MonoBehaviour:
   m_Content: {fileID: 2226241978923523142}
   m_Horizontal: 1
   m_Vertical: 0
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -3082,7 +3082,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 1e9632f669c50724cbf9e76b59ec5680, type: 3}
+  m_Texture: {fileID: 2800000, guid: e6b966f67c23b404fab7d91d3dddf065, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -3855,7 +3855,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0.000004100066}
+  m_AnchoredPosition: {x: 0.000038518483, y: 0.000004100066}
   m_SizeDelta: {x: 351.0449, y: 183.56}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5415365010917598480
@@ -6509,6 +6509,7 @@ MonoBehaviour:
   predictionText: {fileID: 8230324479558167778}
   classesContainer: {fileID: 5658957460829990127}
   predictButton: {fileID: 8230324479711915715}
+  predAnalysisScrollView: {fileID: 2458369975947267659}
 --- !u!82 &6716890702220441676
 AudioSource:
   m_ObjectHideFlags: 0
