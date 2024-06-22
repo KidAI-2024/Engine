@@ -1068,6 +1068,7 @@ GameObject:
   - component: {fileID: 8098898119272641011}
   - component: {fileID: 8098898119272641010}
   - component: {fileID: 3597894980878158191}
+  - component: {fileID: 5725671548975631032}
   m_Layer: 0
   m_Name: BMWShark
   m_TagString: Player
@@ -1137,15 +1138,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseStats:
     TopSpeed: 50
-    Acceleration: 7
+    Acceleration: 2
     ReverseSpeed: 10
-    ReverseAcceleration: 3
-    AccelerationCurve: 0.5
+    ReverseAcceleration: 1
+    AccelerationCurve: 0.4
     Braking: 16
     CoastingDrag: 5
     Grip: 0.97
     Steer: 4
     AddedGravity: 1
+  gearRatios:
+  - 3.8
+  - 2.2
+  - 1.52
+  - 1.22
+  - 1
+  - 0.82
+  maxRPM: 7000
+  minRPM: 3000
+  currentRPM: 900
+  currentGear: 0
+  wheelRadius: 0.06
+  minEnginePitch: 0.5
+  maxEnginePitch: 1.5
+  minEngineVolume: 0.1
+  maxEngineVolume: 1
   wheelMeshes:
     FrontLeftWheel: {fileID: 4097273534704375601}
     FrontRightWheel: {fileID: 6029425459100092130}
@@ -1176,6 +1193,102 @@ MonoBehaviour:
     m_Bits: 4294967291
   steeringAnimationDamping: 10
   maxSteeringAngle: 30
+--- !u!82 &5725671548975631032
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8098898119272641021}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 92b51350a374b0145ba411bf6037d2af, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8522890419236515188
 GameObject:
   m_ObjectHideFlags: 0

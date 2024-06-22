@@ -11,6 +11,7 @@ namespace Karting.UI
 
         public TextMeshProUGUI speedText;
         public TextMeshProUGUI gearText;
+        public TextMeshProUGUI currGearText;
         public Slider speedSlider;
 
         void start()
@@ -61,6 +62,15 @@ namespace Karting.UI
             // Update direction display
             gearText.text = isMovingForward ? "D" : "R";
             gearText.text = speed > 1 ? gearText.text : "N";
+
+            if (gearText.text == "N")
+            {
+                currGearText.text = "";
+            }
+            else
+            {
+                currGearText.text = (attachedVehicle.GetComponent<Karting.Car.CarController3>().currentGear + 1).ToString();
+            }
         }
         void ondestroy()
         {

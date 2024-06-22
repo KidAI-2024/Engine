@@ -25,6 +25,29 @@ namespace Karting.Car
             Grip = .95f,
             AddedGravity = 1f,
         };
+        // ========= Gearbox =========
+        [Header("Gearbox")]
+
+        public float[] gearRatios = { 3.80f, 2.20f, 1.52f, 1.22f, 1.00f, 0.82f };
+        // maximum RPM before shifting up
+        public float maxRPM = 7000f; // Example 
+        // minimum RPM before shifting down
+        public float minRPM = 3000f; // Example minimum RPM before shifting down
+        // Starting RPM
+        public float currentRPM = 900f;
+        // Starting gear
+        public int currentGear = 0;
+        // radius in meters
+        public float wheelRadius = 0.06f;
+
+        // ========= Audio =========
+        [Header("Audio")]
+        AudioSource engineAudioSource;
+        public float minEnginePitch = 0.5f;
+        public float maxEnginePitch = 1.5f;
+        public float minEngineVolume = 0.1f;
+        public float maxEngineVolume = 1.0f;
+
 
         [Header("Vehicle Visual")]
         public WheelMeshes wheelMeshes;
@@ -117,11 +140,16 @@ namespace Karting.Car
             }
             webcamFeedController = GameObject.Find("WebcamFeedController");
             projectController = ProjectController.Instance;
+            if (engineAudioSource == null)
+            {
+                engineAudioSource = GetComponent<AudioSource>();
+            }
         }
 
         void FixedUpdate()
         {
             float currVelocity = Rigidbody.velocity.magnitude;
+            // calculate gforce for camera follow
             Gforce = (currVelocity - lastVelocity) / (Time.fixedDeltaTime * Physics.gravity.magnitude);
             lastVelocity = currVelocity;
 
@@ -146,6 +174,8 @@ namespace Karting.Car
                 MoveVehicle(Input.Accelerate, Input.Brake, Input.TurnInput);
             }
             GroundAirbourne();
+            // audio management
+            UpdateEngineSound(currentRPM);
 
             m_PreviousGroundPercent = GroundPercent;
 
@@ -183,6 +213,7 @@ namespace Karting.Car
                 groundedCount++;
             return groundedCount;
         }
+        // Update the suspension parameters for a single wheel
         void UpdateSuspensionParams(WheelCollider wheel)
         {
             wheel.suspensionDistance = SuspensionHeight;
@@ -192,6 +223,7 @@ namespace Karting.Car
             spring.damper = SuspensionDamp;
             wheel.suspensionSpring = spring;
         }
+        // Update the suspension parameters for all wheels
         void UpdateAllSuspensionParams()
         {
             UpdateSuspensionParams(wheelColliders.FrontLeftWheel);
@@ -204,6 +236,7 @@ namespace Karting.Car
         {
             return Gforce;
         }
+        // Update the wheel positions based on their colliders
         void ApplyWheelPositions()
         {
             UpdateWheelPosition(wheelColliders.FrontLeftWheel, wheelMeshes.FrontLeftWheel);
@@ -249,24 +282,29 @@ namespace Karting.Car
         }
         void MoveVehicle(bool accelerate, bool brake, float turnInput)
         {
+            // calculate acceleration [0, 1] where 0 is not accelerating and 1 is fully accelerating
+            // based on whether the kart is braking or accelerating
             float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
-
+            // get the local velocity vector
             Vector3 localVel = transform.InverseTransformVector(Rigidbody.velocity);
 
             bool accelDirectionIsFwd = accelInput >= 0;
             bool localVelDirectionIsFwd = localVel.z >= 0;
 
-            // use the max speed for the direction we are going--forward or reverse.
+            // use the max speed for the direction we are going to (forward or reverse).
             float maxSpeed = localVelDirectionIsFwd ? m_FinalStats.TopSpeed : m_FinalStats.ReverseSpeed;
+            // current speed magnitude
             float currentSpeed = Rigidbody.velocity.magnitude;
+            // car is breaking if the local velocity is in the opposite direction of the acceleration
             bool isBraking = (localVelDirectionIsFwd && brake) || (!localVelDirectionIsFwd && accelerate);
-            // apply inputs to forward/backward
+            // turning power differs if we are drifting
             float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
             // manage break lights
             ManageBreakLights(isBraking);
 
             // forward movement
             ForwardMovement(accelInput, currentSpeed, maxSpeed, isBraking, turningPower, accelDirectionIsFwd);
+
 
             if (GroundPercent > 0.0f)
             {
@@ -302,20 +340,44 @@ namespace Karting.Car
 
         private void ForwardMovement(float accelInput, float currentSpeed, float maxSpeed, bool isBraking, float turningPower, bool accelDirectionIsFwd)
         {
+            // ===========================================
+            // ================= Gearbox =================
+            // ===========================================
+            // Calculate current RPM based on speed and gear ratio
+            currentRPM = CalculateEngineRPM(currentSpeed, wheelRadius, currentGear, gearRatios);
+
+            // Handle gear shifting based on RPM
+            HandleGearShift(currentRPM);
+
+            // Adjust the acceleration power based on the current gear ratio
+            float gearRatio = gearRatios[currentGear];
+            // ===========================================
+            // ===========================================
+            // ===========================================
+
+
+            // ===========================================
+            // =============== Acceleration ==============
+            // ===========================================
             // manual acceleration curve coefficient scalar
             float accelerationCurveCoeff = 5;
             // get the acceleration for the direction we are going
             float accelPower = accelDirectionIsFwd ? m_FinalStats.Acceleration : m_FinalStats.ReverseAcceleration;
             // calculate the acceleration ramp based on the current speed and maximum speed
             float accelRampT = currentSpeed / maxSpeed;
+            // multiply the acceleration curve by the coefficient
             float multipliedAccelerationCurve = m_FinalStats.AccelerationCurve * accelerationCurveCoeff;
+            // to get the final acceleration ramp, we use a quadratic curve
             float accelRamp = Mathf.Lerp(multipliedAccelerationCurve, 1, accelRampT * accelRampT);
             // if we are braking (moving reverse to where we are going)
             // use the braking accleration instead
             float finalAccelPower = isBraking ? m_FinalStats.Braking : accelPower;
 
             // calculate the final acceleration by multiplying the acceleration power with the acceleration ramp
-            float finalAcceleration = finalAccelPower * accelRamp;
+            float finalAcceleration = (finalAccelPower * accelRamp) * gearRatio;
+            // ===========================================
+            // ===========================================
+            // ===========================================
 
             // calculate the turning angle based on the turning power and the car's transform
             Quaternion turnAngle = Quaternion.AngleAxis(turningPower, transform.up);
@@ -554,6 +616,51 @@ namespace Karting.Car
             {
                 if (Vector3.Dot(contact.normal, Vector3.up) > dot)
                     m_LastCollisionNormal = contact.normal;
+            }
+        }
+
+        float CalculateEngineRPM(float currentSpeed, float wheelRadius, int currentGear, float[] gearRatios)
+        {
+            if (currentSpeed < 0.1f)
+            {
+                return 900f; // Idle RPM
+            }
+            float wheelRPM = (currentSpeed / (2 * Mathf.PI * wheelRadius)) * 60; // Converting speed to RPM
+            return wheelRPM * gearRatios[currentGear]; // -1 to match array index
+        }
+        public void HandleGearShift(float engineRPM)
+        {
+            if (engineRPM > maxRPM && currentGear < gearRatios.Length - 1)
+            {
+                ShiftUp();
+            }
+            else if (engineRPM < minRPM && currentGear > 0)
+            {
+                ShiftDown();
+            }
+        }
+
+        void ShiftUp()
+        {
+            currentGear++;
+            Debug.Log("Shifting up to gear: " + currentGear);
+        }
+
+        void ShiftDown()
+        {
+            currentGear--;
+            Debug.Log("Shifting down to gear: " + currentGear);
+        }
+        private void UpdateEngineSound(float engineRPM)
+        {
+            if (engineAudioSource != null)
+            {
+                // Normalize RPM for pitch calculation
+                float rpmRatio = engineRPM / maxRPM;
+
+                // Set pitch and volume based on RPM
+                engineAudioSource.pitch = Mathf.Lerp(minEnginePitch, maxEnginePitch, rpmRatio);
+                engineAudioSource.volume = Mathf.Lerp(minEngineVolume, maxEngineVolume, rpmRatio);
             }
         }
         [System.Serializable]
