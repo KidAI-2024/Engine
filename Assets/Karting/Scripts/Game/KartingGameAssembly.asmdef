@@ -1,3 +1,16 @@
 {
-	"name": "Karrti"
+    "name": "Karrti",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4147c91582fbe324081d166f61225ab1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

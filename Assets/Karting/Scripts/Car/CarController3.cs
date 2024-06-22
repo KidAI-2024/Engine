@@ -97,6 +97,7 @@ namespace Karting.Car
         bool m_HasCollision;
         bool m_InAir = false;
 
+        // used by checkpoints to add powerups to the kart
         public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
         public void SetCanMove(bool move) => m_CanMove = move;
         public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
@@ -128,7 +129,7 @@ namespace Karting.Car
 
             GatherInputs();
 
-            // apply our powerups to create our finalStats
+            // apply powerups
             TickPowerups();
 
             // apply our physics properties
@@ -507,10 +508,10 @@ namespace Karting.Car
 
         void TickPowerups()
         {
-            // remove all elapsed powerups
+            // remove all powerups that have reached their max time
             m_ActivePowerupList.RemoveAll((p) => { return p.ElapsedTime > p.MaxTime; });
 
-            // zero out powerups before we add them all up
+            // empty stats to sum all powerups
             var powerups = new Stats();
 
             // add up all our powerups
@@ -518,11 +519,12 @@ namespace Karting.Car
             {
                 var p = m_ActivePowerupList[i];
 
-                // add elapsed time
+                // increase elapsed time
                 p.ElapsedTime += Time.fixedDeltaTime;
 
-                // add up the powerups
+                // add powerups
                 powerups += p.modifiers;
+                // Debug.Log("Powerup: " + m_ActivePowerupList[i].PowerUpID + " Elapsed Time: " + m_ActivePowerupList[i].ElapsedTime + " Max Time: " + p.MaxTime);
             }
 
             // add powerups to our final stats
@@ -577,11 +579,11 @@ namespace Karting.Car
             public GameObject RightLight;
         }
         [System.Serializable]
-        public struct StatPowerup
+        public class StatPowerup
         {
             public CarController3.Stats modifiers;
             public string PowerUpID;
-            public float ElapsedTime;
+            public float ElapsedTime = 0.0f;
             public float MaxTime;
         }
 
