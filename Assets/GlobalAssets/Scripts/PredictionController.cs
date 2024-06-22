@@ -72,6 +72,9 @@ public class PredictionController : MonoBehaviour
         {
             { "project_name", projectController.projectName},
             { "saved_model_name", projectController.savedModelFileName},
+            { "model", projectController.model },
+            { "feature_extraction_type", projectController.featureExtractionType },
+            { "features", string.Join(",", projectController.features) },
             { "event", LoadModelEventName }
         };
         socketClient.SendMessage(message);
