@@ -57,7 +57,6 @@ namespace MortalKombat
             Player2ScoreValue = gameManager.Player2ScoreValue;
             
             Debug.Log("Round: " + Round + " RoundScore: " + RoundScore);
-            PlayerPrefs.DeleteAll();
             flag = true;
 
             player1 = GameObject.Find("Player1").GetComponent<Player1Controller>();
@@ -69,21 +68,25 @@ namespace MortalKombat
             {
                 // if is enables then bring the animation to its end else disable it
                 string animeName = "";
-                if (i < Player1ScoreValue)
+                if(i < Player1ScoreValue || i < Player2ScoreValue)
                 {
-                    Player1Score.transform.GetChild(i).gameObject.SetActive(true);
-                    // skip the default animation and go to the end
-                    animeName = i > 0 ? "star_intro" + i : "star_intro";
-                    Animator animator = Player1Score.transform.GetChild(i).GetComponent<Animator>();
-                    animator.Play(animeName, 0, 1);
-                }
-                else if (i < Player2ScoreValue)
-                {
-                    Player2Score.transform.GetChild(i).gameObject.SetActive(true);
-                    // skip the default animation and go to the end
-                    animeName = "star_intro" + (i+4);
-                    Animator animator = Player2Score.transform.GetChild(i).GetComponent<Animator>();
-                    animator.Play(animeName, 0, 1);
+                    if (i < Player1ScoreValue)
+                    {
+                        Player1Score.transform.GetChild(i).gameObject.SetActive(true);
+                        // skip the default animation and go to the end
+                        animeName = i > 0 ? "star_intro" + (i+1) : "star_intro";
+                        Animator animator = Player1Score.transform.GetChild(i).GetComponent<Animator>();
+                        animator.Play(animeName, 0, 1);
+                    }
+                    if (i < Player2ScoreValue)
+                    {
+                        Player2Score.transform.GetChild(i).gameObject.SetActive(true);
+                        // skip the default animation and go to the end
+                        animeName = "star_intro" + (i+4);
+                        Debug.Log(animeName);
+                        Animator animator = Player2Score.transform.GetChild(i).GetComponent<Animator>();
+                        animator.Play(animeName, 0, 1);
+                    }
                 }
                 else
                 {
@@ -136,8 +139,12 @@ namespace MortalKombat
                 
                 // Increment the Round variable
                 Round++;
-                Player1ScoreValue = player1.health <= 0 ? Player1ScoreValue : Player1ScoreValue + 1;
-                Player2ScoreValue = player1.health <= 0 ? Player2ScoreValue + 1 : Player2ScoreValue;
+                if (player1.health <= 0){
+                    Player2ScoreValue++;
+                }
+                else{
+                    Player1ScoreValue++;
+                }
                 RoundScore = player1.health <= 0 ? RoundScore - 1 : RoundScore + 1;
                 UpdateRoundScoreUI();
                 if (Player1ScoreValue > 2 ||  Player2ScoreValue > 2) // 3 rounds finished = game over

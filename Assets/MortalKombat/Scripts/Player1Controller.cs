@@ -70,6 +70,21 @@ namespace MortalKombat
             bool jumpPressed = Input.GetKeyDown(controls.jump);
             bool blockPressed = Input.GetKeyDown(controls.block);
 
+            // Box Punsh
+            if (primaryHitPressed)
+            {
+                animator.SetBool(primaryHitHash, true);
+            }
+            ResetAnimation(primaryHitHash,"primary");
+
+            // Leg Punsh
+            if (secondaryHitPressed && !jumpPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
+            {
+                animator.SetBool(secondaryHitHash, true);
+            }
+            ResetAnimation(secondaryHitHash,"secondary");
+
+
             // Walking
             if (!isWalking && (forwardPressed || backwardPressed))
             {
@@ -104,33 +119,24 @@ namespace MortalKombat
             }
             ResetAnimation(jumpHash,"Jumping");
 
-            // Leg Punsh
-            if (secondaryHitPressed && !jumpPressed && !animator.GetCurrentAnimatorStateInfo(0).IsName("JumpKick"))
-            {
-                animator.SetBool(secondaryHitHash, true);
-            }
-            ResetAnimation(secondaryHitHash,"secondary");
-
-
-            // Box Punsh
-            if (primaryHitPressed)
-            {
-                animator.SetBool(primaryHitHash, true);
-            }
-            ResetAnimation(primaryHitHash,"primary");
 
             // Move the character forward if walking
             if (isWalking)
             {
-                bool isInForwardLimit = gameObject.name == "Player1" ? transform.position.z > endLimit : transform.position.z < endLimit;
-                bool isInBackwardLimit = gameObject.name == "Player1" ? transform.position.z < startLimit : transform.position.z > startLimit;
+                bool isPlayer1 = gameObject.name == "Player1";
+                bool isInForwardLimit = isPlayer1 ? transform.position.z > endLimit : transform.position.z < endLimit;
+                bool isInBackwardLimit = isPlayer1 ? transform.position.z < startLimit : transform.position.z > startLimit;
                 if (forwardPressed && isInForwardLimit && !backwardPressed)
                 {
+                    // rotate the character to the direction of movement
+                    transform.rotation = isPlayer1 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
                     transform.Translate(Vector3.forward * speed * Time.deltaTime);
                 }
                 else if (backwardPressed && isInBackwardLimit && !forwardPressed)
                 {
-                    transform.Translate(Vector3.back * speed * Time.deltaTime);
+                    // rotate the character to the direction of movement
+                    transform.rotation = isPlayer1 ?  Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 180, 0);
+                    transform.Translate(Vector3.forward * speed * Time.deltaTime);
                 }
             }
         }
