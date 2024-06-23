@@ -35,13 +35,43 @@ namespace GlobalAssets.UI
                 {
                     capturedImages.Add(content.transform.GetChild(i).GetComponent<RawImage>().texture as Texture2D);
                 }
-               
-
-
                     dialog.GetComponent<WebcamController>().capturedImages = new List<Texture2D>(capturedImages);
-                    dialog.GetComponent<WebcamController>().InstantiateCapturedImages();
-                
+                    dialog.GetComponent<WebcamController>().InstantiateCapturedImages();     
             }
+            else if (isAudio && captureImageCanvas != null)
+            {
+                Debug.Log("IN here");
+                GameObject content = this.gameObject.transform.GetChild(this.gameObject.transform.childCount - 1).GetChild(0).GetChild(0).gameObject;
+                Debug.Log("Object name: " + gameObject.name);
+                // Create a new list to hold the captured audio clips
+                List<AudioClip> capturedAudios = new List<AudioClip>();
+
+                // Loop through each child of the content object
+                for (int i = 0; i < content.transform.childCount; i++)
+                {
+                    Debug.Log("In loopppppp");
+                    Transform child = content.transform.GetChild(i);
+
+                    // Log the name of the child GameObject
+                    Debug.Log("Child GameObject name: " + child.gameObject.name);
+                    // Attempt to get the AudioSource component from each child, if it exists
+                    AudioSource audioSource = content.transform.GetChild(i).GetComponent<AudioSource>();
+                    if (audioSource != null)
+                    {
+                        Debug.Log("Not Null");
+                        capturedAudios.Add(audioSource.clip);
+                    }
+                }
+                Debug.Log("Number of captured audios: " + capturedAudios.Count);
+
+
+                // Set the capturedAudios list of the MicController component
+                dialog.GetComponent<MicController>().capturedAudios = new List<AudioClip>(capturedAudios);
+
+                // Instantiate the captured audios in the UI
+                dialog.GetComponent<MicController>().InstantiateCapturedAudios();
+            }
+
         }
 
         public void CloseDialog()

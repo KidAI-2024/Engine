@@ -149,7 +149,7 @@ public class MicController : MonoBehaviour
         {
             GameObject newAudioObject = Instantiate(AudioPrefab, finalAudiosContainer);
             RawImage newImage = newAudioObject.GetComponent<RawImage>();
-            newImage.texture = microphoneIcon.texture;
+            //newImage.texture = microphoneIcon.texture;
 
             float spacingX = 70f;
             float spacingY = 70f;
@@ -176,11 +176,14 @@ public class MicController : MonoBehaviour
         EmptyAudio.SetActive(capturedAudios.Count == 0);
     }
 
-    public void InstantiateCapturedImages()
+    public void InstantiateCapturedAudios()
     {
         int i = 0;
+        Debug.Log("Instantiate");
         foreach (AudioClip audioClip in capturedAudios)
         {
+
+            Debug.Log("In foreach");
             GameObject newAudioObject = Instantiate(AudioPrefab, AudioContainer);
             RawImage newImage = newAudioObject.GetComponent<RawImage>();
 
