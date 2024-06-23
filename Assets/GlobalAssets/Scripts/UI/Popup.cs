@@ -9,7 +9,7 @@ namespace GlobalAssets.UI
         public GameObject dialog; // Reference to your dialog GameObject
         public bool IscaptureCameraPanel = false;
         public Canvas captureImageCanvas; // Reference to your camera panel GameObject
-            
+        public bool isAudio = false;
         void Start()
         {
             // Disable the dialog initially
@@ -24,19 +24,23 @@ namespace GlobalAssets.UI
 
             // this if condition is only for openining the camera panel of the training scene
             // to choose list of images of same class
-            if(captureImageCanvas != null)
+            if (captureImageCanvas != null&&!isAudio)
             {
                 // get the last child of this.gameObject and get the first child of that child and get the first child of that child and get the first child of that child
                 GameObject content = this.gameObject.transform.GetChild(this.gameObject.transform.childCount - 1).GetChild(0).GetChild(0).gameObject;
-                
+
                 // capturedImages = the raw images children of the content object
                 List<Texture2D> capturedImages = new List<Texture2D>();
                 for (int i = 0; i < content.transform.childCount; i++)
                 {
                     capturedImages.Add(content.transform.GetChild(i).GetComponent<RawImage>().texture as Texture2D);
-                }           
-                dialog.GetComponent<WebcamController>().capturedImages = new List<Texture2D>(capturedImages);
-                dialog.GetComponent<WebcamController>().InstantiateCapturedImages();
+                }
+               
+
+
+                    dialog.GetComponent<WebcamController>().capturedImages = new List<Texture2D>(capturedImages);
+                    dialog.GetComponent<WebcamController>().InstantiateCapturedImages();
+                
             }
         }
 
