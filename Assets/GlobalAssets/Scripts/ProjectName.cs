@@ -31,6 +31,7 @@ public class ProjectName : MonoBehaviour
     }
 
     private ProjectController projectController;
+    private List<ProjectData> projectDataList = new List<ProjectData>();
     public GameObject LoadingPanel;
     void Start()
     {
@@ -43,7 +44,6 @@ public class ProjectName : MonoBehaviour
     {
         string projectsPath = Application.dataPath.Replace("/Assets", "/Projects") + "/";
         string[] projectFolders = Directory.GetDirectories(projectsPath);
-        List<ProjectData> projectDataList = new List<ProjectData>();
 
         foreach (string projectFolder in projectFolders)
         {
@@ -57,10 +57,16 @@ public class ProjectName : MonoBehaviour
         }
 
         projectDataList.Sort((x, y) => DateTime.Parse(y.createdAt).CompareTo(DateTime.Parse(x.createdAt)));
-
+        int i = 0;
         foreach (ProjectData projectData in projectDataList)
         {
             InstantiateProjectBtn(projectData.projectName, projectData.projectType, projectData.createdAt, projectData.sceneName);
+            if(i >= 4)
+            {
+                RectTransform ProjectListPanelRectTransform = ProjectListPanel.GetComponent<RectTransform>();
+                ProjectListPanelRectTransform.sizeDelta = new Vector2(ProjectListPanelRectTransform.sizeDelta.x, ProjectListPanelRectTransform.sizeDelta.y + 65);
+            }
+            i++;
         }
     }
 
