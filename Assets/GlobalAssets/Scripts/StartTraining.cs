@@ -25,7 +25,7 @@ public class StartTraining : MonoBehaviour
     }
     void Update()
     {
-        if(!isTrainingFinished && isTrainingStarted)
+        if (!isTrainingFinished && isTrainingStarted)
         {
             if (socketClient.isDataAvailable())
             {
@@ -43,7 +43,8 @@ public class StartTraining : MonoBehaviour
             }
         }
     }
-    public void StartSocketTraining(){
+    public void StartSocketTraining()
+    {
         TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
         TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
         isTrainingStarted = true;
@@ -114,14 +115,18 @@ public class StartTraining : MonoBehaviour
         warningPanel.transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = buttonText;
     }
     private void SocketTrain()
-    {    
+    {
         // if (Input.GetKeyDown(KeyCode.Space))
         Dictionary<string, string> message = new Dictionary<string, string>
         {
             { "path",  "Projects/"+ projectController.projectName },
-            { "event", trainingEvent }
+            { "event", trainingEvent },
+            {"num_classes", projectController.numberOfClasses.ToString() },
+            {"epochs", projectController.epochs.ToString()},
+            {"max_lr", projectController.learningRate.ToString()}
+
         };
         socketClient.SendMessage(message);
         Debug.Log("Training Started");
-    } 
+    }
 }
