@@ -1439,6 +1439,31 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
+--- !u!1 &611034755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5658957460829990127, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+  m_PrefabInstance: {fileID: 1987724051}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &611034756 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8230324481204049160, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+  m_PrefabInstance: {fileID: 1987724051}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &611034757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611034756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2bc26022e1bf0d448f8edb77d02768f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClassPrefab: {fileID: 3990965805350471347, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
+  ClassesContainer: {fileID: 611034755}
+  CameraPanel: {fileID: 1987724053}
 --- !u!1 &734590328
 GameObject:
   m_ObjectHideFlags: 0
@@ -5213,6 +5238,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1473937207966461469, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: isAudio
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1473937208111726769, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -5395,6 +5424,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2816372155698999783, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121602321630880016, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3177020153871378653, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
@@ -5879,6 +5912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2395085763816455707, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+    - {fileID: 3121602321630880016, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
 --- !u!224 &1987724052 stripped
 RectTransform:

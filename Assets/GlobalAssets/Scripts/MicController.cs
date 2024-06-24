@@ -44,7 +44,8 @@ public class MicController : MonoBehaviour
         finalAudiosContainer = outsideAudiosContainer.transform;
         EmptyAudio = finalAudiosContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
         EmptyAudioCaptureAudios = AudioContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
-
+        if (audioSource!=null &&audioSource.isPlaying)
+            audioSource.Stop(); // Stop any currently playing audio
         if (Microphone.devices.Length == 0)
         {
             Debug.LogError("No microphone found!");
@@ -85,11 +86,8 @@ public class MicController : MonoBehaviour
         currentClip = Microphone.Start(microphone, false, 5, 44100);
         capturedAudios.Add(currentClip); // Add captured audio to the list
 
-        // Store the current clip in a local variable for the event listener
-        AudioClip capturedClip = currentClip;
-
-        GameObject newImageObject = Instantiate(AudioPrefab, AudioContainer);
-        RawImage newImage = newImageObject.GetComponent<RawImage>();
+        // Instantiate the prefab and set its position
+        GameObject newAudioObject = Instantiate(AudioPrefab, AudioContainer);
 
         float spacingX = 70f;
         float spacingY = 70f;
@@ -97,8 +95,14 @@ public class MicController : MonoBehaviour
         int row = capturedAudios.Count / maxColumns;
         int col = capturedAudios.Count % maxColumns;
         Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
-        newImageObject.transform.localPosition = newPosition;
-        newImageObject.GetComponent<RemoveAudios>().ImageIndex = capturedAudios.Count - 1;
+        newAudioObject.transform.localPosition = newPosition;
+
+        // Set the audio clip on the AudioSource component
+        AudioSource newAudioSource = newAudioObject.GetComponent<AudioSource>();
+        if (newAudioSource != null)
+        {
+            newAudioSource.clip = currentClip;
+        }
 
         if (col == 0 && capturedAudios.Count > 8)
         {
@@ -112,7 +116,8 @@ public class MicController : MonoBehaviour
         recordButton.onClick.RemoveAllListeners();
         recordButton.onClick.AddListener(StopRecording);
 
-        newImageObject.GetComponent<Button>().onClick.AddListener(() => PlayAudio(capturedClip));
+        // Update the button listener to play the correct audio
+        newAudioObject.GetComponent<Button>().onClick.AddListener(() => PlayAudio(newAudioSource));
     }
 
     public void StopRecording()
@@ -123,12 +128,12 @@ public class MicController : MonoBehaviour
         recordButton.onClick.AddListener(RecordAudio); // Reattach listener
     }
 
-    public void PlayAudio(AudioClip clip)
+    public void PlayAudio(AudioSource source)
     {
         if (audioSource.isPlaying)
             audioSource.Stop(); // Stop any currently playing audio
 
-        audioSource.clip = clip; // Assign the audio clip
+        audioSource.clip = source.clip; // Assign the audio clip
         audioSource.Play(); // Play the audio clip
     }
 
@@ -148,8 +153,6 @@ public class MicController : MonoBehaviour
         foreach (AudioClip clip in capturedAudios)
         {
             GameObject newAudioObject = Instantiate(AudioPrefab, finalAudiosContainer);
-            RawImage newImage = newAudioObject.GetComponent<RawImage>();
-            //newImage.texture = microphoneIcon.texture;
 
             float spacingX = 70f;
             float spacingY = 70f;
@@ -168,7 +171,14 @@ public class MicController : MonoBehaviour
                 );
             }
 
-            newAudioObject.GetComponent<Button>().onClick.AddListener(() => PlayAudio(clip));
+            AudioSource newAudioSource = newAudioObject.GetComponent<AudioSource>();
+            if (newAudioSource != null)
+            {
+                newAudioSource.clip = clip;
+            }
+
+            // Update the button listener to play the correct audio
+            newAudioObject.GetComponent<Button>().onClick.AddListener(() => PlayAudio(newAudioSource));
 
             i++;
         }
@@ -182,10 +192,8 @@ public class MicController : MonoBehaviour
         Debug.Log("Instantiate");
         foreach (AudioClip audioClip in capturedAudios)
         {
-
             Debug.Log("In foreach");
             GameObject newAudioObject = Instantiate(AudioPrefab, AudioContainer);
-            RawImage newImage = newAudioObject.GetComponent<RawImage>();
 
             float spacingX = 70f;
             float spacingY = 70f;
@@ -197,7 +205,11 @@ public class MicController : MonoBehaviour
             newAudioObject.transform.localPosition = newPosition;
             newAudioObject.GetComponent<RemoveAudios>().ImageIndex = i;
 
-            newAudioObject.GetComponent<Button>().onClick.AddListener(() => PlayAudio(audioClip));
+            AudioSource newAudioSource = newAudioObject.GetComponent<AudioSource>();
+            if (newAudioSource != null)
+            {
+                newAudioSource.clip = audioClip;
+            }
 
             if (col == 0 && capturedAudios.Count > 8)
             {
@@ -206,7 +218,12 @@ public class MicController : MonoBehaviour
                     AudioContainer.GetComponent<RectTransform>().sizeDelta.y + 70
                 );
             }
+
+            // Update the button listener to play the correct audio
+            newAudioObject.GetComponent<Button>().onClick.AddListener(() => PlayAudio(newAudioSource));
+
             i++;
         }
     }
+
 }
