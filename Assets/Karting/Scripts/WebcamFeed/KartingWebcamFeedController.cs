@@ -43,7 +43,7 @@ namespace Karting.WebcamFeed
             // Start Camera from Unity
             rawImage.texture = webcamTexture;
             rawImage.material.mainTexture = webcamTexture;
-            webcamTexture.Play();
+            ToggleCamera(isActive);
         }
         // Update is called once per frame
         void Update()
@@ -105,15 +105,15 @@ namespace Karting.WebcamFeed
                 fpsText.text = "FPS: " + fps;
             }
         }
-        public void ToggleCamera()
+        public void ToggleCamera(bool btnState)
         {
-            if (isActive)
+            if (btnState)
             {
-                DeactivateCamera();
+                ActivateCamera();
             }
             else
             {
-                ActivateCamera();
+                DeactivateCamera();
             }
         }
         public void ActivateCamera()
