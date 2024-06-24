@@ -15,8 +15,11 @@ namespace MortalKombat
         // Start is called before the first frame update
         void Start()
         {
+            Debug.LogError("Enemy Controller Started");
             enemyPlayer = GameObject.Find("Player2");
             player1 = GameObject.Find("Player1");
+            Debug.LogError("Enemy Player: " + enemyPlayer);
+            Debug.LogError("Player1: " + player1);
         }
 
         // Update is called once per frame
@@ -80,7 +83,6 @@ namespace MortalKombat
             {
                 enemyController.backwardAuto = true;
             }
-
 
         }
     }

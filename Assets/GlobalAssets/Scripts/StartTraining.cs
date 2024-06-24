@@ -130,10 +130,12 @@ public class StartTraining : MonoBehaviour
     }
     private void SocketTrain()
     {    
+        string projectPath = Path.Combine(projectController.directoryPath, projectController.projectName);
+        Debug.Log("Training Path: " + projectPath);
         // if (Input.GetKeyDown(KeyCode.Space))
         Dictionary<string, string> message = new Dictionary<string, string>
         {
-            { "path",  "Projects/"+ projectController.projectName },
+            { "path",  projectPath },
             { "model", projectController.model },
             { "feature_extraction_type", projectController.featureExtractionType },
             { "features", string.Join(",", projectController.features) },

@@ -2950,15 +2950,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 897255392}
-        m_TargetAssemblyTypeName: GlobalAssets.UI.SceneChanger, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
+        m_TargetAssemblyTypeName: GlobalAssets.UI.SceneChanger, GlobalAssembly
+        m_MethodName: QuitGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Lobby
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1183263444
@@ -5497,6 +5497,7 @@ GameObject:
   - component: {fileID: 1971739763}
   - component: {fileID: 1971739767}
   - component: {fileID: 1971739768}
+  - component: {fileID: 1971739769}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5635,6 +5636,18 @@ MonoBehaviour:
   webcamDisplay: {fileID: 1635927944}
   predictionText: {fileID: 1020120590}
   framePredicitonRate: 5
+--- !u!114 &1971739769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971739762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d32c051b12c8144ab33a35d4c5d371c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2018528275
 GameObject:
   m_ObjectHideFlags: 0
@@ -5645,7 +5658,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2018528277}
   - component: {fileID: 2018528276}
-  - component: {fileID: 2018528278}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5691,18 +5703,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2018528278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2018528275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d32c051b12c8144ab33a35d4c5d371c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2058630888
 GameObject:
   m_ObjectHideFlags: 0

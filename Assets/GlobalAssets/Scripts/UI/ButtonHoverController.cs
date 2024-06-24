@@ -35,11 +35,17 @@ public class ButtonHoverController : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void ButtonSelected()
     {
+        if (button == null) {
+            button = GetComponent<Button>();
+        }
         button.image.color = hoverColor;
         isSelected = true;
     }
     public void ButtonDeselected()
     {
+        if (button == null) {
+            button = GetComponent<Button>();
+        }
         button.image.color = originalColor;
         isSelected = false;
     }

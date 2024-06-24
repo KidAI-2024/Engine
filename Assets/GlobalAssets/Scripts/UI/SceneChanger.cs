@@ -10,6 +10,11 @@ namespace GlobalAssets.UI
         {
             SceneManager.LoadScene(targetSceneName);
         }
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
     }
 
 }

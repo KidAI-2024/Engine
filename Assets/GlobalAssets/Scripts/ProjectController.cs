@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class ProjectController : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class ProjectController : MonoBehaviour
     public string model = "";
     public string featureExtractionType = "";
 
+    public string directoryPath;
+
     // Ensure only one instance of ProjectController exists
     private void Awake()
     {
@@ -31,6 +34,8 @@ public class ProjectController : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            directoryPath = Path.Combine(Application.persistentDataPath, "Projects");
+            directoryPath = Path.GetFullPath(directoryPath);
         }
         else
         {
@@ -61,7 +66,13 @@ public class ProjectController : MonoBehaviour
     {
         // save the Instance data to a file in the directory Engine/Projects/{projectName}
         string json = JsonUtility.ToJson(Instance);
-        string path = Application.dataPath.Replace("/Assets", "/Projects") + "/" + projectName + "/project.json";
+        string projectDirectory = Path.Combine(directoryPath, projectName);
+        if (!Directory.Exists(projectDirectory))
+        {
+            Directory.CreateDirectory(projectDirectory);
+        }
+
+        string path = Path.Combine(projectDirectory, "project.json");
         System.IO.File.WriteAllText(path, json);
         Debug.Log("Saved project data to: " + path);
     }
@@ -70,12 +81,16 @@ public class ProjectController : MonoBehaviour
     public void Load(string prjctName)
     {
         // load the Instance data from a file in the directory Projects/{projectName}
-        string path = Application.dataPath.Replace("/Assets", "/Projects") + "/" + prjctName + "/project.json";
-        if (System.IO.File.Exists(path))
+        string path = Path.Combine(directoryPath, prjctName, "project.json");
+        if (File.Exists(path))
         {
-            string json = System.IO.File.ReadAllText(path);
+            string json = File.ReadAllText(path);
             JsonUtility.FromJsonOverwrite(json, Instance);
             Debug.Log("Loaded project data from: " + path);
+        }
+        else
+        {
+            Debug.LogError("File not found: " + path);
         }
     }
 

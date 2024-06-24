@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
+using System.IO;
 
 public class PredictionController : MonoBehaviour
 {
@@ -16,7 +16,6 @@ public class PredictionController : MonoBehaviour
     public GameObject predAnalysisScrollView;
 
     private bool nextFrameReady = true;
-    private bool startPrediction = false;
     private Color32[] frame;
     private Dictionary<string, string> classMap = new Dictionary<string, string>();
     private GlobalAssets.Socket.SocketUDP socketClient;
@@ -45,7 +44,6 @@ public class PredictionController : MonoBehaviour
         if (togglePredicting)
         {
             predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stop";
-            startPrediction = true;
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
             {
@@ -59,7 +57,6 @@ public class PredictionController : MonoBehaviour
         else
         {
             predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Predict";
-            startPrediction = false;
             webcamTexture.Stop();
             webcamDisplay.texture = null;
             webcamDisplay.material.mainTexture = null;
@@ -71,7 +68,7 @@ public class PredictionController : MonoBehaviour
         // Construct dictionary to send to server
         Dictionary<string, string> message = new Dictionary<string, string>
         {
-            { "project_name", projectController.projectName},
+            { "path",  Path.Combine(projectController.directoryPath, projectController.projectName) },
             { "saved_model_name", projectController.savedModelFileName},
             { "model", projectController.model },
             { "feature_extraction_type", projectController.featureExtractionType },

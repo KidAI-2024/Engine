@@ -42,7 +42,7 @@ public class ProjectName : MonoBehaviour
     // sort by createdAt
     void LoadProjectsList()
     {
-        string projectsPath = Application.dataPath.Replace("/Assets", "/Projects") + "/";
+        string projectsPath = projectController.directoryPath;
         string[] projectFolders = Directory.GetDirectories(projectsPath);
 
         foreach (string projectFolder in projectFolders)
@@ -94,8 +94,7 @@ public class ProjectName : MonoBehaviour
         
         InstantiateProjectBtn(projectName, projectType, createdAt, nextSceneName);
         // Create project folder
-        string basePath = Application.dataPath.Replace("/Assets", "/Projects");
-        string classFolderPath = Path.Combine(basePath, projectName);
+        string classFolderPath = Path.Combine(projectController.directoryPath, projectName);
         if (!Directory.Exists(classFolderPath))
         {
             Directory.CreateDirectory(classFolderPath);
@@ -131,9 +130,8 @@ public class ProjectName : MonoBehaviour
     public void RenameProject(string oldProjectName, string newProjectName)
     {
         Debug.Log("Rename project from " + oldProjectName + " to " + newProjectName);
-        string basePath = Application.dataPath.Replace("/Assets", "/Projects");
-        string oldProjectFolderPath = Path.Combine(basePath, oldProjectName);
-        string newProjectFolderPath = Path.Combine(basePath, newProjectName);
+        string oldProjectFolderPath = Path.Combine(projectController.directoryPath, oldProjectName);
+        string newProjectFolderPath = Path.Combine(projectController.directoryPath, newProjectName);
         if (!Directory.Exists(newProjectFolderPath))
         {
             Directory.Move(oldProjectFolderPath, newProjectFolderPath);

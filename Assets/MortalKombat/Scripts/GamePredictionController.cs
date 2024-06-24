@@ -14,7 +14,7 @@ namespace MortalKombat
 
         private GameObject player1;
         private GameObject player2;
-        private bool nextFrameReady = true;
+        private bool nextFrameReady = false;
         private Color32[] frame;
         private GlobalAssets.Socket.SocketUDP socketClient;
         private WebCamTexture webcamTexture;

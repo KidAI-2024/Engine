@@ -46,7 +46,7 @@ namespace MortalKombat
             foreach (var item in projectController.classesToControlsMap)
             {
                 projectController.ControlsToclassesMap[item.Value] = item.Key;
-                Debug.Log("Control: " + item.Value + " Class: " + item.Key);
+                // Debug.Log("Control: " + item.Value + " Class: " + item.Key);
             }
         }
         public void InstantiateCharacters()
