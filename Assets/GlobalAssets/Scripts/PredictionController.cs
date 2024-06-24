@@ -72,7 +72,8 @@ public class PredictionController : MonoBehaviour
         {
             { "project_name", projectController.projectName},
             { "saved_model_name", projectController.savedModelFileName},
-            { "event", LoadModelEventName }
+            { "event", LoadModelEventName },
+            {"num_classes", projectController.numberOfClasses.ToString() }
         };
         socketClient.SendMessage(message);
     }
@@ -148,7 +149,8 @@ public class PredictionController : MonoBehaviour
         }
         return message;
     }
-    void ResetNextFrameReady(){
+    void ResetNextFrameReady()
+    {
         nextFrameReady = true;
     }
     void OnDestroy()
