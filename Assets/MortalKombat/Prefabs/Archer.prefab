@@ -1022,7 +1022,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3780014862208142508}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -5.15, y: -1.23, z: 0}
+  m_LocalPosition: {x: 20.11, y: 0.19, z: 33.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1068,8 +1068,13 @@ MonoBehaviour:
   primaryPower: 0
   secondaryPower: 0
   speed: 0
+  prediction: 
   startLimit: 0
   endLimit: 0
+  forwardAuto: 0
+  backwardAuto: 0
+  primaryHitAuto: 0
+  secondaryHitAuto: 0
 --- !u!82 &4085933284382487027
 AudioSource:
   m_ObjectHideFlags: 0

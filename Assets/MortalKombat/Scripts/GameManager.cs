@@ -21,7 +21,9 @@ namespace MortalKombat
         public int RoundScore = 0;
         public int Player1ScoreValue = 0;
         public int Player2ScoreValue = 0;
-
+        
+        public float volume = 1f;
+        public bool mute = false;
         GameObject player1;
         GameObject player2;
         ProjectController projectController;
