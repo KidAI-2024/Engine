@@ -22,6 +22,8 @@ namespace Karting.Camera
         public Vector2 winCameraPos;
         Vector2 currCameraPos;
         bool isWinCamera = false;
+        public GameObject gamePlayManagerObj;
+        Karting.Game.GameplayManager gamePlayManager;
         public void Start()
         {
             if (attachedVehicle == null)
@@ -44,6 +46,7 @@ namespace Karting.Camera
 
             target = focusPoint.transform;
             controllerRef = attachedVehicle.GetComponent<Karting.Car.CarController3>();
+            gamePlayManager = gamePlayManagerObj.GetComponent<Karting.Game.GameplayManager>();
         }
         void Update()
         {
@@ -51,11 +54,24 @@ namespace Karting.Camera
             {
                 CycleCamera();
             }
+            if (gamePlayManager.win)
+            {
+                SetWinCamera();
+            }
+            else
+            {
+                SetCameraToNormalMode();
+            }
         }
 
         private void FixedUpdate()
         {
             UpdateCam();
+        }
+        public void SetCameraToNormalMode()
+        {
+            isWinCamera = false;
+            currCameraPos = cameraPos[locationIndicator];
         }
 
         public void CycleCamera()
