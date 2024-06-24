@@ -19,6 +19,9 @@ namespace Karting.Camera
         public float distance = 2;
 
         public Vector2[] cameraPos;
+        public Vector2 winCameraPos;
+        Vector2 currCameraPos;
+        bool isWinCamera = false;
         public void Start()
         {
             if (attachedVehicle == null)
@@ -30,15 +33,24 @@ namespace Karting.Camera
                     return;
                 }
             }
-            cameraPos = new Vector2[4];
+            cameraPos = new Vector2[2];
             // cameraPos[0] = new Vector2(2, 0);
             cameraPos[0] = new Vector2(8.9f, 1.2f);
             cameraPos[1] = new Vector2(10.73f, 0.73f);
+            winCameraPos = new Vector2(-13.12f, -0.4f);
+            currCameraPos = cameraPos[locationIndicator];
 
             focusPoint = attachedVehicle.transform.Find("focus").gameObject;
 
             target = focusPoint.transform;
             controllerRef = attachedVehicle.GetComponent<Karting.Car.CarController3>();
+        }
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                CycleCamera();
+            }
         }
 
         private void FixedUpdate()
@@ -48,18 +60,29 @@ namespace Karting.Camera
 
         public void CycleCamera()
         {
-            if (locationIndicator >= cameraPos.Length - 1 || locationIndicator < 0) locationIndicator = 0;
-            else locationIndicator++;
+            if (!isWinCamera)
+            {
+                // Cycle through the camera positions
+                if (locationIndicator >= cameraPos.Length - 1 || locationIndicator < 0)
+                {
+                    locationIndicator = 0;
+                }
+                else
+                {
+                    locationIndicator++;
+                }
+                currCameraPos = cameraPos[locationIndicator];
+            }
+        }
+        public void SetWinCamera()
+        {
+            currCameraPos = winCameraPos;
+            isWinCamera = true;
         }
         public void UpdateCam()
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                CycleCamera();
-            }
-
             // Calculate the new camera position based on the target's position and camera position offsets
-            newPos = target.position - (target.forward * cameraPos[locationIndicator].x) + (target.up * cameraPos[locationIndicator].y);
+            newPos = target.position - (target.forward * currCameraPos.x) + (target.up * currCameraPos.y);
 
             // Calculate the acceleration effect based on the vehicle's G-force
             accelerationEffect = Mathf.Lerp(accelerationEffect, controllerRef.GetGforce() * 3.5f, 2 * Time.deltaTime);
