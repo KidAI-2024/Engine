@@ -6,8 +6,11 @@ namespace Karting.Game
         public Transform carSpawnPoint;
 
         public float time { get; set; } = 0.0f;
+        public GameObject checkpoints;
 
         private GameObject instantiatedCar;
+        private Karting.Game.RestartCheckpoint restartCheckpoint;
+
         public bool win { get; private set; } = false;
 
 
@@ -23,10 +26,24 @@ namespace Karting.Game
             instantiatedCar = Instantiate(GameManager.instance.selectedCarPrefab, carSpawnPoint.position, carSpawnPoint.rotation);
 
             instantiatedCar.name = "PlayerCar";
+            // Get the RestartCheckpoint component
+            restartCheckpoint = checkpoints.GetComponent<Karting.Game.RestartCheckpoint>();
+            if (restartCheckpoint == null)
+            {
+                Debug.LogError("No RestartCheckpoint component found in GameplayManager");
+            }
         }
         public void RestartGame()
         {
             ResetCarToSpawnPoint();
+            if (restartCheckpoint != null)
+            {
+                restartCheckpoint.RestartCheckpoints();
+            }
+            else
+            {
+                Debug.LogError("No RestartCheckpoint component found in GameplayManager");
+            }
             time = 0.0f;
             win = false;
         }
