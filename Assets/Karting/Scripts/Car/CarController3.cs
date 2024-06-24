@@ -42,11 +42,13 @@ namespace Karting.Car
 
         // ========= Audio =========
         AudioSource engineAudioSource;
-        [Header("Audio")]
+        [Header("Engine Audio")]
         public float minEnginePitch = 0.001f;
         public float maxEnginePitch = 1.5f;
         public float minEngineVolume = 0.00001f;
         public float maxEngineVolume = 0.7f;
+        [Header("Crash Audio")]
+        public AudioSource crashAudioSource;
 
 
         [Header("Vehicle Visual")]
@@ -603,7 +605,14 @@ namespace Karting.Car
                 Rigidbody.velocity += Physics.gravity * Time.fixedDeltaTime * m_FinalStats.AddedGravity;
             }
         }
-        void OnCollisionEnter(Collision collision) => m_HasCollision = true;
+        void OnCollisionEnter(Collision collision)
+        {
+            m_HasCollision = true;
+            if (crashAudioSource != null)
+            {
+                crashAudioSource.Play();
+            }
+        }
         void OnCollisionExit(Collision collision) => m_HasCollision = false;
 
         void OnCollisionStay(Collision collision)
