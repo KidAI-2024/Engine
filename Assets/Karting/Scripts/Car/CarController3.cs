@@ -41,12 +41,12 @@ namespace Karting.Car
         public float wheelRadius = 0.06f;
 
         // ========= Audio =========
-        [Header("Audio")]
         AudioSource engineAudioSource;
-        public float minEnginePitch = 0.5f;
+        [Header("Audio")]
+        public float minEnginePitch = 0.001f;
         public float maxEnginePitch = 1.5f;
-        public float minEngineVolume = 0.1f;
-        public float maxEngineVolume = 1.0f;
+        public float minEngineVolume = 0.00001f;
+        public float maxEngineVolume = 0.7f;
 
 
         [Header("Vehicle Visual")]

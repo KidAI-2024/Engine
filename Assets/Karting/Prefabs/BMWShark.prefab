@@ -1159,10 +1159,10 @@ MonoBehaviour:
   currentRPM: 900
   currentGear: 0
   wheelRadius: 0.06
-  minEnginePitch: 0.5
+  minEnginePitch: 0.01
   maxEnginePitch: 1.5
-  minEngineVolume: 0.1
-  maxEngineVolume: 1
+  minEngineVolume: 0.0001
+  maxEngineVolume: 0.7
   wheelMeshes:
     FrontLeftWheel: {fileID: 4097273534704375601}
     FrontRightWheel: {fileID: 6029425459100092130}
