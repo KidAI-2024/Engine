@@ -9,10 +9,10 @@ namespace Karting.UI
     {
         public AudioMixer audioMixer;
         bool isMuted = false;
-        float currentVolume = 1;
+        public float currentVolume = 0.5f;
         void Start()
         {
-            audioMixer.SetFloat("Volume", 0);
+            audioMixer.SetFloat("Volume", 20 * Mathf.Log10(currentVolume));
         }
         public void ToggleMute()
         {
