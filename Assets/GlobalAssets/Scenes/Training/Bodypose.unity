@@ -7096,6 +7096,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Training Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8230324480607045246, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: b83aa96b39762b94bbf5ce2f984aa14f, type: 3}
     - target: {fileID: 8303181103707509225, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
