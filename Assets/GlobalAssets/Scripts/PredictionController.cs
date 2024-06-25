@@ -25,6 +25,7 @@ public class PredictionController : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Prediction Controller started");
         predictionText.text = "Predict";
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
@@ -35,6 +36,8 @@ public class PredictionController : MonoBehaviour
             requestedWidth = 320,
             requestedHeight = 180
         };
+        // Load the model to the server
+        Debug.Log("Loading model to server");
         LoadModelToML();
         predictButton.GetComponent<Button>().interactable = false;
     }
@@ -114,6 +117,7 @@ public class PredictionController : MonoBehaviour
             }
             else if (response["event"] == LoadModelEventName)
             {
+                Debug.Log("Load Received: " + response["status"]);
                 if (response["status"] == "success") // Model loaded successfully
                 {
                     CreateClassMap();
