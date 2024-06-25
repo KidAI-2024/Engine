@@ -408,7 +408,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MapContoller
+          m_StringArgument: Bodypose
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &74657146
@@ -6440,6 +6440,10 @@ MonoBehaviour:
   RoundScore: 0
   Player1ScoreValue: 0
   Player2ScoreValue: 0
+  volume: 1
+  mute: 0
+  player1: {fileID: 0}
+  player2: {fileID: 0}
 --- !u!4 &2018528277
 Transform:
   m_ObjectHideFlags: 0

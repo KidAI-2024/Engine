@@ -152,6 +152,7 @@ namespace MortalKombat
                     PlayerPrefs.DeleteAll();
                     GameOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = RoundScore > 0 ? "Player 1 Wins!" : "Player 2 Wins!"; // +ve means player 1 wins, -ve means player 2 wins
                     GameOverText.SetActive(true);
+                    gameManager.Reset();
                     Invoke("BackToCharacterSelect", 6);
                 }
                 else{

@@ -22,8 +22,8 @@ namespace MortalKombat
         private GameManager gameManager;
         void Start()
         {
-            gameManager = GameManager.Instance; 
-
+            gameManager = GameManager.Instance;  
+            
             if(gameManager.mute)
             {
                 MuteToggleButton.GetComponent<UnityEngine.UI.Toggle>().isOn = true;
@@ -71,6 +71,8 @@ namespace MortalKombat
             {
                 AudioSources.transform.GetChild(i).GetComponent<AudioSource>().volume = volume;
             }
+            // player1.GetComponent<AudioSource>().volume = volume;
+            // player2.GetComponent<AudioSource>().volume = volume;
 
             // if the volume is 0, set the mute toggle button to true
             if (volume == 0)

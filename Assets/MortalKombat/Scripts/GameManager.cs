@@ -24,8 +24,8 @@ namespace MortalKombat
         
         public float volume = 1f;
         public bool mute = false;
-        GameObject player1;
-        GameObject player2;
+        public GameObject player1;
+        public GameObject player2;
         ProjectController projectController;
 
         void Awake()
@@ -152,6 +152,13 @@ namespace MortalKombat
                 block = "down",
                 isEnabled = true
             };
+        }
+        public void Reset()
+        {
+            Round = 1;
+            RoundScore = 0;
+            Player1ScoreValue = 0;
+            Player2ScoreValue = 0;
         }
     }
 }
