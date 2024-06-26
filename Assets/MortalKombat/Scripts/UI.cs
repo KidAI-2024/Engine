@@ -16,6 +16,9 @@ namespace MortalKombat
         public Slider Player2HealthSlider; 
         public GameObject Player1Score;
         public GameObject Player2Score;
+        public GameObject player1text;
+        public GameObject player2text;
+
         Player1Controller player1;
         Player1Controller player2;
 
@@ -50,6 +53,9 @@ namespace MortalKombat
         {
             gameManager = GameManager.Instance;
             gameManager.InstantiateCharacters();
+            // player1text.GetComponent<TextMeshProUGUI>().text = gameManager.player1Name;
+            // player2text.GetComponent<TextMeshProUGUI>().text = gameManager.player2Name;
+            // Debug.Log("Player 1: " + gameManager.player1Name + " Player 2: " + gameManager.player2Name);
             // Load the Round value from Player Preferences
             Round = gameManager.Round;
             RoundScore = gameManager.RoundScore;
@@ -63,6 +69,8 @@ namespace MortalKombat
             player2 = GameObject.Find("Player2").GetComponent<Player1Controller>();
             Player1HealthSlider.maxValue = player1.health;
             Player2HealthSlider.maxValue = player2.health;
+
+
             RoundOverText.gameObject.SetActive(false);
             for (int i = 0; i < 3; i++)
             {
@@ -129,6 +137,16 @@ namespace MortalKombat
             }
             Player1HealthSlider.value = player1.health;
             Player2HealthSlider.value = player2.health;
+            // player 1 health slider color changes with the health.. when it appreaches 0.. slider color appreaches red
+            if (player1.health <= player1.maxHealth * 0.3)
+            {
+                Player1HealthSlider.fillRect.GetComponent<Image>().color = Color.red;
+            }
+            // player 2 health slider color changes with the health.. when it appreaches 0.. slider color appreaches red
+            if (player2.health <= player2.maxHealth * 0.3)
+            {
+                Player2HealthSlider.fillRect.GetComponent<Image>().color = Color.red;
+            }
             // Round over
             if ((player1.health <= 0 || player2.health <= 0) && flag)
             {

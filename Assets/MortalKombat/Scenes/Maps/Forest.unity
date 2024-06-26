@@ -2990,7 +2990,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player 2
+  m_text: Hulk
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 15c159484e6350342978778e8f5ddd66, type: 2}
   m_sharedMaterial: {fileID: -7359140024864931139, guid: 15c159484e6350342978778e8f5ddd66, type: 2}
@@ -6415,6 +6415,8 @@ MonoBehaviour:
   Player2HealthSlider: {fileID: 1881946561}
   Player1Score: {fileID: 345545231}
   Player2Score: {fileID: 1652890860}
+  player1text: {fileID: 1630549190}
+  player2text: {fileID: 1003821990}
   countdownText: {fileID: 849490067}
   preGameCountdownText: {fileID: 1254100125}
   GameOverText: {fileID: 1302584350}
@@ -6485,7 +6487,8 @@ MonoBehaviour:
   cannonPrefab: {fileID: 1389819304454177112, guid: 30d5bbe9962c7994382072bb5e39342c, type: 3}
   hulkPrefab: {fileID: 8629680460142611306, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
   cryptoPrefab: {fileID: 7276845217541675517, guid: c17d038464eb8a6408f0387608cff4b7, type: 3}
-  zombiePrefab: {fileID: 0}
+  zombiePrefab: {fileID: 2183345094201480820, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+  mapName: Forest
   player1Name: Ninja
   player2Name: Hulk
   Round: 1

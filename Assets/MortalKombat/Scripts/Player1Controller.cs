@@ -15,6 +15,7 @@ namespace MortalKombat
     }
     public class Player1Controller : MonoBehaviour
     {
+        public int maxHealth;
         public int health;
         public int primaryPower;
         public int secondaryPower;
@@ -40,6 +41,7 @@ namespace MortalKombat
 
         void OnEnable() // instead of start to make sure the health is set when the game is starts
         {
+            maxHealth = health;
             // Assuming the Animator component is attached to the child GameObject as this script
             animator  = GetComponentInChildren<Animator>();
             isWalkingHash = Animator.StringToHash("isWalking");

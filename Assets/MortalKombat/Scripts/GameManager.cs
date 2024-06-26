@@ -62,6 +62,7 @@ namespace MortalKombat
                 player1.name = "Player1";
                 var player1Controller = player1.GetComponent<Player1Controller>();
                 player1Controller.health = 100;
+                player1Controller.maxHealth = player1Controller.health;
                 player1Controller.primaryPower = 10;
                 player1Controller.secondaryPower = 15;
                 player1Controller.speed = 2.5f;
@@ -76,6 +77,7 @@ namespace MortalKombat
                 player1.name = "Player1";
                 var player1Controller = player1.GetComponent<Player1Controller>();
                 player1Controller.health = 120;
+                player1Controller.maxHealth = player1Controller.health;
                 player1Controller.primaryPower = 15;
                 player1Controller.secondaryPower = 10;
                 player1Controller.speed = 2.0f;
@@ -90,6 +92,7 @@ namespace MortalKombat
                 player1.name = "Player1";
                 var player1Controller = player1.GetComponent<Player1Controller>();
                 player1Controller.health = 155;
+                player1Controller.maxHealth = player1Controller.health;
                 player1Controller.primaryPower = 25;
                 player1Controller.secondaryPower = 5;
                 player1Controller.speed = 1.3f;
@@ -106,6 +109,7 @@ namespace MortalKombat
                 player2.name = "Player2";
                 var player2Controller = player2.GetComponent<Player1Controller>();
                 player2Controller.health = 150;
+                player2Controller.maxHealth = player2Controller.health;
                 player2Controller.primaryPower = 20;
                 player2Controller.secondaryPower = 15;
                 player2Controller.speed = 1.5f;
@@ -120,6 +124,7 @@ namespace MortalKombat
                 player2.name = "Player2";
                 var player2Controller = player2.GetComponent<Player1Controller>();
                 player2Controller.health = 110;
+                player2Controller.maxHealth = player2Controller.health;
                 player2Controller.primaryPower = 12;
                 player2Controller.secondaryPower = 10;
                 player2Controller.speed = 2.3f;
@@ -134,6 +139,7 @@ namespace MortalKombat
                 player2.name = "Player2";
                 var player2Controller = player2.GetComponent<Player1Controller>();
                 player2Controller.health = 90;
+                player2Controller.maxHealth = player2Controller.health;
                 player2Controller.primaryPower = 25;
                 player2Controller.secondaryPower = 20;
                 player2Controller.speed = 1.8f;
