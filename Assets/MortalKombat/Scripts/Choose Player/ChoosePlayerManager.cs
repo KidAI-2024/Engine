@@ -46,6 +46,9 @@ namespace MortalKombat.ChoosePlayer
         public AudioClip crypto_sfx;
         public AudioClip zombie_sfx;
         
+
+        public string NextScene = "CharacterSelect";
+
         void Start(){
             gameManager = GameManager.Instance;
             // add event listener to player 1 button
@@ -75,12 +78,19 @@ namespace MortalKombat.ChoosePlayer
                 gameManager.player1Name = selectedPlayer1Name;
                 player1Text.text = "Ready";
                 player1Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Unready";
+                // Cannot modify the character after ready
+                ninjaButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                archerButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                cannonButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
             }
             else
             {
                 player1Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Ready";
                 gameManager.player1Name = "";
                 player1Text.text = "";
+                ninjaButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
+                archerButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
+                cannonButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
             }
             CheckBothPlayersReady();
         }
@@ -92,12 +102,19 @@ namespace MortalKombat.ChoosePlayer
                 gameManager.player2Name = selectedPlayer2Name;
                 player2Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Unready";
                 player2Text.text = "Ready";
+                // Cannot modify the character after ready
+                hulkButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                cryptoButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                zombieButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
             }
             else
             { 
                 player2Button.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Ready";
                 gameManager.player2Name = "";
                 player2Text.text = "";
+                hulkButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
+                cryptoButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
+                zombieButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
             }
             CheckBothPlayersReady();
         }
@@ -114,7 +131,7 @@ namespace MortalKombat.ChoosePlayer
         IEnumerator LoadChooseMapScene()
         {
             yield return new WaitForSeconds(1);
-            UnityEngine.SceneManagement.SceneManager.LoadScene("SelectMap");
+            UnityEngine.SceneManagement.SceneManager.LoadScene(NextScene);
         }
 
         void OnCharacterPlayerChange(string characterName, bool isFirstPlayer = false)

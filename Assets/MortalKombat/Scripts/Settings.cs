@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace MortalKombat 
 {
     public class Settings : MonoBehaviour
@@ -30,6 +29,12 @@ namespace MortalKombat
                 ToggleMute();
             }
             Volume(gameManager.volume);
+            if (!gameManager.predictIsOn)
+            {
+                Camera.SetActive(false);
+                CameraToggleButton.GetComponent<UISwitcher.UISwitcher>().isOn = false;
+            }
+
 
             // add listener to the mute toggle button
             MuteToggleButton.GetComponent<UnityEngine.UI.Toggle>().onValueChanged.AddListener(delegate {
@@ -87,8 +92,15 @@ namespace MortalKombat
         }
         public void ToggleCamera()
         {
-            Camera.SetActive(!Camera.activeSelf);
-            gameManager.predictIsOn = !gameManager.predictIsOn;
+            gameManager.predictIsOn = CameraToggleButton.GetComponent<UISwitcher.UISwitcher>().isOn;
+            if (gameManager.predictIsOn)
+            {
+                Camera.SetActive(true);
+            }
+            else
+            {
+                Camera.SetActive(false);
+            }
         }
 
     }

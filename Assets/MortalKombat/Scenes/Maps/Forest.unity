@@ -264,8 +264,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2018528276}
-        m_TargetAssemblyTypeName: MortalKombat.GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1971739767}
+        m_TargetAssemblyTypeName: MortalKombat.UI, Assembly-CSharp
         m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:

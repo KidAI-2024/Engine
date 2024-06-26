@@ -181,7 +181,7 @@ namespace MortalKombat
                     gameManager.Player2ScoreValue = Player2ScoreValue;
                     RoundOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = player1.health <= 0 ? "Player 2 Wins!" : "Player 1 Wins!";
                     RoundOverText.SetActive(true);
-                    Invoke("RestartGame", 8);   
+                    Invoke("RestartRound", 8);   
                 }
             }
         }
@@ -247,10 +247,14 @@ namespace MortalKombat
             countdownText.text = seconds.ToString();
         }
 
-        void RestartGame()
+        void RestartRound()
         {
             // Reload the scene to restart the game with a new round
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
+        public void RestartGame()
+        {
+            gameManager.RestartGame();
         }
         void BackToCharacterSelect()
         {

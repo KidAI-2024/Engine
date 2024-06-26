@@ -291,8 +291,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2470262055049152610, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470262055049152610, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470262055049152610, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 88127513}
+    - target: {fileID: 2470262055049152610, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470262055049152610, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GlobalAssets.UI.SceneChanger, GlobalAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470262055049152610, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Mortal Kombat
+      value: CharacterSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470262055049152610, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2470262055049152637, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -300,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2470262055106028213, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: CharacterSelect
+      value: Bodypose
       objectReference: {fileID: 0}
     - target: {fileID: 2470262055326493355, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
       propertyPath: m_text
@@ -312,6 +336,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+--- !u!114 &88127513 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2470262054931758935, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
+  m_PrefabInstance: {fileID: 88127510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96fd71e5028a67f4eaafe0422f7c7d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1054424676
 GameObject:
   m_ObjectHideFlags: 0
