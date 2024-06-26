@@ -10,7 +10,9 @@ namespace MortalKombat
 
         private static bool isInputEnabled = false;
         public bool EnableTimer;
-        
+
+        public TextMeshProUGUI countdownTillBacktoChooseCharacterText;
+        public GameObject predictionPanel;
         public GameObject settingsPanel;
         public Slider Player1HealthSlider;
         public Slider Player2HealthSlider; 
@@ -36,6 +38,7 @@ namespace MortalKombat
         public AudioClip round1Sound;
         public AudioClip round2Sound;
         public AudioClip round3Sound;
+        public int backAfter = 5;
         
         // Start with Round 1
         public static int Round = 1;
@@ -43,6 +46,7 @@ namespace MortalKombat
         public static int Player1ScoreValue = 0;
         public static int Player2ScoreValue = 0;
         private bool flag;
+        
         // Property to get the input status
         public static bool IsInputEnabled
         {
@@ -171,7 +175,9 @@ namespace MortalKombat
                     GameOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = RoundScore > 0 ? "Player 1 Wins!" : "Player 2 Wins!"; // +ve means player 1 wins, -ve means player 2 wins
                     GameOverText.SetActive(true);
                     gameManager.Reset();
-                    Invoke("BackToCharacterSelect", 6);
+                    predictionPanel.SetActive(false);
+                    InvokeRepeating("CountDownAfterGameOver", 1, 1);
+                    // Invoke("BackToCharacterSelect", 6); 
                 }
                 else{
                     // Save the Round value to Player Preferences
@@ -183,6 +189,15 @@ namespace MortalKombat
                     RoundOverText.SetActive(true);
                     Invoke("RestartRound", 8);   
                 }
+            }
+        }
+        void CountDownAfterGameOver()
+        {
+            backAfter--;
+            countdownTillBacktoChooseCharacterText.text = "Back to Choose Character in " + backAfter;
+            if (backAfter == 0)
+            {
+                BackToCharacterSelect();
             }
         }
         void UpdatePreGameCountdown()
