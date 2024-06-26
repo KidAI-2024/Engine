@@ -2939,7 +2939,7 @@ GameObject:
   - component: {fileID: 8864106035571474834}
   m_Layer: 0
   m_Name: mixamorig:LeftToeBase
-  m_TagString: leg
+  m_TagString: secondary2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3785,6 +3785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953d5ade5f1ff694c90151c9bf99064b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   health: 0
   primaryPower: 0
   secondaryPower: 0
@@ -3855,7 +3856,7 @@ GameObject:
   - component: {fileID: 8864106036229830853}
   m_Layer: 0
   m_Name: mixamorig:Weapon
-  m_TagString: weapon
+  m_TagString: primary2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -41,13 +41,13 @@ namespace MortalKombat
                 return;
             }
             // player (left player)
-            if (PLayer1Animator.GetBool(primaryHitHash) && this.gameObject.tag == "hand" && col.gameObject.tag == "enemy")
+            if (PLayer1Animator.GetBool(primaryHitHash) && this.gameObject.tag == "primary1" && col.gameObject.tag == "enemy")
             {
                 Player2.health -= Player1.primaryPower;
                 PLayer2Animator.SetBool(hitHash, true);
                 PLayer1Animator.SetBool(primaryHitHash, false);
             }
-            if (PLayer1Animator.GetBool(secondaryHitHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "enemy")
+            if (PLayer1Animator.GetBool(secondaryHitHash) && this.gameObject.tag == "secondary1" && col.gameObject.tag == "enemy")
             {
                 Player2.health -= Player1.secondaryPower;
                 PLayer2Animator.SetBool(hitHash, true);
@@ -60,13 +60,13 @@ namespace MortalKombat
             }
 
             // enemy (right player)
-            if (PLayer2Animator.GetBool(primaryHitHash) && this.gameObject.tag == "weapon" && col.gameObject.tag == "player")
+            if (PLayer2Animator.GetBool(primaryHitHash) && this.gameObject.tag == "primary2" && col.gameObject.tag == "player")
             {
                 Player1.health -= Player2.primaryPower;
                 PLayer1Animator.SetBool(hitHash, true);
                 PLayer2Animator.SetBool(primaryHitHash, false);
             }
-            if (PLayer2Animator.GetBool(secondaryHitHash) && this.gameObject.tag == "leg" && col.gameObject.tag == "player")
+            if (PLayer2Animator.GetBool(secondaryHitHash) && this.gameObject.tag == "secondary2" && col.gameObject.tag == "player")
             {
                 Player1.health -= Player2.secondaryPower;
                 PLayer1Animator.SetBool(hitHash, true);

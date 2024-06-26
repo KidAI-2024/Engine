@@ -12,9 +12,11 @@ namespace MortalKombat
         private float timer = -3f; // Timer to keep track of elapsed time
         private float interval = 1f; // Time interval in seconds
 
+        private GameManager gameManager;
         // Start is called before the first frame update
         void Start()
         {
+            gameManager = GameManager.Instance;
             enemyPlayer = GameObject.Find("Player2");
             player1 = GameObject.Find("Player1");
         }
@@ -58,7 +60,7 @@ namespace MortalKombat
             // Get the current position of the player   
             float player1Position = player1.transform.position.z;
             float enemyPosition = enemyPlayer.transform.position.z;
-            
+
             // If the player is in front of the enemy with close distance, the enemy will attack
             if (player1Position > enemyPosition - 1 && player1Position < enemyPosition + 1.5)
             {
@@ -77,11 +79,11 @@ namespace MortalKombat
             }
 
             // If the player is behind the enemy, the enemy will move back
-            if (player1Position < enemyPosition - 1.5)
+            else if (player1Position < enemyPosition - 1.4)
             {
                 enemyController.backwardAuto = true;
             }
-
+            
         }
     }
 }

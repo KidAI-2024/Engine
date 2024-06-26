@@ -116,9 +116,7 @@ namespace MortalKombat
                 InvokeRepeating("UpdatePreGameCountdown", 1f, 1f);
             }
             else{
-                
                 preGameCountdownText.gameObject.SetActive(false);
-                isInputEnabled = true;
             }
             PlayRoundSound(Round);
         }
@@ -234,7 +232,7 @@ namespace MortalKombat
                 // disable pregame countdown text after 1 second
                 Invoke("DisablePreGameCountdownText", 1);
                 // countdownText.gameObject.SetActive(true);
-                isInputEnabled = true;
+                // isInputEnabled = true;
             }
         }
         void DisablePreGameCountdownText()
@@ -301,6 +299,12 @@ namespace MortalKombat
                     audioSource.PlayOneShot(round3Sound);
                     break;
             }
+            // enable input after the audio finished
+            Invoke("EnableInput", 3.0f);
+        }
+        void EnableInput()
+        {
+            isInputEnabled = true;
         }
     }
 }
