@@ -9,7 +9,7 @@ namespace MortalKombat
     {
         private GameObject enemyPlayer;
         private GameObject player1;
-        private float timer = 0f; // Timer to keep track of elapsed time
+        private float timer = -3f; // Timer to keep track of elapsed time
         private float interval = 1f; // Time interval in seconds
 
         // Start is called before the first frame update
@@ -69,6 +69,7 @@ namespace MortalKombat
                     enemyController.primaryHitAuto = true;
                 timer -= 2;
             }
+
             // If the player is in front of the enemy, the enemy will move forward
             if (player1Position > enemyPosition + 1.4)
             {
@@ -76,7 +77,7 @@ namespace MortalKombat
             }
 
             // If the player is behind the enemy, the enemy will move back
-            if (player1Position < enemyPosition - 1.4)
+            if (player1Position < enemyPosition - 1.5)
             {
                 enemyController.backwardAuto = true;
             }

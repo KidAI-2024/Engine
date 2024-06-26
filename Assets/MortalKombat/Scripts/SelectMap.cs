@@ -28,22 +28,22 @@ namespace MortalKombat
         }
         public void NextMap()
         {
-            gameManager.mapName = "Forest";
-            MapsPanel.GetComponent<Image>().sprite = map1_image;
-            MapNameText.GetComponent<TextMeshProUGUI>().text = "Forest";
+            // gameManager.mapName = "Forest";
+            // MapsPanel.GetComponent<Image>().sprite = map1_image;
+            // MapNameText.GetComponent<TextMeshProUGUI>().text = "Forest";
             // uncomment nex lines when added new map
-            // if (gameManager.mapName == "Forest")
-            // {
-            //     gameManager.mapName = "Desert";
-            //     MapsPanel.GetComponent<Image>().sprite = map2_image;
-            //     MapNameText.GetComponent<TextMeshProUGUI>().text = "Desert";
-            // }
-            // else
-            // {
-            //     gameManager.mapName = "Forest";
-            //     MapsPanel.GetComponent<Image>().sprite = map1_image;
-            //     MapNameText.GetComponent<TextMeshProUGUI>().text = "Forest";
-            // }
+            if (gameManager.mapName == "Forest")
+            {
+                gameManager.mapName = "SeaPort";
+                MapsPanel.GetComponent<Image>().sprite = map2_image;
+                MapNameText.GetComponent<TextMeshProUGUI>().text = "Sea Port";
+            }
+            else
+            {
+                gameManager.mapName = "Forest";
+                MapsPanel.GetComponent<Image>().sprite = map1_image;
+                MapNameText.GetComponent<TextMeshProUGUI>().text = "Forest";
+            }
         }
     }
 }

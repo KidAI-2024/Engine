@@ -39,9 +39,10 @@ namespace MortalKombat
         public bool primaryHitAuto = false;
         public bool secondaryHitAuto = false;
 
+        GameManager gameManager;
         void OnEnable() // instead of start to make sure the health is set when the game is starts
         {
-            maxHealth = health;
+            gameManager = GameManager.Instance;
             // Assuming the Animator component is attached to the child GameObject as this script
             animator  = GetComponentInChildren<Animator>();
             isWalkingHash = Animator.StringToHash("isWalking");
@@ -126,18 +127,40 @@ namespace MortalKombat
             if (isWalking)
             {
                 bool isPlayer1 = gameObject.name == "Player1";
-                bool isInForwardLimit = isPlayer1 ? transform.position.z > endLimit : transform.position.z < endLimit;
-                bool isInBackwardLimit = isPlayer1 ? transform.position.z < startLimit : transform.position.z > startLimit;
+                bool isForestMap = gameManager.mapName == "Forest";
+
+                // Set limits based on the map
+                float forwardLimit = isForestMap ? endLimit : startLimit;
+                float backwardLimit = isForestMap ? startLimit : endLimit;
+
+                bool isInForwardLimit;
+                bool isInBackwardLimit; 
+                if (isForestMap){
+                    isInForwardLimit = isPlayer1 ? transform.position.z > endLimit : transform.position.z < endLimit;
+                    isInBackwardLimit = isPlayer1 ? transform.position.z < startLimit : transform.position.z > startLimit;
+                }
+                else{
+                    isInForwardLimit = isPlayer1 ? transform.position.z < endLimit : transform.position.z > endLimit;
+                    isInBackwardLimit = isPlayer1 ? transform.position.z > startLimit : transform.position.z < startLimit;
+                }
+                Quaternion forwardRotation = isForestMap 
+                    ? (isPlayer1 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0))
+                    :  Quaternion.Euler(0, 0, 0);
+
+                Quaternion backwardRotation = isForestMap 
+                    ? (isPlayer1 ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 180, 0))
+                    : Quaternion.Euler(0, 180, 0);
+
                 if (forwardPressed && isInForwardLimit && !backwardPressed)
                 {
                     // rotate the character to the direction of movement
-                    transform.rotation = isPlayer1 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+                    transform.rotation = forwardRotation;
                     transform.Translate(Vector3.forward * speed * Time.deltaTime);
                 }
                 else if (backwardPressed && isInBackwardLimit && !forwardPressed)
                 {
                     // rotate the character to the direction of movement
-                    transform.rotation = isPlayer1 ?  Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 180, 0);
+                    transform.rotation = backwardRotation;
                     transform.Translate(Vector3.forward * speed * Time.deltaTime);
                 }
             }

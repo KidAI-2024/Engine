@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/MortalKombat/Scenes/Maps/Forest.unity
     guid: 7769f33fb4fa2e5458344a36556ad760
   - enabled: 1
+    path: Assets/MortalKombat/Scenes/Maps/SeaPort.unity
+    guid: 5fa1b336fa2f6d544adf157cb18b9247
+  - enabled: 1
     path: Assets/Karting/Scenes/KartingIntro.unity
     guid: dff6b5a5e053a2d40867edd5449ef4c6
   - enabled: 1

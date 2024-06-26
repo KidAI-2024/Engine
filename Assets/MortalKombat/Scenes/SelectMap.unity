@@ -1625,7 +1625,7 @@ MonoBehaviour:
   MapsPanel: {fileID: 703198703}
   MapNameText: {fileID: 600839934}
   map1_image: {fileID: 21300000, guid: 8d72d2cfc1f90b847aee27c7a2c42b59, type: 3}
-  map2_image: {fileID: 21300000, guid: 8d72d2cfc1f90b847aee27c7a2c42b59, type: 3}
+  map2_image: {fileID: 21300000, guid: 533e67f09c1149c4b8e3b72546240d73, type: 3}
 --- !u!82 &1496187155
 AudioSource:
   m_ObjectHideFlags: 0
