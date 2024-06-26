@@ -6485,6 +6485,7 @@ MonoBehaviour:
   cannonPrefab: {fileID: 1389819304454177112, guid: 30d5bbe9962c7994382072bb5e39342c, type: 3}
   hulkPrefab: {fileID: 8629680460142611306, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
   cryptoPrefab: {fileID: 7276845217541675517, guid: c17d038464eb8a6408f0387608cff4b7, type: 3}
+  zombiePrefab: {fileID: 0}
   player1Name: Ninja
   player2Name: Hulk
   Round: 1

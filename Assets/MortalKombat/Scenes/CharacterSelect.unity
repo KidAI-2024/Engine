@@ -478,6 +478,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4557255597122999830, guid: 9ac5f50ff64f860429afcafc07d2233c, type: 3}
   m_PrefabInstance: {fileID: 919003229}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &436381229
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2118985386}
+    m_Modifications:
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -396.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -223.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.17364809
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9848078
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2183345094201480820, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_Name
+      value: Zombie
+      objectReference: {fileID: 0}
+    - target: {fileID: 2183345094201480820, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+--- !u!4 &436381230 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1515211028395773134, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
+  m_PrefabInstance: {fileID: 436381229}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &452676681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,12 +1455,18 @@ MonoBehaviour:
   cannonPrefab: {fileID: 1389819304454177112, guid: 30d5bbe9962c7994382072bb5e39342c, type: 3}
   hulkPrefab: {fileID: 8629680460142611306, guid: 2f6227721db66c44da65e406c5c8fa25, type: 3}
   cryptoPrefab: {fileID: 7276845217541675517, guid: c17d038464eb8a6408f0387608cff4b7, type: 3}
+  zombiePrefab: {fileID: 2183345094201480820, guid: 59f7bc6de324e0d4880bbb762b0f1ba5, type: 3}
   player1Name: 
   player2Name: 
   Round: 1
   RoundScore: 0
   Player1ScoreValue: 0
   Player2ScoreValue: 0
+  volume: 1
+  mute: 0
+  predictIsOn: 1
+  player1: {fileID: 0}
+  player2: {fileID: 0}
 --- !u!4 &1257836648
 Transform:
   m_ObjectHideFlags: 0
@@ -1459,12 +1531,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2539841123914356283, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_Type
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2539841123914356283, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 21300000, guid: 1705ca187e01a824a96f69b21730b901, type: 3}
     - target: {fileID: 2563969372625082579, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 5
@@ -1472,6 +1544,10 @@ PrefabInstance:
     - target: {fileID: 2679901174104609120, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_Name
       value: Choose Player Panel 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885033306491098561, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
+      propertyPath: m_Name
+      value: Zombie
       objectReference: {fileID: 0}
     - target: {fileID: 2941214199728257400, guid: 2096541cff8b1ae49848da6c4510d1a7, type: 3}
       propertyPath: m_Value
@@ -1996,6 +2072,7 @@ MonoBehaviour:
   cannonButton: {fileID: 1104025341}
   hulkButton: {fileID: 2081277262}
   cryptoButton: {fileID: 218413744}
+  zombieButton: {fileID: 1480806688}
   player1: {fileID: 667509723}
   player2: {fileID: 2118985385}
   player1Ready: 0
@@ -2005,6 +2082,7 @@ MonoBehaviour:
   cannon_sfx: {fileID: 8300000, guid: 8f1b70d996b05c24f9687dca5fc5bc36, type: 3}
   archer_sfx: {fileID: 8300000, guid: 226671ef21e21a24583dc75886d7c766, type: 3}
   crypto_sfx: {fileID: 8300000, guid: b29a4ddba83b59e499ee4107c1bc60b5, type: 3}
+  zombie_sfx: {fileID: 8300000, guid: d5062071848c3eb4b823390662ba4e17, type: 3}
 --- !u!4 &1812073553
 Transform:
   m_ObjectHideFlags: 0
@@ -2375,6 +2453,7 @@ Transform:
   m_Children:
   - {fileID: 1507287135}
   - {fileID: 1530256083276794211}
+  - {fileID: 436381230}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

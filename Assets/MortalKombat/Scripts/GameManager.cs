@@ -13,6 +13,7 @@ namespace MortalKombat
         
         public GameObject hulkPrefab;
         public GameObject cryptoPrefab;
+        public GameObject zombiePrefab;
         
 
         public string player1Name;
@@ -122,6 +123,20 @@ namespace MortalKombat
                 player2Controller.primaryPower = 12;
                 player2Controller.secondaryPower = 10;
                 player2Controller.speed = 2.3f;
+                // constants for  second player
+                player2Controller.startLimit = 28.3f;
+                player2Controller.endLimit = 33.8f;
+                player2Controller.controls = SetPlayer2Controls();
+            }
+            else if (player2Name == "Zombie")
+            {
+                player2 = Instantiate(zombiePrefab);
+                player2.name = "Player2";
+                var player2Controller = player2.GetComponent<Player1Controller>();
+                player2Controller.health = 90;
+                player2Controller.primaryPower = 25;
+                player2Controller.secondaryPower = 20;
+                player2Controller.speed = 1.8f;
                 // constants for  second player
                 player2Controller.startLimit = 28.3f;
                 player2Controller.endLimit = 33.8f;

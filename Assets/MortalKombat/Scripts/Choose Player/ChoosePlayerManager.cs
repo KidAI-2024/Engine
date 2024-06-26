@@ -26,6 +26,7 @@ namespace MortalKombat.ChoosePlayer
 
         public GameObject hulkButton;
         public GameObject cryptoButton;
+        public GameObject zombieButton;
 
         // 2 public game objects for player 1 and player 2
         public GameObject player1;
@@ -43,6 +44,7 @@ namespace MortalKombat.ChoosePlayer
         public AudioClip cannon_sfx;
         public AudioClip archer_sfx;
         public AudioClip crypto_sfx;
+        public AudioClip zombie_sfx;
         
         void Start(){
             gameManager = GameManager.Instance;
@@ -62,6 +64,7 @@ namespace MortalKombat.ChoosePlayer
             cannonButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Cannon"));
             hulkButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Hulk"));
             cryptoButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Crypto"));
+            zombieButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnCharacterPlayerChange("Zombie"));
         }
 
         public void Player1Ready()
@@ -166,6 +169,7 @@ namespace MortalKombat.ChoosePlayer
                 case "Hulk":
                     player2.transform.GetChild(0).gameObject.SetActive(true);
                     player2.transform.GetChild(1).gameObject.SetActive(false);
+                    player2.transform.GetChild(2).gameObject.SetActive(false);
                     hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
                     cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
                     if(!isFirstPlayer)
@@ -179,6 +183,7 @@ namespace MortalKombat.ChoosePlayer
                 case "Crypto":
                     player2.transform.GetChild(0).gameObject.SetActive(false);
                     player2.transform.GetChild(1).gameObject.SetActive(true);
+                    player2.transform.GetChild(2).gameObject.SetActive(false);
                     cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
                     hulkButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
 
@@ -189,6 +194,21 @@ namespace MortalKombat.ChoosePlayer
                     }
                     selectedPlayer2Name = "Crypto";
                     ChoosePlayer(player2InfoPanel, "CRYPTO", 0.75f, 0.65f, 0.9f);
+                    break;
+
+                case "Zombie":
+                    player2.transform.GetChild(0).gameObject.SetActive(false);
+                    player2.transform.GetChild(1).gameObject.SetActive(false);
+                    player2.transform.GetChild(2).gameObject.SetActive(true);
+                    zombieButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonSelected();
+                    cryptoButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
+                    if(!isFirstPlayer)
+                    {
+                        audioSource = zombieButton.GetComponent<UnityEngine.UI.Button>().GetComponent<AudioSource>();
+                        audioSource.PlayOneShot(zombie_sfx);
+                    }
+                    selectedPlayer2Name = "Zombie";
+                    ChoosePlayer(player2InfoPanel, "ZOMBIE", 0.65f, 0.75f, 0.6f);
                     break;
                 default:
                     archerButton.GetComponent<UnityEngine.UI.Button>().GetComponent<ButtonHoverController>().ButtonDeselected();
