@@ -88,6 +88,7 @@ namespace MortalKombat
         public void ToggleCamera()
         {
             Camera.SetActive(!Camera.activeSelf);
+            gameManager.predictIsOn = !gameManager.predictIsOn;
         }
 
     }

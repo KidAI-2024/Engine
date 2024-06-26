@@ -13,6 +13,7 @@ public class StartTraining : MonoBehaviour
     public GameObject saveProjectButton;
     public GameObject warningPanel;
     public GameObject feebackPanel;
+    public GameObject predictButton;
 
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
@@ -54,6 +55,8 @@ public class StartTraining : MonoBehaviour
                         texture.LoadImage(imageBytes);
                         GraphImage.GetComponent<RawImage>().texture = texture;
                     }
+                    // unlock the predict button
+                    predictButton.GetComponent<Button>().interactable = true;
                 }
             }
         }

@@ -24,6 +24,8 @@ namespace MortalKombat
         
         public float volume = 1f;
         public bool mute = false;
+        public bool predictIsOn = true;
+
         public GameObject player1;
         public GameObject player2;
         ProjectController projectController;
@@ -159,6 +161,12 @@ namespace MortalKombat
             RoundScore = 0;
             Player1ScoreValue = 0;
             Player2ScoreValue = 0;
+        }
+
+        public void RestartGame()
+        {
+            Reset();
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 }

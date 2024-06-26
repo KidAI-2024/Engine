@@ -115,6 +115,7 @@ public class PredictionController : MonoBehaviour
                 if (response["status"] == "success") // Model loaded successfully
                 {
                     CreateClassMap();
+                    // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
                     // move the prediction analysis scroll view content to the end (most right) to show the predict button
                     predAnalysisScrollView.GetComponent<ScrollRect>().normalizedPosition = new Vector2(1, 0);

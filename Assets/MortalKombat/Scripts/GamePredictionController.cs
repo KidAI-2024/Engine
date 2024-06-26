@@ -11,17 +11,19 @@ namespace MortalKombat
         public TextMeshProUGUI predictionText;
         public int framePredicitonRate = 5; // predict every 5 frames
 
-
         private GameObject player1;
         private GameObject player2;
-        private bool nextFrameReady = false;
+        private bool nextFrameReady = true;
         private Color32[] frame;
         private GlobalAssets.Socket.SocketUDP socketClient;
         private WebCamTexture webcamTexture;
         private int frameCounter = 0;
         private ProjectController projectController;
+        private GameManager gameManager;
+
         void Start()
         {
+            gameManager = GameManager.Instance;
             socketClient = GlobalAssets.Socket.SocketUDP.Instance;
             projectController = ProjectController.Instance;
             // search game object called PLayer1
@@ -48,7 +50,7 @@ namespace MortalKombat
         void Update()
         {
             frameCounter++;
-            if (nextFrameReady && frameCounter % framePredicitonRate == 0)
+            if (gameManager.predictIsOn && nextFrameReady && frameCounter % framePredicitonRate == 0)
             {
                 frameCounter = 0;
                 if (webcamTexture.isPlaying)
