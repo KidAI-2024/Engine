@@ -409,6 +409,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 383070084404931609}
         m_TargetAssemblyTypeName: MortalKombat.UI, Assembly-CSharp
+        m_MethodName: ResetTimeScale
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 383070084404931609}
+        m_TargetAssemblyTypeName: MortalKombat.UI, Assembly-CSharp
         m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
@@ -694,6 +706,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 383070084404931609}
+        m_TargetAssemblyTypeName: MortalKombat.UI, Assembly-CSharp
+        m_MethodName: ResetTimeScale
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 383070085150114329}
         m_TargetAssemblyTypeName: GlobalAssets.UI.SceneChanger, GlobalAssembly
         m_MethodName: LoadScene
@@ -2717,6 +2741,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 383070084404931609}
+        m_TargetAssemblyTypeName: MortalKombat.UI, Assembly-CSharp
+        m_MethodName: ResetTimeScale
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 383070085150114329}
         m_TargetAssemblyTypeName: GlobalAssets.UI.SceneChanger, Assembly-CSharp
         m_MethodName: LoadScene
@@ -5423,6 +5459,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 383070084404931609}
+        m_TargetAssemblyTypeName: MortalKombat.UI, Assembly-CSharp
+        m_MethodName: ResetTimeScale
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 383070085150114329}
         m_TargetAssemblyTypeName: GlobalAssets.UI.SceneChanger, GlobalAssembly
         m_MethodName: LoadScene

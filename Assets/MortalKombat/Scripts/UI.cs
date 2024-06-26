@@ -267,7 +267,13 @@ namespace MortalKombat
         }
         public void RestartGame()
         {
-            gameManager.RestartGame();
+            Time.timeScale = 1;
+            gameManager.Reset();
+            RestartRound();
+        }
+        public void ResetTimeScale()
+        {
+            Time.timeScale = 1;
         }
         void BackToCharacterSelect()
         {
