@@ -9,9 +9,10 @@ namespace Karting.UI
     public class SettingsPanelController : MonoBehaviour
     {
         public GameObject settingsPanel;
-        public Button backButton;
-        public Button exitButton;
         public Button settingsButton;
+        public Button exitButton;
+        public Button returnToLobbyButton;
+        bool isSettingsPanelActive = false;
         void Start()
         {
             // Hide the settings panel initially
@@ -24,23 +25,7 @@ namespace Karting.UI
             {
                 Debug.Log("Settings Panel is null in SettingsPanelController");
             }
-            if (backButton != null)
-            {
 
-                backButton.onClick.AddListener(ToggleSettingsPanel);
-            }
-            else
-            {
-                Debug.Log("Back Button is null in SettingsPanelController");
-            }
-            if (exitButton != null)
-            {
-                exitButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
-            }
-            else
-            {
-                Debug.Log("Exit Button is null in SettingsPanelController");
-            }
             if (settingsButton != null)
             {
                 settingsButton.onClick.AddListener(ToggleSettingsPanel);
@@ -49,6 +34,44 @@ namespace Karting.UI
             {
                 Debug.Log("Settings Button is null in SettingsPanelController");
             }
+            if (exitButton != null)
+            {
+                // change scene to kartingintro
+                // exitButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
+                // quit app
+                exitButton.onClick.AddListener(() => Quit());
+            }
+            else
+            {
+                Debug.Log("Exit Button is null in SettingsPanelController");
+            }
+            if (returnToLobbyButton != null)
+            {
+                // change scene to lobby
+                returnToLobbyButton.onClick.AddListener(() => SceneManager.LoadScene("Lobby"));
+            }
+            else
+            {
+                Debug.Log("Return To Lobby Button is null in SettingsPanelController");
+            }
+        }
+        // This function will be called when the button is clicked
+        void Quit()
+        {
+            // Log a message in the console
+            Debug.Log("Application is quitting");
+
+            // If we are running in a standalone build of the game
+#if UNITY_STANDALONE
+            // Quit the application
+            Application.Quit();
+#endif
+
+            // If we are running in the editor
+#if UNITY_EDITOR
+            // Stop playing the scene
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
         }
 
         void Update()
@@ -60,14 +83,16 @@ namespace Karting.UI
             }
         }
 
-        void ToggleSettingsPanel()
+        public void ToggleSettingsPanel()
         {
-            settingsPanel.SetActive(!settingsPanel.activeSelf);
+            settingsPanel.SetActive(!isSettingsPanelActive);
+            isSettingsPanelActive = !isSettingsPanelActive;
         }
-        void ondestroy()
+        public void CloseSettingsPanel()
         {
-            backButton.onClick.RemoveAllListeners();
-            exitButton.onClick.RemoveAllListeners();
+            settingsPanel.SetActive(false);
+            isSettingsPanelActive = false;
         }
+
     }
 }

@@ -10,11 +10,14 @@ namespace Karting.UI
 
         private float startTime;
         private bool timerRunning;
+        public GameObject gamePlayManagerObj;
+        Karting.Game.GameplayManager gamePlayManager;
 
         void Start()
         {
             timerRunning = false;
             StartStopwatch();
+            gamePlayManager = gamePlayManagerObj.GetComponent<Karting.Game.GameplayManager>();
         }
 
         void Update()
@@ -23,6 +26,12 @@ namespace Karting.UI
             {
                 float elapsedTime = Time.time - startTime;
                 UpdateTimer(elapsedTime);
+                gamePlayManager.time = elapsedTime;
+                // Debug.Log("Time: " + gamePlayManager.time);
+                if (gamePlayManager.win)
+                {
+                    StopStopwatch();
+                }
             }
         }
 
