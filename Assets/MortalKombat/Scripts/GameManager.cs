@@ -15,7 +15,7 @@ namespace MortalKombat
         public GameObject cryptoPrefab;
         public GameObject zombiePrefab;
         
-
+        public string mapName = "Forest";
         public string player1Name;
         public string player2Name;
         public int Round = 1;
@@ -142,6 +142,25 @@ namespace MortalKombat
                 player2Controller.endLimit = 33.8f;
                 player2Controller.controls = SetPlayer2Controls();
             }
+
+            // if(player1 != null) 
+            // {
+            //     if(mapName == "Forest")
+            //     {
+            //         // set player1 position to (20.11,0.19,33.5) and rotation to (0,180,0)
+            //         player1.transform.position = new Vector3(20.11f, 0.19f, 33.5f);
+            //         player1.transform.rotation = Quaternion.Euler(0, 180, 0);
+            //     }
+            // }
+            // if(player2 != null)
+            // {
+            //     if(mapName == "Forest")
+            //     {
+            //         // set player2 position to (20.11,0.2,28.9) and rotation to (0,0,0)
+            //         player2.transform.position = new Vector3(20.11f, 0.2f, 28.9f);
+            //         player2.transform.rotation = Quaternion.Euler(0, 0, 0);
+            //     }
+            // }
         }
 
         Controls SetPlayer1Controls()
