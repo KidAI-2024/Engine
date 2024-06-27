@@ -57,8 +57,8 @@ namespace MortalKombat
         {
             gameManager = GameManager.Instance;
             gameManager.InstantiateCharacters();
-            // player1text.GetComponent<TextMeshProUGUI>().text = gameManager.player1Name;
-            // player2text.GetComponent<TextMeshProUGUI>().text = gameManager.player2Name;
+            player1text.GetComponent<TextMeshProUGUI>().text = gameManager.player1Name;
+            player2text.GetComponent<TextMeshProUGUI>().text = gameManager.player2Name;
             // Debug.Log("Player 1: " + gameManager.player1Name + " Player 2: " + gameManager.player2Name);
             // Load the Round value from Player Preferences
             Round = gameManager.Round;

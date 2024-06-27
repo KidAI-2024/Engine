@@ -62,7 +62,6 @@ namespace MortalKombat
             // enemy (right player)
             if (PLayer2Animator.GetBool(primaryHitHash) && this.gameObject.tag == "primary2" && col.gameObject.tag == "player")
             {
-                Debug.Log("Collision");
                 Player1.health -= Player2.primaryPower;
                 PLayer1Animator.SetBool(hitHash, true);
                 PLayer2Animator.SetBool(primaryHitHash, false);
