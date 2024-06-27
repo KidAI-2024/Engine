@@ -1160,6 +1160,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1496187155}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 1e5a2f00dbcd1b1488c6893105532b6c, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1228208348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1452,6 +1464,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1496187155}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 1e5a2f00dbcd1b1488c6893105532b6c, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1475227328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1626,6 +1650,10 @@ MonoBehaviour:
   MapNameText: {fileID: 600839934}
   map1_image: {fileID: 21300000, guid: 8d72d2cfc1f90b847aee27c7a2c42b59, type: 3}
   map2_image: {fileID: 21300000, guid: 533e67f09c1149c4b8e3b72546240d73, type: 3}
+  audioSource: {fileID: 1496187155}
+  SeaPortSound: {fileID: 8300000, guid: 1c7f2b2cc7135484cb3ac0fa46e95bea, type: 3}
+  ForestSound: {fileID: 8300000, guid: 6ba7b64237a9b3842b3f401fa0427b30, type: 3}
+  mapIndex: 2
 --- !u!82 &1496187155
 AudioSource:
   m_ObjectHideFlags: 0

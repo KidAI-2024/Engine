@@ -13,6 +13,10 @@ namespace MortalKombat
         public GameObject MapNameText;
         public Sprite map1_image;
         public Sprite map2_image;
+
+        public AudioSource audioSource;
+        public AudioClip SeaPortSound;
+        public AudioClip ForestSound;
         public int mapIndex;
         private GameManager gameManager;
 
@@ -21,6 +25,7 @@ namespace MortalKombat
         {
             gameManager = GameManager.Instance;
             gameManager.mapName = "Forest";
+            
             if(mapIndex == 2)
             {
                 NextMap();
@@ -28,6 +33,7 @@ namespace MortalKombat
         }
         public void LoadSelectedMap()
         {
+            audioSource.PlayOneShot(gameManager.mapName == "Forest" ? ForestSound : SeaPortSound);
             // load the selected map name
             SceneManager.LoadScene(gameManager.mapName);
         }
