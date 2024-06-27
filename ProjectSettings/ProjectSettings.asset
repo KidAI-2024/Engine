@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
   productName: KidAI
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: 39a07f8304b779548897a6e6e910ab63, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.011158439, g: 0, b: 0.5188679, a: 1}
   m_ShowUnitySplashScreen: 1
