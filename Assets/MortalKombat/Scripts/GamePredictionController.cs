@@ -50,6 +50,11 @@ namespace MortalKombat
         }
         void Update()
         {
+            if (player1 == null)
+            {
+                player1 = GameObject.Find("Player1");
+                return;
+            }
             frameCounter++;
             if (gameManager.predictIsOn && nextFrameReady && frameCounter % framePredicitonRate == 0)
             {
