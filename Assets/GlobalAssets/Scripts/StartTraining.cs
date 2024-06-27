@@ -153,9 +153,13 @@ public class StartTraining : MonoBehaviour
             { "model", projectController.model },
             { "feature_extraction_type", projectController.featureExtractionType },
             { "features", string.Join(",", projectController.features) },
+            {"num_classes", projectController.numberOfClasses.ToString() },
+            {"epochs", projectController.epochs.ToString()},
+            {"max_lr", projectController.learningRate.ToString()}
             { "event", trainingEvent }
+
         };
         socketClient.SendMessage(message);
         Debug.Log("Training Started");
-    } 
+    }
 }

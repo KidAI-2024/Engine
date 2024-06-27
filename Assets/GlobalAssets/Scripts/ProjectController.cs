@@ -27,6 +27,8 @@ public class ProjectController : MonoBehaviour
 
     public string directoryPath;
 
+    public int epochs = 10;
+    public float learningRate = 0.01f;
     // Ensure only one instance of ProjectController exists
     private void Awake()
     {
