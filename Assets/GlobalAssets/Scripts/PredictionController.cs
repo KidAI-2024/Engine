@@ -38,6 +38,10 @@ public class PredictionController : MonoBehaviour
         LoadModelToML();
         predictButton.GetComponent<Button>().interactable = false;
     }
+    
+    
+    
+    
     public void StartPrediction()
     {
         togglePredicting = !togglePredicting;
@@ -148,7 +152,8 @@ public class PredictionController : MonoBehaviour
         }
         return message;
     }
-    void ResetNextFrameReady(){
+    void ResetNextFrameReady()
+    {
         nextFrameReady = true;
     }
     void OnDestroy()

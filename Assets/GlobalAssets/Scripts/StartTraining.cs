@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 using GlobalAssets.UI;
+using UnityEngine.SceneManagement;
 
 public class StartTraining : MonoBehaviour
 {
@@ -48,7 +49,15 @@ public class StartTraining : MonoBehaviour
         TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
         isTrainingStarted = true;
         CreateClassMap();
-        saveProjectButton.GetComponent<SaveProject>().Save();
+        if (SceneManager.GetActiveScene().name == "Audio")
+        {
+            saveProjectButton.GetComponent<SaveAudioProject>().Save();
+        }
+        else
+        {
+            saveProjectButton.GetComponent<SaveProject>().Save();
+        }
+       
         if (!Validate()) return;
         SocketTrain();
     }

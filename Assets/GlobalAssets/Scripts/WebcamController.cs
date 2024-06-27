@@ -24,9 +24,9 @@ public class WebcamController : MonoBehaviour
 
     void Start()
     {
-        EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
-        EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
-        // Add a listener to the capture button
+        //EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
+        //EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
+        //// Add a listener to the capture button
         autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
         captureButton.onClick.AddListener(CapturePhoto);
         autoCaptureButton.onClick.AddListener(AutoCapture);

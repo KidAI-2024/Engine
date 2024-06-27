@@ -5,28 +5,27 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 
-
 namespace GlobalAssets.UI
 {
-    public class SaveProject : MonoBehaviour
+    public class SaveAudioProject : MonoBehaviour
     {
-        
         public GameObject targetGameObject; // The GameObject whose children contain ScrollView components
         public GameObject AddNewClassButton; // The button that adds a new class
         public GameObject CameraController; // The CameraController GameObject (will be used to instantiate the classBoxes)
-        public string folderPath = "Projects"; // Folder path to save the images
+        public string folderPath = "Projects"; // Folder path to save the audios
         private string savePath;
-        private List<ClassData> ImagesData = new List<ClassData>();
+        private List<ClassData> AudiosData = new List<ClassData>();
         ProjectController projectController;
-        // for loading images
-        List<Texture2D> capturedImages = new List<Texture2D>();
-        public GameObject imagePrefab;
-        GameObject EmptyImage;
-        Transform finalImagesContainer;
+        // for loading audios
+        List<AudioClip> capturedAudios = new List<AudioClip>();
+        public GameObject audioPrefab;
+        GameObject EmptyAudio;
+        Transform finalAudiosContainer;
+
         private struct ClassData
         {
             public string className;
-            public List<byte[]> images;
+            public List<AudioClip> audios;
         }
 
         // Start is called before the first frame update
@@ -36,100 +35,98 @@ namespace GlobalAssets.UI
             Load();
             this.gameObject.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => Save());
         }
+
         private void Load()
         {
             // If number of classes > 2 instantiate new classBoxes using AddNewClassButton.GetComponent<AddNewClass>().InstantiateNewClass();
-            // Loop over classes in the projectController.classes list folders and load the images
+            // Loop over classes in the projectController.classes list folders and load the audios
             // Modify the classBox's input field to have the class name
-            // Load the images into the classBox   
-            
+            // Load the audios into the classBox   
+
             for (int i = 0; i < projectController.classes.Count; i++)
             {
-                capturedImages.Clear();
+                capturedAudios.Clear();
                 if (i > 1)
                     AddNewClassButton.GetComponent<AddNewClass>().InstantiateNewClass();
 
                 Transform classBox = targetGameObject.transform.GetChild(i);
                 TMP_InputField className = classBox.GetChild(0).GetChild(1).GetComponentInChildren<TMP_InputField>();
                 className.text = projectController.classes[i];
-                finalImagesContainer = classBox.GetChild(0).GetChild(4).GetChild(0).GetChild(0).gameObject.transform; // ImagesContainer
-                EmptyImage = finalImagesContainer.parent.parent.transform.GetChild(2).gameObject;
+                finalAudiosContainer = classBox.GetChild(0).GetChild(4).GetChild(0).GetChild(0).gameObject.transform; // AudiosContainer
+                EmptyAudio = finalAudiosContainer.parent.parent.transform.GetChild(2).gameObject;
                 string classFolderPath = Path.Combine(folderPath, projectController.projectName, i + "_" + projectController.classes[i]);
                 if (Directory.Exists(classFolderPath))
                 {
-                    string[] imagePaths = Directory.GetFiles(classFolderPath);
+                    string[] audioPaths = Directory.GetFiles(classFolderPath);
 
-                    foreach (string imagePath in imagePaths)
+                    foreach (string audioPath in audioPaths)
                     {
-                        byte[] bytes = File.ReadAllBytes(imagePath);
-                        Texture2D texture = new Texture2D(320,180);
-                        texture.LoadImage(bytes);
-                        capturedImages.Add(texture);
+                        byte[] bytes = File.ReadAllBytes(audioPath);
+                        AudioClip audioClip = WavUtility.ToAudioClip(bytes, audioPath); // Assuming you have a utility to convert bytes to AudioClip
+                        capturedAudios.Add(audioClip);
                     }
-                    LoadImages();
+                    LoadAudios();
                 }
             }
         }
-        public void LoadImages()
+
+        public void LoadAudios()
         {
-            
-            foreach (Transform child in finalImagesContainer)
+            foreach (Transform child in finalAudiosContainer)
             {
                 Destroy(child.gameObject);
             }
             int i = 0;
-            // add all the captured images to the finalImagesContainer
-            foreach (Texture2D image in capturedImages)
+            // add all the captured audios to the finalAudiosContainer
+            foreach (AudioClip audio in capturedAudios)
             {
-                GameObject newImageObject = Instantiate(imagePrefab, finalImagesContainer);
-                RawImage newImage = newImageObject.GetComponent<RawImage>();
-                newImage.texture = image;
-                
-                // Set the position of the new RawImage to stack horizontally in a grid
-                float spacingX = 70f; // Adjust the horizontal spacing between images
+                GameObject newAudioObject = Instantiate(audioPrefab, finalAudiosContainer);
+                AudioSource newAudioSource = newAudioObject.GetComponent<AudioSource>();
+                newAudioSource.clip = audio;
+
+                // Set the position of the new AudioSource to stack horizontally in a grid
+                float spacingX = 70f; // Adjust the horizontal spacing between audios
                 float spacingY = 70f; // Adjust the vertical spacing between rows
                 int maxColumns = 3; // Number of columns in the grid
                 int row = i / maxColumns; // Calculate the row index
                 int col = i % maxColumns; // Calculate the column index
 
-
                 Vector3 newPosition = new Vector3(col * spacingX + 5, -row * spacingY - 5, 0);
-                newImageObject.transform.localPosition = newPosition;
-                newImageObject.GetComponent<RemoveImage>().ImageIndex = i;
-                newImageObject.GetComponent<RemoveImage>().capturedImages = capturedImages;
-                newImageObject.GetComponent<RemoveImage>().isLoad = true;
-                // get the imageContainer and increase its height
-                if (col == 0 && capturedImages.Count > 8)
+                newAudioObject.transform.localPosition = newPosition;
+                newAudioObject.GetComponent<RemoveAudios>().ImageIndex = i;
+                newAudioObject.GetComponent<RemoveAudios>().capturedAudios = capturedAudios;
+                newAudioObject.GetComponent<RemoveAudios>().isLoad = true;
+                // get the audioContainer and increase its height
+                if (col == 0 && capturedAudios.Count > 8)
                 {
-                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                        finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
-                        finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70
+                    finalAudiosContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                        finalAudiosContainer.GetComponent<RectTransform>().sizeDelta.x,
+                        finalAudiosContainer.GetComponent<RectTransform>().sizeDelta.y + 70
                     );
                 }
                 i++;
             }
-            EmptyImage.SetActive(capturedImages.Count == 0);
+            EmptyAudio.SetActive(capturedAudios.Count == 0);
         }
 
         public void Save()
         {
-            //if()schene name
-            GetImages();
-            SaveImagesToPath();
+            GetAudios();
+            SaveAudiosToPath();
             projectController.Save();
-
         }
-        private void SaveImagesToPath()
+
+        private void SaveAudiosToPath()
         {
             // Define the base folder path
             string basePath = folderPath;
             savePath = basePath + "/" + projectController.projectName; // Project One be dynamic
-            // Save ImagesData to basePath/Project1/ImagesData.className/images[i].png
-            for (int i = 0; i < ImagesData.Count; i++)
+            // Save AudiosData to basePath/Project1/AudiosData.className/audios[i].wav
+            for (int i = 0; i < AudiosData.Count; i++)
             {
                 // Construct the folder path for the current class
-                string classFolderPath = Path.Combine(basePath, projectController.projectName, i + "_" + ImagesData[i].className);
-                
+                string classFolderPath = Path.Combine(basePath, projectController.projectName, i + "_" + AudiosData[i].className);
+
                 // delete directory that starts with i_
                 string[] directories = Directory.GetDirectories(savePath);
                 foreach (string directory in directories)
@@ -139,29 +136,30 @@ namespace GlobalAssets.UI
                         Directory.Delete(directory, true);
                     }
                 }
-                
+
                 // Create the directory if it doesn't exist
                 if (!Directory.Exists(classFolderPath))
                 {
                     Directory.CreateDirectory(classFolderPath);
                 }
 
-                // Save each image
-                for (int j = 0; j < ImagesData[i].images.Count; j++)
+                // Save each audio
+                for (int j = 0; j < AudiosData[i].audios.Count; j++)
                 {
+                    // Construct the file path for the current audio
+                    string audioPath = Path.Combine(classFolderPath, i + "_" + AudiosData[i].className + "_" + j + ".wav");
 
-                    // Construct the file path for the current image
-                    string imagePath = Path.Combine(classFolderPath, i + "_" + ImagesData[i].className + "_" + j + ".png");
+                    // Convert the AudioClip to a byte array
+                    byte[] bytes = WavUtility.FromAudioClipStream(AudiosData[i].audios[j]);
 
-                    // Write the image bytes to the file
-                    File.WriteAllBytes(imagePath, ImagesData[i].images[j]);
+                    // Write the audio bytes to the file
+                    File.WriteAllBytes(audioPath, bytes);
                 }
             }
         }
 
-        private void GetImages()
+        private void GetAudios()
         {
-
             // Check if the targetGameObject is provided
             if (targetGameObject == null)
             {
@@ -169,9 +167,9 @@ namespace GlobalAssets.UI
                 return;
             }
             int j = 0;
-            ImagesData.Clear();
+            AudiosData.Clear();
             projectController.classes.Clear(); // clear the classes list
-            projectController.imagesPerClass.Clear(); // clear the images per class dictionary
+            projectController.imagesPerClass.Clear(); // clear the audios per class dictionary
             // Get the transform of the targetGameObject
             Transform targetTransform = targetGameObject.transform;
             // Iterate through all direct children of the targetGameObject
@@ -184,25 +182,23 @@ namespace GlobalAssets.UI
                     // Create a new ClassData object and add it to the list
                     string classNameText = className.text;
                     projectController.classes.Add(classNameText); // add the class to the project controller
-                    ImagesData.Add(new ClassData { className = classNameText, images = new List<byte[]>() });
-                    
-                    // from each child, find "Content" object and get the images inside it
+                    AudiosData.Add(new ClassData { className = classNameText, audios = new List<AudioClip>() });
+
+                    // from each child, find "Content" object and get the audios inside it
                     Transform content = child.GetComponentInChildren<Mask>().transform;
                     if (content != null)
                     {
-                        // Get all the Raw Images inside the Content object
-                        RawImage[] images = content.GetComponentsInChildren<RawImage>(true);
-                        // Loop through each image and save it
-                        for (int i = 0; i < images.Length; i++)
+                        // Get all the AudioSource components inside the Content object
+                        AudioSource[] audios = content.GetComponentsInChildren<AudioSource>(true);
+                        // Loop through each audio and save it
+                        for (int i = 0; i < audios.Length; i++)
                         {
-                            // Get the texture from the Raw Image
-                            Texture2D texture = images[i].texture as Texture2D;
-                            // Convert the texture to a byte array
-                            byte[] bytes = texture.EncodeToPNG();
-                            // Add the byte array to the list of images
-                            ImagesData[j].images.Add(bytes);
+                            // Get the AudioClip from the AudioSource
+                            AudioClip audioClip = audios[i].clip;
+                            // Add the AudioClip to the list of audios
+                            AudiosData[j].audios.Add(audioClip);
                         }
-                        projectController.imagesPerClass.Add(classNameText, ImagesData[j].images.Count);
+                        projectController.imagesPerClass.Add(classNameText, AudiosData[j].audios.Count);
                     }
                     j++;
                 }
