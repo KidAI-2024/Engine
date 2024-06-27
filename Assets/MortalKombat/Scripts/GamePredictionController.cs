@@ -27,8 +27,6 @@ namespace MortalKombat
             socketClient = GlobalAssets.Socket.SocketUDP.Instance;
             projectController = ProjectController.Instance;
             // search game object called PLayer1
-            player1 = GameObject.Find("Player1");
-            // player2 = GameObject.Find("Player2");
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
             {
@@ -46,6 +44,9 @@ namespace MortalKombat
             webcamDisplay.material.mainTexture = webcamTexture;
             webcamTexture.Play();
             predictionText.text = "";
+            
+            player1 = GameObject.Find("Player1");
+            // player2 = GameObject.Find("Player2");
         }
         void Update()
         {

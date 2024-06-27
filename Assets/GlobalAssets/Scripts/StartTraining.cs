@@ -155,7 +155,7 @@ public class StartTraining : MonoBehaviour
             { "features", string.Join(",", projectController.features) },
             {"num_classes", projectController.numberOfClasses.ToString() },
             {"epochs", projectController.epochs.ToString()},
-            {"max_lr", projectController.learningRate.ToString()}
+            {"max_lr", projectController.learningRate.ToString()},
             { "event", trainingEvent }
 
         };
