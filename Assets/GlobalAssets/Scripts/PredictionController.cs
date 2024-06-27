@@ -151,6 +151,13 @@ public class PredictionController : MonoBehaviour
         {
             return projectController.PythonClassesToUnityClassesMap[message];
         }
+        //TODO: if class is -1, then return "No Prediction"
+        /*
+        if (message == "-1")
+        {
+            return "No Prediction";
+        }
+        */
         return message;
     }
     void ResetNextFrameReady()
