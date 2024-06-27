@@ -10,7 +10,7 @@ namespace MortalKombat
         private GameObject enemyPlayer;
         private GameObject player1;
         private float timer = -3f; // Timer to keep track of elapsed time
-        private float interval = 1f; // Time interval in seconds
+        private float interval = 0.7f; // Time interval in seconds
 
         private GameManager gameManager;
         // Start is called before the first frame update
@@ -62,14 +62,14 @@ namespace MortalKombat
             float enemyPosition = enemyPlayer.transform.position.z;
 
             // If the player is in front of the enemy with close distance, the enemy will attack
-            if (player1Position > enemyPosition - 1 && player1Position < enemyPosition + 1.5)
+            if (player1Position > enemyPosition - 1.5 && player1Position < enemyPosition + 1.5)
             {
                 int rand = Random.Range(0, 2);
                 if (rand == 0)
                     enemyController.secondaryHitAuto = true;
                 else
                     enemyController.primaryHitAuto = true;
-                timer -= 2;
+                timer -= 1.5f;
             }
 
             // If the player is in front of the enemy, the enemy will move forward

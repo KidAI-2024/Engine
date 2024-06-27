@@ -13,6 +13,7 @@ namespace MortalKombat
         public GameObject MapNameText;
         public Sprite map1_image;
         public Sprite map2_image;
+        public int mapIndex;
         private GameManager gameManager;
 
         // Start is called before the first frame update
@@ -20,6 +21,10 @@ namespace MortalKombat
         {
             gameManager = GameManager.Instance;
             gameManager.mapName = "Forest";
+            if(mapIndex == 2)
+            {
+                NextMap();
+            }
         }
         public void LoadSelectedMap()
         {
