@@ -6349,6 +6349,7 @@ MonoBehaviour:
   warningPanel: {fileID: 4262488912688447590}
   feebackPanel: {fileID: 3160493266296037638}
   predictButton: {fileID: 8230324479711915715}
+  trainingInProgress: 0
 --- !u!114 &957079022398751654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6511,6 +6512,7 @@ MonoBehaviour:
   classesContainer: {fileID: 5658957460829990127}
   predictButton: {fileID: 8230324479711915715}
   predAnalysisScrollView: {fileID: 2458369975947267659}
+  TrainingButton: {fileID: 8230324479330642376}
 --- !u!82 &6716890702220441676
 AudioSource:
   m_ObjectHideFlags: 0

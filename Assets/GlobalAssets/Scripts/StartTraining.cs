@@ -14,7 +14,7 @@ public class StartTraining : MonoBehaviour
     public GameObject warningPanel;
     public GameObject feebackPanel;
     public GameObject predictButton;
-
+    public bool trainingInProgress = false;
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
     private bool isTrainingFinished = false;
@@ -32,10 +32,12 @@ public class StartTraining : MonoBehaviour
     }
     void Update()
     {
-        if(!isTrainingFinished && isTrainingStarted)
+        trainingInProgress = !isTrainingFinished && isTrainingStarted;
+        if(trainingInProgress)
         {
             if (socketClient.isDataAvailable())
             {
+                Debug.Log("Data is Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")
@@ -44,6 +46,7 @@ public class StartTraining : MonoBehaviour
                     projectController.savedModelFileName = response["saved_model_name"];
                     projectController.Save();
                     isTrainingFinished = true;
+                    isTrainingStarted = false;
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
 
@@ -58,6 +61,14 @@ public class StartTraining : MonoBehaviour
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
                 }
+                else if (response["status"] == "failed")
+                {
+                    DisplayWarning("Training Failed", "OK");
+                    TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
+                    TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
+                    isTrainingFinished = true;
+                    isTrainingStarted = false;
+                }
             }
         }
     }
@@ -65,6 +76,7 @@ public class StartTraining : MonoBehaviour
         TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
         TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
         isTrainingStarted = true;
+        isTrainingFinished = false;
         CreateClassMap();
         saveProjectButton.GetComponent<SaveProject>().Save();
         if (!Validate()) return;
