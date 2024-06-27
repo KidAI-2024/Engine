@@ -37,7 +37,6 @@ public class StartTraining : MonoBehaviour
         {
             if (socketClient.isDataAvailable())
             {
-                Debug.Log("Data is Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")
@@ -73,13 +72,13 @@ public class StartTraining : MonoBehaviour
         }
     }
     public void StartSocketTraining(){
-        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
-        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
-        isTrainingStarted = true;
-        isTrainingFinished = false;
-        CreateClassMap();
         saveProjectButton.GetComponent<SaveProject>().Save();
         if (!Validate()) return;
+        isTrainingFinished = false;
+        isTrainingStarted = true;
+        CreateClassMap();
+        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
+        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
         SocketTrain();
     }
     // This function creates a map of class names to class indices

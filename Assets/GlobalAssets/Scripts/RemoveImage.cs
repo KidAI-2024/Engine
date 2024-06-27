@@ -56,9 +56,9 @@ public class RemoveImage : MonoBehaviour
         // Remove the last child (empty space)
         Destroy(gameObject);
         // Update the capturedImages list
-        Debug.Log("ImageIndex: " + ImageIndex + " capturedImages.Count: " + capturedImages.Count);
+        // Debug.Log("ImageIndex: " + ImageIndex + " capturedImages.Count: " + capturedImages.Count);
 
         capturedImages.RemoveAt(ImageIndex);
-        numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
+        //numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
     }
 }
