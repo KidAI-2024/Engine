@@ -3651,7 +3651,7 @@ MonoBehaviour:
   round1Sound: {fileID: 8300000, guid: bc4283319a3d98848a5446e4adca90af, type: 3}
   round2Sound: {fileID: 8300000, guid: ae549a8ff91ff294f984a03055b19442, type: 3}
   round3Sound: {fileID: 8300000, guid: 7eb4188d008de5a4d927525df2071c63, type: 3}
-  backAfter: 5
+  backAfter: 10
 --- !u!114 &383070084404931611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3666,7 +3666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   webcamDisplay: {fileID: 383070083051177515}
   predictionText: {fileID: 383070084417780044}
-  framePredicitonRate: 5
+  framePredicitonRate: 4
 --- !u!114 &383070084404931610
 MonoBehaviour:
   m_ObjectHideFlags: 0
