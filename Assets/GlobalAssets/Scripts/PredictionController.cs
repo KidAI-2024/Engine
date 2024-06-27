@@ -25,6 +25,7 @@ public class PredictionController : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Prediction Controller started");
         predictionText.text = "Predict";
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
@@ -35,6 +36,8 @@ public class PredictionController : MonoBehaviour
             requestedWidth = 320,
             requestedHeight = 180
         };
+        // Load the model to the server
+        Debug.Log("Loading model to server");
         LoadModelToML();
         predictButton.GetComponent<Button>().interactable = false;
     }
@@ -72,7 +75,8 @@ public class PredictionController : MonoBehaviour
         {
             { "project_name", projectController.projectName},
             { "saved_model_name", projectController.savedModelFileName},
-            { "event", LoadModelEventName }
+            { "event", LoadModelEventName },
+            {"num_classes", projectController.numberOfClasses.ToString() }
         };
         socketClient.SendMessage(message);
     }
@@ -113,6 +117,7 @@ public class PredictionController : MonoBehaviour
             }
             else if (response["event"] == LoadModelEventName)
             {
+                Debug.Log("Load Received: " + response["status"]);
                 if (response["status"] == "success") // Model loaded successfully
                 {
                     CreateClassMap();
@@ -146,9 +151,17 @@ public class PredictionController : MonoBehaviour
         {
             return projectController.PythonClassesToUnityClassesMap[message];
         }
+        //TODO: if class is -1, then return "No Prediction"
+        /*
+        if (message == "-1")
+        {
+            return "No Prediction";
+        }
+        */
         return message;
     }
-    void ResetNextFrameReady(){
+    void ResetNextFrameReady()
+    {
         nextFrameReady = true;
     }
     void OnDestroy()

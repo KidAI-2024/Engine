@@ -20,7 +20,8 @@ public class ProjectController : MonoBehaviour
     public Dictionary<string, string> classesToControlsMap = new Dictionary<string, string>(); // Class : ControlName
     public Dictionary<string, string> ControlsToclassesMap = new Dictionary<string, string>(); // ControlName : Class
     public Dictionary<string, string> PythonClassesToUnityClassesMap = new Dictionary<string, string>(); // Python Predicted Class : Unity Class
-
+    public int epochs = 10;
+    public float learningRate = 0.01f;
     // Ensure only one instance of ProjectController exists
     private void Awake()
     {
