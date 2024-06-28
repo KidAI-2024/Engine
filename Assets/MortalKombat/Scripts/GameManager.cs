@@ -51,7 +51,6 @@ namespace MortalKombat
             foreach (var item in projectController.classesToControlsMap)
             {
                 projectController.ControlsToclassesMap[item.Value] = item.Key;
-                // Debug.Log("Control: " + item.Value + " Class: " + item.Key);
             }
         }
         public void InstantiateCharacters()
@@ -182,13 +181,18 @@ namespace MortalKombat
 
         Controls SetPlayer1Controls()
         {
+            string predicted_forward = projectController.ControlsToclassesMap.ContainsKey("Right")? projectController.ControlsToclassesMap["Right"] : "?_?";
+            string predicted_backward = projectController.ControlsToclassesMap.ContainsKey("Left")? projectController.ControlsToclassesMap["Left"] : "?_?";
+            string predicted_primaryHit = projectController.ControlsToclassesMap.ContainsKey("Primary")? projectController.ControlsToclassesMap["Primary"] : "?_?";
+            string predicted_secondaryHit = projectController.ControlsToclassesMap.ContainsKey("Secondary")? projectController.ControlsToclassesMap["Secondary"] : "?_?";
+
             return new Controls
             {
-                forward = new List<string>{"d", projectController.ControlsToclassesMap["Right"]},
-                backward = new List<string>{"a", projectController.ControlsToclassesMap["Left"]},
+                forward = new List<string>{"d", predicted_forward},
+                backward = new List<string>{"a", predicted_backward},
                 jump = "w", 
-                primaryHit = new List<string>{"e", projectController.ControlsToclassesMap["Primary"]},
-                secondaryHit = new List<string>{"space", projectController.ControlsToclassesMap["Secondary"]},
+                primaryHit = new List<string>{"e", predicted_primaryHit},
+                secondaryHit = new List<string>{"space", predicted_secondaryHit},
                 block = "q",
                 isEnabled = true
             };
