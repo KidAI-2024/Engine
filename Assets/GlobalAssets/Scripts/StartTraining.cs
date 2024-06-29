@@ -10,6 +10,7 @@ public class StartTraining : MonoBehaviour
 {
     public string trainingEvent;
     public GameObject saveProjectButton;
+    public bool trainingInProgress = false;
     public GameObject warningPanel;
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
@@ -26,18 +27,29 @@ public class StartTraining : MonoBehaviour
     }
     void Update()
     {
-        if(!isTrainingFinished && isTrainingStarted)
+        trainingInProgress = !isTrainingFinished && isTrainingStarted;
+        if (trainingInProgress)
         {
+          
             if (socketClient.isDataAvailable())
             {
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                Debug.Log(response);
+                foreach (KeyValuePair<string, string> kvp in response)
+                {
+                   
+                        Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+                    
+                }
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")
                 {
+                    Debug.Log("In Train");
                     projectController.isTrained = true;
                     projectController.savedModelFileName = response["saved_model_name"];
                     projectController.Save();
                     isTrainingFinished = true;
+                    isTrainingStarted = false;
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
                 }
@@ -48,6 +60,7 @@ public class StartTraining : MonoBehaviour
         TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
         TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
         isTrainingStarted = true;
+        isTrainingFinished=false;
         CreateClassMap();
         if (SceneManager.GetActiveScene().name == "Audio")
         {
@@ -95,7 +108,7 @@ public class StartTraining : MonoBehaviour
         // check if number if image a class is less than 10
         foreach (string className in projectController.classes)
         {
-            if (projectController.imagesPerClass[className] < 10)
+            if (projectController.imagesPerClass[className] < 1)
             {
                 DisplayWarning("Add at least 10 images to each class", "OK");
                 return false;

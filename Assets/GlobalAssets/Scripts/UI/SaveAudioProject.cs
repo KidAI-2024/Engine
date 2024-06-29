@@ -31,6 +31,7 @@ namespace GlobalAssets.UI
         // Start is called before the first frame update
         void Start()
         {
+            Debug.Log("in save here");
             projectController = ProjectController.Instance;
             Load();
             this.gameObject.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => Save());
@@ -47,7 +48,8 @@ namespace GlobalAssets.UI
             {
                 capturedAudios.Clear();
                 if (i > 1)
-                    AddNewClassButton.GetComponent<AddNewClass>().InstantiateNewClass();
+                    AddNewClassButton.GetComponent<AddAudioClass>().InstantiateNewClass();
+                    //AddNewClassButton.GetComponent<?AddAudioClass>().InstantiateNewClass();
 
                 Transform classBox = targetGameObject.transform.GetChild(i);
                 TMP_InputField className = classBox.GetChild(0).GetChild(1).GetComponentInChildren<TMP_InputField>();

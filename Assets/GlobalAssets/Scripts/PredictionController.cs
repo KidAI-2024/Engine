@@ -13,6 +13,7 @@ public class PredictionController : MonoBehaviour
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
     public GameObject predictButton;
+    public GameObject TrainingButton;
 
     private bool nextFrameReady = true;
     private bool startPrediction = false;
@@ -25,6 +26,7 @@ public class PredictionController : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("IN PRED CALSS");
         predictionText.text = "Predict";
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
@@ -105,30 +107,34 @@ public class PredictionController : MonoBehaviour
                 nextFrameReady = false;
             }
         }
-        // Receive the response from the server
-        if (socketClient.isDataAvailable())
-        {
-            Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-            if (response["event"] == PredictEventName)
+        //bool trainingInProgress = TrainingButton.GetComponent<StartTraining>().trainingInProgress;
+        bool trainingInProgress = true;
+        if (trainingInProgress)
+        { // Receive the response from the server
+            if (socketClient.isDataAvailable())
             {
-                string pred = response["prediction"];
-                Debug.Log("Received: " + pred);
-                predictionText.text = MapToClassName(pred);
-            }
-            else if (response["event"] == LoadModelEventName)
-            {
-                if (response["status"] == "success") // Model loaded successfully
+                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                if (response["event"] == PredictEventName)
                 {
-                    CreateClassMap();
-                    predictButton.GetComponent<Button>().interactable = true;
+                    string pred = response["prediction"];
+                    Debug.Log("Received: " + pred);
+                    predictionText.text = MapToClassName(pred);
                 }
-                else // Model loading failed.. lock the predict button
+                else if (response["event"] == LoadModelEventName)
                 {
-                    predictButton.GetComponent<Button>().interactable = false;
+                    if (response["status"] == "success") // Model loaded successfully
+                    {
+                        CreateClassMap();
+                        predictButton.GetComponent<Button>().interactable = true;
+                    }
+                    else // Model loading failed.. lock the predict button
+                    {
+                        predictButton.GetComponent<Button>().interactable = false;
+                    }
                 }
+                nextFrameReady = true;
+                // Invoke("ResetNextFrameReady", 1.0f);
             }
-            nextFrameReady = true;
-            // Invoke("ResetNextFrameReady", 1.0f);
         }
     }
     // This function creates a map of class names to class indices

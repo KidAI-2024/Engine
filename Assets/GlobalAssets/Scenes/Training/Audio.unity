@@ -11008,7 +11008,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4451610672621393792}
   m_HandleRect: {fileID: 4451610672621393793}
   m_Direction: 3
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -16575,6 +16575,7 @@ MonoBehaviour:
   sampleRate: 44100
   chunkDuration: 1
   classesContainer: {fileID: 5658957462740086780}
+  TrainingButton: {fileID: 8230324481312041691}
 --- !u!114 &8230324481312041688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16718,6 +16719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trainingEvent: start_audio_train
   saveProjectButton: {fileID: 7757605286404077015}
+  trainingInProgress: 0
   warningPanel: {fileID: 4262488914061443957}
 --- !u!222 &8230324481312041695
 CanvasRenderer:
