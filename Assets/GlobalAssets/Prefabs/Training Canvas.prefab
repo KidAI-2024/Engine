@@ -2538,6 +2538,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &4164737915993657953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4034,6 +4035,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &5543479245830114324
 GameObject:
   m_ObjectHideFlags: 0
@@ -4370,6 +4372,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &5814341234558806632
 GameObject:
   m_ObjectHideFlags: 0
@@ -5177,6 +5180,7 @@ MonoBehaviour:
   numCapturedText: {fileID: 104892566259470874}
   EmptyImage: {fileID: 0}
   capturedImages: []
+  isPreprossingInProgress: 0
 --- !u!1 &7070607014872872523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5667,6 +5671,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &7757605288314992324
 GameObject:
   m_ObjectHideFlags: 0
@@ -5807,6 +5812,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &1118973967304101842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6366,6 +6372,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &8230324479376756124
 GameObject:
   m_ObjectHideFlags: 0
@@ -6513,6 +6520,7 @@ MonoBehaviour:
   predictButton: {fileID: 8230324479711915715}
   predAnalysisScrollView: {fileID: 2458369975947267659}
   TrainingButton: {fileID: 8230324479330642376}
+  CapturingImagesPanel: {fileID: 7055515263572593785}
 --- !u!82 &6716890702220441676
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6760,6 +6768,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &8230324479516099468
 GameObject:
   m_ObjectHideFlags: 0
@@ -7361,6 +7370,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &8230324479927702542
 GameObject:
   m_ObjectHideFlags: 0
@@ -7723,6 +7733,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &8230324480607045244
 GameObject:
   m_ObjectHideFlags: 0
@@ -8363,6 +8374,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890702220441676}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &3121602321630880016
 MonoBehaviour:
   m_ObjectHideFlags: 0

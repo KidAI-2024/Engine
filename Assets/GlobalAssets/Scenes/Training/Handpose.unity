@@ -282,6 +282,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2395085763816455707, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: EnablePreprocessing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2395085763816455707, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: PreprocessingEventName
+      value: preprocess_hand_pose
+      objectReference: {fileID: 0}
     - target: {fileID: 4995968369288576209, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

@@ -1288,6 +1288,7 @@ MonoBehaviour:
   audioSource: {fileID: 1987724055}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &250084562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6651,6 +6652,14 @@ PrefabInstance:
     - target: {fileID: 2226241978923523142, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.000011112014
+      objectReference: {fileID: 0}
+    - target: {fileID: 2395085763816455707, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: EnablePreprocessing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2395085763816455707, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: PreprocessingEventName
+      value: preprocess_body_pose
       objectReference: {fileID: 0}
     - target: {fileID: 2571160937542685804, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -37,6 +37,7 @@ public class StartTraining : MonoBehaviour
         {
             if (socketClient.isDataAvailable())
             {
+                Debug.Log("Training data Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")

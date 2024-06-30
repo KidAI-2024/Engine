@@ -15,6 +15,7 @@ public class PredictionController : MonoBehaviour
     public GameObject predictButton;
     public GameObject predAnalysisScrollView;
     public GameObject TrainingButton;
+    public GameObject CapturingImagesPanel;
 
     private bool nextFrameReady = true;
     private Color32[] frame;
@@ -104,11 +105,12 @@ public class PredictionController : MonoBehaviour
             }
         }
         bool trainingInProgress = TrainingButton.GetComponent<StartTraining>().trainingInProgress;
-        if (!trainingInProgress)
+        bool isPreprossingInProgress = CapturingImagesPanel.GetComponent<WebcamController>().isPreprossingInProgress;
+        if (!trainingInProgress && !isPreprossingInProgress)
         {
             // Receive the response from the server
             if (socketClient.isDataAvailable())
-            {
+            {  
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 if (response["event"] == PredictEventName)
                 {
