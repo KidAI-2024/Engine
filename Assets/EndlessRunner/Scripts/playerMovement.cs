@@ -14,12 +14,30 @@ public class playerMovement : MonoBehaviour
     public float jump_force;
 
     public Rigidbody rb;
-   
+    private GlobalAssets.Socket.SocketUDP socketClient;
+    private ProjectController projectController;
+
+
+    //public int pythonPredictedClass { get; private set; } = -1;
+    //public string UnityPredictedClass { get; private set; } = "";
     // Start is called before the first frame update
     void Start()
     {
+        socketClient = GlobalAssets.Socket.SocketUDP.Instance;
+        projectController = ProjectController.Instance;
         current_position = 1;
         Physics.gravity = new Vector3(0, -50f, 0);
+
+        
+        // Check if the device supports microphone
+        Dictionary<string, string> message = new Dictionary<string, string>
+        {
+
+            { "event", "predict_audio" }
+        };
+
+        // Send the message to the server
+        socketClient.SendMessage(message);
     }
  
     private void OnTriggerEnter(Collider other)
@@ -58,10 +76,46 @@ public class playerMovement : MonoBehaviour
     void OnDestroy()
     {
         Physics.gravity = new Vector3(0,-9.81f,0);
+        Dictionary<string, string> message = new Dictionary<string, string>
+        {
+
+            { "event", "stop_prediction" }
+        };
+
+        // Send the message to the server
+        socketClient.SendMessage(message);
+    }
+    string PythonToUnityClassName(string message)
+    {
+        if (projectController.PythonClassesToUnityClassesMap.ContainsKey(message))
+        {
+            return projectController.PythonClassesToUnityClassesMap[message];
+        }
+        return message;
     }
     void Update()
     {
-        
+        string pred_class = "";
+        string pred_control = "";
+        // Receive the response from the server (Python)
+        if (socketClient.isDataAvailable())
+        {
+            Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+
+            if (response["event"] == "predict_audio")
+            {
+                string pred = response["prediction"];
+                if (pred != "none")
+                {       pred_class = PythonToUnityClassName(pred);
+                    if(pred_class!="none")
+                pred_control = projectController.classesToControlsMap[pred_class];
+            }
+                //Debug.Log("Received Prediction: " + MapToClassName(pred) + " " + pred);
+                //predictionText.text = MapToClassName(pred);
+            }
+           
+        }
+
 
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + for_speed * Time.deltaTime);
         //transform.position += transform.forward * for_speed * Time.deltaTime;
@@ -79,7 +133,7 @@ public class playerMovement : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, new Vector3(5.5f, transform.position.y, transform.position.z), side_speed * Time.deltaTime);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow)|| pred_control == "Right")
         {
             if (current_position == 0)
             {
@@ -90,7 +144,7 @@ public class playerMovement : MonoBehaviour
                 current_position = 2;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)|| pred_control == "Left")
         {
             if (current_position == 1)
             {
@@ -101,7 +155,7 @@ public class playerMovement : MonoBehaviour
                 current_position = 1;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow)|| pred_control == "Jump")
         {
 
             if (transform.position.y <= 1)
