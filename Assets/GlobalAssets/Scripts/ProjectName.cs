@@ -80,7 +80,6 @@ public class ProjectName : MonoBehaviour
     }
     public void CreateProject()
     {
-        LoadingPanel.SetActive(true);
         string projectName = ProjectNameTextField.GetComponentInChildren<TMP_InputField>().text;
         TextMeshProUGUI ErrorMessageText = ErrorMessageTextField.GetComponentInChildren<TextMeshProUGUI>();
         if(projectName == "")
@@ -89,6 +88,7 @@ public class ProjectName : MonoBehaviour
             Debug.Log("*Project must have a name");
             return;
         }
+        LoadingPanel.SetActive(true);
         ErrorMessageText.text = "";
         string createdAt = System.DateTime.Now.ToString("yyyy-MM-dd");
         
