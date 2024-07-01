@@ -26,6 +26,8 @@ public class PredictionController : MonoBehaviour
     private bool togglePredicting = false;
     private ProjectController projectController;
     private Texture2D predictImagePlaceHolder;
+    private bool isPredictingUploadedImage = false;
+
     void Start()
     {
         predictionText.text = "Predict";
@@ -46,6 +48,7 @@ public class PredictionController : MonoBehaviour
     }
     public void StartUploadPrediction()
     {
+        isPredictingUploadedImage = true;
         // add code to upload image 
         // webcamDisplay.texture =  uploaded image texture; 
         // webcamDisplay.material.mainTexture = uploaded image texture;
@@ -97,7 +100,7 @@ public class PredictionController : MonoBehaviour
         // if (Input.GetKeyDown(KeyCode.Space))
         if (nextFrameReady)
         {
-            if (webcamTexture.isPlaying)
+            if (webcamTexture.isPlaying || isPredictingUploadedImage)
             {
                 // Send the frame to the server
                 frame = webcamTexture.GetPixels32();
@@ -114,6 +117,7 @@ public class PredictionController : MonoBehaviour
                 };
                 socketClient.SendMessage(message);
                 nextFrameReady = false;
+                isPredictingUploadedImage = false;
             }
         }
         bool trainingInProgress = TrainingButton.GetComponent<StartTraining>().trainingInProgress;
