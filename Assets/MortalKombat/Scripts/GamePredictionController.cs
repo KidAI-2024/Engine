@@ -11,7 +11,6 @@ namespace MortalKombat
         public TextMeshProUGUI predictionText;
         public int framePredicitonRate = 5; // predict every 5 frames
 
-
         private GameObject player1;
         private GameObject player2;
         private bool nextFrameReady = true;
@@ -20,13 +19,14 @@ namespace MortalKombat
         private WebCamTexture webcamTexture;
         private int frameCounter = 0;
         private ProjectController projectController;
+        private GameManager gameManager;
+
         void Start()
         {
+            gameManager = GameManager.Instance;
             socketClient = GlobalAssets.Socket.SocketUDP.Instance;
             projectController = ProjectController.Instance;
             // search game object called PLayer1
-            player1 = GameObject.Find("Player1");
-            // player2 = GameObject.Find("Player2");
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
             {
@@ -44,11 +44,18 @@ namespace MortalKombat
             webcamDisplay.material.mainTexture = webcamTexture;
             webcamTexture.Play();
             predictionText.text = "";
+            
+            player1 = GameObject.Find("Player1");
+            // player2 = GameObject.Find("Player2");
         }
         void Update()
         {
+            if (player1 == null)
+            {
+                player1 = GameObject.Find("Player1");
+            }
             frameCounter++;
-            if (nextFrameReady && frameCounter % framePredicitonRate == 0)
+            if (gameManager.predictIsOn && nextFrameReady && frameCounter % framePredicitonRate == 0)
             {
                 frameCounter = 0;
                 if (webcamTexture.isPlaying)
@@ -74,8 +81,15 @@ namespace MortalKombat
             {
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 string pred = response["prediction"];
-                string unityPredictedClass = MapToClassName(pred); // ML code returns 1,2,3 we want "class x", "class y", "class z"
-                player1.GetComponent<Player1Controller>().prediction = unityPredictedClass;
+                string unityPredictedClass;
+                if (pred == "None")
+                {
+                    unityPredictedClass = pred;
+                }
+                else{
+                    unityPredictedClass = MapToClassName(pred); // ML code returns 1,2,3 we want "class x", "class y", "class z"
+                    player1.GetComponent<Player1Controller>().prediction = unityPredictedClass;
+                }
                 predictionText.text = unityPredictedClass;
                 nextFrameReady = true;
             }

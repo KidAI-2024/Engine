@@ -10,12 +10,17 @@ namespace MortalKombat
 
         private static bool isInputEnabled = false;
         public bool EnableTimer;
-        
+
+        public TextMeshProUGUI countdownTillBacktoChooseCharacterText;
+        public GameObject predictionPanel;
         public GameObject settingsPanel;
         public Slider Player1HealthSlider;
         public Slider Player2HealthSlider; 
         public GameObject Player1Score;
         public GameObject Player2Score;
+        public GameObject player1text;
+        public GameObject player2text;
+
         Player1Controller player1;
         Player1Controller player2;
 
@@ -33,6 +38,7 @@ namespace MortalKombat
         public AudioClip round1Sound;
         public AudioClip round2Sound;
         public AudioClip round3Sound;
+        public int backAfter = 10;
         
         // Start with Round 1
         public static int Round = 1;
@@ -40,6 +46,7 @@ namespace MortalKombat
         public static int Player1ScoreValue = 0;
         public static int Player2ScoreValue = 0;
         private bool flag;
+        
         // Property to get the input status
         public static bool IsInputEnabled
         {
@@ -50,6 +57,9 @@ namespace MortalKombat
         {
             gameManager = GameManager.Instance;
             gameManager.InstantiateCharacters();
+            player1text.GetComponent<TextMeshProUGUI>().text = gameManager.player1Name;
+            player2text.GetComponent<TextMeshProUGUI>().text = gameManager.player2Name;
+            // Debug.Log("Player 1: " + gameManager.player1Name + " Player 2: " + gameManager.player2Name);
             // Load the Round value from Player Preferences
             Round = gameManager.Round;
             RoundScore = gameManager.RoundScore;
@@ -57,33 +67,38 @@ namespace MortalKombat
             Player2ScoreValue = gameManager.Player2ScoreValue;
             
             Debug.Log("Round: " + Round + " RoundScore: " + RoundScore);
-            PlayerPrefs.DeleteAll();
             flag = true;
 
             player1 = GameObject.Find("Player1").GetComponent<Player1Controller>();
             player2 = GameObject.Find("Player2").GetComponent<Player1Controller>();
             Player1HealthSlider.maxValue = player1.health;
             Player2HealthSlider.maxValue = player2.health;
+
+
             RoundOverText.gameObject.SetActive(false);
             for (int i = 0; i < 3; i++)
             {
                 // if is enables then bring the animation to its end else disable it
                 string animeName = "";
-                if (i < Player1ScoreValue)
+                if(i < Player1ScoreValue || i < Player2ScoreValue)
                 {
-                    Player1Score.transform.GetChild(i).gameObject.SetActive(true);
-                    // skip the default animation and go to the end
-                    animeName = i > 0 ? "star_intro" + i : "star_intro";
-                    Animator animator = Player1Score.transform.GetChild(i).GetComponent<Animator>();
-                    animator.Play(animeName, 0, 1);
-                }
-                else if (i < Player2ScoreValue)
-                {
-                    Player2Score.transform.GetChild(i).gameObject.SetActive(true);
-                    // skip the default animation and go to the end
-                    animeName = "star_intro" + (i+4);
-                    Animator animator = Player2Score.transform.GetChild(i).GetComponent<Animator>();
-                    animator.Play(animeName, 0, 1);
+                    if (i < Player1ScoreValue)
+                    {
+                        Player1Score.transform.GetChild(i).gameObject.SetActive(true);
+                        // skip the default animation and go to the end
+                        animeName = i > 0 ? "star_intro" + (i+1) : "star_intro";
+                        Animator animator = Player1Score.transform.GetChild(i).GetComponent<Animator>();
+                        animator.Play(animeName, 0, 1);
+                    }
+                    if (i < Player2ScoreValue)
+                    {
+                        Player2Score.transform.GetChild(i).gameObject.SetActive(true);
+                        // skip the default animation and go to the end
+                        animeName = "star_intro" + (i+4);
+                        Debug.Log(animeName);
+                        Animator animator = Player2Score.transform.GetChild(i).GetComponent<Animator>();
+                        animator.Play(animeName, 0, 1);
+                    }
                 }
                 else
                 {
@@ -101,9 +116,7 @@ namespace MortalKombat
                 InvokeRepeating("UpdatePreGameCountdown", 1f, 1f);
             }
             else{
-                
                 preGameCountdownText.gameObject.SetActive(false);
-                isInputEnabled = true;
             }
             PlayRoundSound(Round);
         }
@@ -126,6 +139,16 @@ namespace MortalKombat
             }
             Player1HealthSlider.value = player1.health;
             Player2HealthSlider.value = player2.health;
+            // player 1 health slider color changes with the health.. when it appreaches 0.. slider color appreaches red
+            if (player1.health <= player1.maxHealth * 0.3)
+            {
+                Player1HealthSlider.fillRect.GetComponent<Image>().color = Color.red;
+            }
+            // player 2 health slider color changes with the health.. when it appreaches 0.. slider color appreaches red
+            if (player2.health <= player2.maxHealth * 0.3)
+            {
+                Player2HealthSlider.fillRect.GetComponent<Image>().color = Color.red;
+            }
             // Round over
             if ((player1.health <= 0 || player2.health <= 0) && flag)
             {
@@ -136,8 +159,12 @@ namespace MortalKombat
                 
                 // Increment the Round variable
                 Round++;
-                Player1ScoreValue = player1.health <= 0 ? Player1ScoreValue : Player1ScoreValue + 1;
-                Player2ScoreValue = player1.health <= 0 ? Player2ScoreValue + 1 : Player2ScoreValue;
+                if (player1.health <= 0){
+                    Player2ScoreValue++;
+                }
+                else{
+                    Player1ScoreValue++;
+                }
                 RoundScore = player1.health <= 0 ? RoundScore - 1 : RoundScore + 1;
                 UpdateRoundScoreUI();
                 if (Player1ScoreValue > 2 ||  Player2ScoreValue > 2) // 3 rounds finished = game over
@@ -145,7 +172,10 @@ namespace MortalKombat
                     PlayerPrefs.DeleteAll();
                     GameOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = RoundScore > 0 ? "Player 1 Wins!" : "Player 2 Wins!"; // +ve means player 1 wins, -ve means player 2 wins
                     GameOverText.SetActive(true);
-                    Invoke("BackToCharacterSelect", 6);
+                    gameManager.Reset();
+                    predictionPanel.SetActive(false);
+                    InvokeRepeating("CountDownAfterGameOver", 1, 1);
+                    // Invoke("BackToCharacterSelect", 6); 
                 }
                 else{
                     // Save the Round value to Player Preferences
@@ -155,8 +185,17 @@ namespace MortalKombat
                     gameManager.Player2ScoreValue = Player2ScoreValue;
                     RoundOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = player1.health <= 0 ? "Player 2 Wins!" : "Player 1 Wins!";
                     RoundOverText.SetActive(true);
-                    Invoke("RestartGame", 8);   
+                    Invoke("RestartRound", 8);   
                 }
+            }
+        }
+        void CountDownAfterGameOver()
+        {
+            backAfter--;
+            countdownTillBacktoChooseCharacterText.text = "Back to Choose Character in " + backAfter;
+            if (backAfter == 0)
+            {
+                BackToCharacterSelect();
             }
         }
         void UpdatePreGameCountdown()
@@ -193,7 +232,7 @@ namespace MortalKombat
                 // disable pregame countdown text after 1 second
                 Invoke("DisablePreGameCountdownText", 1);
                 // countdownText.gameObject.SetActive(true);
-                isInputEnabled = true;
+                // isInputEnabled = true;
             }
         }
         void DisablePreGameCountdownText()
@@ -221,10 +260,20 @@ namespace MortalKombat
             countdownText.text = seconds.ToString();
         }
 
-        void RestartGame()
+        void RestartRound()
         {
             // Reload the scene to restart the game with a new round
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
+        public void RestartGame()
+        {
+            Time.timeScale = 1;
+            gameManager.Reset();
+            RestartRound();
+        }
+        public void ResetTimeScale()
+        {
+            Time.timeScale = 1;
         }
         void BackToCharacterSelect()
         {
@@ -256,6 +305,12 @@ namespace MortalKombat
                     audioSource.PlayOneShot(round3Sound);
                     break;
             }
+            // enable input after the audio finished
+            Invoke("EnableInput", 3.0f);
+        }
+        void EnableInput()
+        {
+            isInputEnabled = true;
         }
     }
 }

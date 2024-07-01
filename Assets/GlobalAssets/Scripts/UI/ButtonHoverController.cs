@@ -9,7 +9,7 @@ public class ButtonHoverController : MonoBehaviour, IPointerEnterHandler, IPoint
     public AudioSource audioSource;
     public AudioClip hoverSound;
     public bool isSelectable = false;
-    bool isSelected = false;
+    public bool isSelected = false;
 
     void Start()
     {
@@ -32,26 +32,45 @@ public class ButtonHoverController : MonoBehaviour, IPointerEnterHandler, IPoint
             });
         }
     }
-
+    public void DeselectAll()
+    {
+        ButtonHoverController[] brothers = transform.parent.GetComponentsInChildren<ButtonHoverController>();
+        foreach (ButtonHoverController brother in brothers)
+        {
+            brother.ButtonDeselected();
+        }
+    }
     public void ButtonSelected()
     {
+        if (button == null) {
+            button = GetComponent<Button>();
+        }
         button.image.color = hoverColor;
         isSelected = true;
     }
     public void ButtonDeselected()
     {
+        if (button == null) {
+            button = GetComponent<Button>();
+        }
         button.image.color = originalColor;
         isSelected = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (button == null) {
+            button = GetComponent<Button>();
+        }
         button.image.color = hoverColor;
         audioSource.PlayOneShot(hoverSound);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (button == null) {
+            button = GetComponent<Button>();
+        }
         if (!isSelected)
         {
             button.image.color = originalColor;

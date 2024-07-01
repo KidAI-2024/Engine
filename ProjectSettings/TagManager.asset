@@ -13,6 +13,12 @@ TagManager:
   - Tile
   - Enemy
   - KartingCheckpoint
+  - player
+  - enemy
+  - primary1
+  - secondary1
+  - primary2
+  - secondary2
   layers:
   - Default
   - TransparentFX
