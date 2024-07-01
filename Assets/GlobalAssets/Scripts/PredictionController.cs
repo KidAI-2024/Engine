@@ -28,7 +28,7 @@ public class PredictionController : MonoBehaviour
     private Texture2D predictImagePlaceHolder;
     private bool isPredictingUploadedImage = false;
     string uploadedImgPath;
-
+    private Texture2D uploadedImage;
     void Start()
     {
         predictionText.text = "Predict";
@@ -61,6 +61,7 @@ public class PredictionController : MonoBehaviour
             WWW www = new WWW("file://" + uploadedImgPath);
             webcamDisplay.texture = www.texture; // uploaded image texture; 
             webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
+            uploadedImage = www.texture;
         }
     }
     public void StartPrediction()
@@ -110,10 +111,10 @@ public class PredictionController : MonoBehaviour
         // if (Input.GetKeyDown(KeyCode.Space))
         if (nextFrameReady)
         {
-            if (webcamTexture.isPlaying || isPredictingUploadedImage)
+            if (webcamTexture.isPlaying)
             {
-                // Send the frame to the server
                 frame = webcamTexture.GetPixels32();
+                // Send the frame to the server
                 byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
                 // Encode the byte array to a Base64 string
                 string frameBase64 = Convert.ToBase64String(frameBytes);
@@ -123,6 +124,24 @@ public class PredictionController : MonoBehaviour
                     { "frame", frameBase64 },
                     { "width", webcamTexture.width.ToString() },
                     { "height", webcamTexture.height.ToString() },
+                    { "event", PredictEventName }
+                };
+                socketClient.SendMessage(message);
+                nextFrameReady = false;
+            }
+            else if (isPredictingUploadedImage)
+            {
+                frame = uploadedImage.GetPixels32();
+                // Send the frame to the server
+                byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
+                // Encode the byte array to a Base64 string
+                string frameBase64 = Convert.ToBase64String(frameBytes);
+                // Construct dictionary to send to server
+                Dictionary<string, string> message = new Dictionary<string, string>
+                {
+                    { "frame", frameBase64 },
+                    { "width", uploadedImage.width.ToString() },
+                    { "height", uploadedImage.height.ToString() },
                     { "event", PredictEventName }
                 };
                 socketClient.SendMessage(message);

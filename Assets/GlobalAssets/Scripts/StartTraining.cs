@@ -23,6 +23,7 @@ public class StartTraining : MonoBehaviour
     public GameObject warningPanel;
     public GameObject feebackPanel;
     public GameObject predictButton;
+    public GameObject uploadButton;
 
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
@@ -47,7 +48,7 @@ public class StartTraining : MonoBehaviour
     void Update()
     {
         trainingInProgress = !isTrainingFinished && isTrainingStarted;
-        if(trainingInProgress)
+        if (trainingInProgress)
         {
             if (socketClient.isDataAvailable())
             {
@@ -56,9 +57,9 @@ public class StartTraining : MonoBehaviour
                 Debug.Log(response);
                 foreach (KeyValuePair<string, string> kvp in response)
                 {
-                   
-                        Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
-                    
+
+                    Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+
                 }
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")
@@ -82,6 +83,7 @@ public class StartTraining : MonoBehaviour
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
+                    uploadButton.GetComponent<Button>().interactable = true;
                     DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
                 }
                 else if (response["status"] == "failed")
@@ -98,7 +100,8 @@ public class StartTraining : MonoBehaviour
             }
         }
     }
-    public void StartSocketTraining(){
+    public void StartSocketTraining()
+    {
         if (SceneManager.GetActiveScene().name == "Audio")
         {
             saveProjectButton.GetComponent<SaveAudioProject>().Save();
@@ -202,7 +205,7 @@ public class StartTraining : MonoBehaviour
         warningPanel.transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = buttonText;
     }
     private void SocketTrain()
-    {    
+    {
         string projectPath = Path.Combine(projectController.directoryPath, projectController.projectName);
         Debug.Log("Training Path: " + projectPath);
         // if (Input.GetKeyDown(KeyCode.Space))
