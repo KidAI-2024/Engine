@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 using TMPro;
 using System.IO;
-
 public class PredictionController : MonoBehaviour
 {
     public string PredictEventName = "";
@@ -27,6 +27,7 @@ public class PredictionController : MonoBehaviour
     private ProjectController projectController;
     private Texture2D predictImagePlaceHolder;
     private bool isPredictingUploadedImage = false;
+    string uploadedImgPath;
 
     void Start()
     {
@@ -50,8 +51,17 @@ public class PredictionController : MonoBehaviour
     {
         isPredictingUploadedImage = true;
         // add code to upload image 
-        // webcamDisplay.texture =  uploaded image texture; 
-        // webcamDisplay.material.mainTexture = uploaded image texture;
+        uploadedImgPath = EditorUtility.OpenFilePanel("Select image to predict", "", "png,jpg,jpeg");
+        if (uploadedImgPath.Length == 0)
+        {
+            return;
+        }
+        if (uploadedImgPath != null)
+        {
+            WWW www = new WWW("file://" + uploadedImgPath);
+            webcamDisplay.texture = www.texture; // uploaded image texture; 
+            webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
+        }
     }
     public void StartPrediction()
     {
@@ -126,7 +136,7 @@ public class PredictionController : MonoBehaviour
         {
             // Receive the response from the server
             if (socketClient.isDataAvailable())
-            {  
+            {
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 if (response["event"] == PredictEventName)
                 {
