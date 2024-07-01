@@ -12,7 +12,7 @@ public class playerMovement : MonoBehaviour
     public float side_speed;
     private float original_force;
     public float jump_force;
-
+    public string predicted_control;
     public Rigidbody rb;
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
@@ -26,9 +26,9 @@ public class playerMovement : MonoBehaviour
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
         current_position = 1;
-        Physics.gravity = new Vector3(0, -50f, 0);
+        Physics.gravity = new Vector3(0, -60f, 0);
 
-        
+        predicted_control = "";
         // Check if the device supports microphone
         Dictionary<string, string> message = new Dictionary<string, string>
         {
@@ -97,6 +97,7 @@ public class playerMovement : MonoBehaviour
     {
         string pred_class = "";
         string pred_control = "";
+        predicted_control = "";
         // Receive the response from the server (Python)
         if (socketClient.isDataAvailable())
         {
@@ -105,11 +106,10 @@ public class playerMovement : MonoBehaviour
             if (response["event"] == "predict_audio")
             {
                 string pred = response["prediction"];
-                if (pred != "none")
-                {       pred_class = PythonToUnityClassName(pred);
+                  pred_class = PythonToUnityClassName(pred);
                     if(pred_class!="none")
                 pred_control = projectController.classesToControlsMap[pred_class];
-            }
+            predicted_control=pred_control;
                 //Debug.Log("Received Prediction: " + MapToClassName(pred) + " " + pred);
                 //predictionText.text = MapToClassName(pred);
             }
