@@ -4,22 +4,19 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 using GlobalAssets.UI;
-<<<<<<< HEAD
 using GlobalAssets.Socket;
 using System;
-=======
 using UnityEngine.SceneManagement;
->>>>>>> 6e3b1c6a6289a88ae52c4a53bff1f411d9e27df5
 
 public class StartTraining : MonoBehaviour
 {
     public string trainingEvent;
-    public GameObject saveProjectButton;
     public bool trainingInProgress = false;
+    public GameObject saveProjectButton;
     public GameObject warningPanel;
     public GameObject feebackPanel;
     public GameObject predictButton;
-    public bool trainingInProgress = false;
+    
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
     private bool isTrainingFinished = false;
@@ -88,17 +85,7 @@ public class StartTraining : MonoBehaviour
             }
         }
     }
-<<<<<<< HEAD
     public void StartSocketTraining(){
-        saveProjectButton.GetComponent<SaveProject>().Save();
-=======
-    public void StartSocketTraining()
-    {
-        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
-        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
-        isTrainingStarted = true;
-        isTrainingFinished=false;
-        CreateClassMap();
         if (SceneManager.GetActiveScene().name == "Audio")
         {
             saveProjectButton.GetComponent<SaveAudioProject>().Save();
@@ -107,8 +94,6 @@ public class StartTraining : MonoBehaviour
         {
             saveProjectButton.GetComponent<SaveProject>().Save();
         }
-       
->>>>>>> 6e3b1c6a6289a88ae52c4a53bff1f411d9e27df5
         if (!Validate()) return;
         isTrainingFinished = false;
         isTrainingStarted = true;

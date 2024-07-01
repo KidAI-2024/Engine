@@ -236,7 +236,7 @@ public class WebcamController : MonoBehaviour
             i++;
         }
         EmptyImage.SetActive(capturedImages.Count == 0);
-        numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
+        //numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
     }
 
     // This function is called by the popup activate to show the captured images of the class clicked

@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/GlobalAssets/Scenes/Training/Image.unity
     guid: a99c7161320617c409fb2998f3eecbb8
   - enabled: 1
-    path: Assets/GlobalAssets/Scenes/Training/Audio.unity
+    path: Assets/GlobalAssets/Scenes/Training/Audio_2.unity
     guid: d524e0b4a3ca4d14dbb1151ac1e0c67e
   - enabled: 1
     path: Assets/Karting/Scenes/KartingMapContoller.unity
