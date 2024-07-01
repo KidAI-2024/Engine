@@ -38,7 +38,7 @@ namespace MortalKombat
         public AudioClip round1Sound;
         public AudioClip round2Sound;
         public AudioClip round3Sound;
-        public int backAfter = 5;
+        public int backAfter = 10;
         
         // Start with Round 1
         public static int Round = 1;

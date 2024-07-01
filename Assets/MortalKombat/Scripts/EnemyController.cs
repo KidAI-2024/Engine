@@ -73,7 +73,7 @@ namespace MortalKombat
             }
 
             // If the player is in front of the enemy, the enemy will move forward
-            if (player1Position > enemyPosition + 1.4)
+            else if (player1Position > enemyPosition + 1.4)
             {
                 enemyController.forwardAuto = true;
             }
@@ -82,6 +82,12 @@ namespace MortalKombat
             else if (player1Position < enemyPosition - 1.4)
             {
                 enemyController.backwardAuto = true;
+            }
+            else{
+                enemyController.forwardAuto = false;
+                enemyController.backwardAuto = false;
+                enemyController.primaryHitAuto = false;
+                enemyController.secondaryHitAuto = false;
             }
             
         }

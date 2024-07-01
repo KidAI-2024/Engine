@@ -53,7 +53,6 @@ namespace MortalKombat
             if (player1 == null)
             {
                 player1 = GameObject.Find("Player1");
-                return;
             }
             frameCounter++;
             if (gameManager.predictIsOn && nextFrameReady && frameCounter % framePredicitonRate == 0)
@@ -82,8 +81,15 @@ namespace MortalKombat
             {
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 string pred = response["prediction"];
-                string unityPredictedClass = MapToClassName(pred); // ML code returns 1,2,3 we want "class x", "class y", "class z"
-                player1.GetComponent<Player1Controller>().prediction = unityPredictedClass;
+                string unityPredictedClass;
+                if (pred == "None")
+                {
+                    unityPredictedClass = pred;
+                }
+                else{
+                    unityPredictedClass = MapToClassName(pred); // ML code returns 1,2,3 we want "class x", "class y", "class z"
+                    player1.GetComponent<Player1Controller>().prediction = unityPredictedClass;
+                }
                 predictionText.text = unityPredictedClass;
                 nextFrameReady = true;
             }

@@ -37,6 +37,7 @@ public class StartTraining : MonoBehaviour
         {
             if (socketClient.isDataAvailable())
             {
+                Debug.Log("Training data Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")
@@ -62,7 +63,10 @@ public class StartTraining : MonoBehaviour
                 }
                 else if (response["status"] == "failed")
                 {
-                    DisplayWarning("Training Failed", "OK");
+                    if (response.ContainsKey("error"))
+                        DisplayWarning(response["error"], "OK");
+                    else
+                        DisplayWarning("Training failed", "OK");
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
                     isTrainingFinished = true;
