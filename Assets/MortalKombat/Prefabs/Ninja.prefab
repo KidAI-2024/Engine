@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1414183118629725346}
   m_Layer: 0
   m_Name: mixamorig:LeftToeBase
-  m_TagString: leg
+  m_TagString: secondary1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -543,7 +543,7 @@ GameObject:
   - component: {fileID: 1414183119176179540}
   m_Layer: 0
   m_Name: Ninja
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -695,10 +695,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953d5ade5f1ff694c90151c9bf99064b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   health: 0
-  legPower: 10
-  boxPower: 15
-  moveSpeed: 2
+  primaryPower: 0
+  secondaryPower: 0
+  speed: 0
+  prediction: 
+  startLimit: 0
+  endLimit: 0
+  forwardAuto: 0
+  backwardAuto: 0
+  primaryHitAuto: 0
+  secondaryHitAuto: 0
 --- !u!114 &1414183119176179540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1075,7 +1083,7 @@ GameObject:
   - component: {fileID: 1414183118056763409}
   m_Layer: 0
   m_Name: mixamorig:LeftHand
-  m_TagString: hand
+  m_TagString: primary1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1372,7 +1380,7 @@ GameObject:
   - component: {fileID: 1414183118428507216}
   m_Layer: 0
   m_Name: mixamorig:RightHand
-  m_TagString: Untagged
+  m_TagString: primary1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

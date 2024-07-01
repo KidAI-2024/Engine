@@ -36,7 +36,10 @@ namespace Karting.UI
         }
         public void ChangeVolume(float volume)
         {
-            audioMixer.SetFloat("Volume", 20 * Mathf.Log10(volume));
+            if (!isMuted)
+            {
+                audioMixer.SetFloat("Volume", 20 * Mathf.Log10(volume));
+            }
             currentVolume = volume;
         }
     }

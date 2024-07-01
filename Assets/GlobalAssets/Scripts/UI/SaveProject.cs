@@ -23,6 +23,7 @@ namespace GlobalAssets.UI
         public GameObject imagePrefab;
         GameObject EmptyImage;
         Transform finalImagesContainer;
+
         private struct ClassData
         {
             public string className;
@@ -42,7 +43,6 @@ namespace GlobalAssets.UI
             // Loop over classes in the projectController.classes list folders and load the images
             // Modify the classBox's input field to have the class name
             // Load the images into the classBox   
-            
             for (int i = 0; i < projectController.classes.Count; i++)
             {
                 capturedImages.Clear();
@@ -52,9 +52,9 @@ namespace GlobalAssets.UI
                 Transform classBox = targetGameObject.transform.GetChild(i);
                 TMP_InputField className = classBox.GetChild(0).GetChild(1).GetComponentInChildren<TMP_InputField>();
                 className.text = projectController.classes[i];
-                finalImagesContainer = classBox.GetChild(0).GetChild(4).GetChild(0).GetChild(0).gameObject.transform; // ImagesContainer
+                finalImagesContainer = classBox.GetChild(0).GetChild(5).GetChild(0).GetChild(0).gameObject.transform; // ImagesContainer
                 EmptyImage = finalImagesContainer.parent.parent.transform.GetChild(2).gameObject;
-                string classFolderPath = Path.Combine(folderPath, projectController.projectName, i + "_" + projectController.classes[i]);
+                string classFolderPath = Path.Combine(projectController.directoryPath, projectController.projectName, i + "_" + projectController.classes[i]);
                 if (Directory.Exists(classFolderPath))
                 {
                     string[] imagePaths = Directory.GetFiles(classFolderPath);
@@ -113,6 +113,7 @@ namespace GlobalAssets.UI
 
         public void Save()
         {
+            //if()schene name
             GetImages();
             SaveImagesToPath();
             projectController.Save();
@@ -121,13 +122,12 @@ namespace GlobalAssets.UI
         private void SaveImagesToPath()
         {
             // Define the base folder path
-            string basePath = folderPath;
-            savePath = basePath + "/" + projectController.projectName; // Project One be dynamic
+            savePath = Path.Combine(projectController.directoryPath, projectController.projectName); // Project One be dynamic
             // Save ImagesData to basePath/Project1/ImagesData.className/images[i].png
             for (int i = 0; i < ImagesData.Count; i++)
             {
                 // Construct the folder path for the current class
-                string classFolderPath = Path.Combine(basePath, projectController.projectName, i + "_" + ImagesData[i].className);
+                string classFolderPath = Path.Combine(savePath, i + "_" + ImagesData[i].className);
                 
                 // delete directory that starts with i_
                 string[] directories = Directory.GetDirectories(savePath);

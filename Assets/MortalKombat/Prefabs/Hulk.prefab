@@ -2939,7 +2939,7 @@ GameObject:
   - component: {fileID: 8864106035571474834}
   m_Layer: 0
   m_Name: mixamorig:LeftToeBase
-  m_TagString: leg
+  m_TagString: secondary2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3629,11 +3629,11 @@ GameObject:
   - component: {fileID: 8973730140477346256}
   - component: {fileID: 3056031890376199082}
   - component: {fileID: 8864106036007977788}
-  - component: {fileID: 8864106036007977789}
   - component: {fileID: 4513593036803335040}
+  - component: {fileID: 8864106036007977789}
   m_Layer: 0
   m_Name: Hulk
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3773,6 +3773,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4513593036803335040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8629680460142611306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953d5ade5f1ff694c90151c9bf99064b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  health: 0
+  primaryPower: 0
+  secondaryPower: 0
+  speed: 0
+  prediction: 
+  startLimit: 0
+  endLimit: 0
+  forwardAuto: 0
+  backwardAuto: 0
+  primaryHitAuto: 0
+  secondaryHitAuto: 0
 --- !u!114 &8864106036007977789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3787,24 +3811,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whoofSound: {fileID: 8300000, guid: d3a4dbf46e0b62e469595ea0093efc58, type: 3}
   headHitSound: {fileID: 8300000, guid: 6a62bfb064af4e845a6295a7b474b5d6, type: 3}
---- !u!114 &4513593036803335040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629680460142611306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 953d5ade5f1ff694c90151c9bf99064b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 0
-  primaryPower: 0
-  secondaryPower: 0
-  speed: 0
-  startLimit: 0
-  endLimit: 0
 --- !u!1 &8726994223816668285
 GameObject:
   m_ObjectHideFlags: 0
@@ -3850,7 +3856,7 @@ GameObject:
   - component: {fileID: 8864106036229830853}
   m_Layer: 0
   m_Name: mixamorig:Weapon
-  m_TagString: weapon
+  m_TagString: primary2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

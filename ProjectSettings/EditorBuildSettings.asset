@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Karting/AddOns/Simple Garage/Scenes/Garage Scene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
     path: Assets/GlobalAssets/Scenes/Lobby.unity
     guid: 439dc291fa079c748b0316e70fbe6cdc
   - enabled: 1
@@ -22,13 +19,31 @@ EditorBuildSettings:
     guid: a99c7161320617c409fb2998f3eecbb8
   - enabled: 1
     path: Assets/GlobalAssets/Scenes/Training/Audio.unity
-    guid: d524e0b4a3ca4d14dbb1151ac1e0c67e
+    guid: 505b2353b31a75044afac850ba967592
   - enabled: 1
-    path: Assets/MortalKombat/Scenes/Mortal Kombat.unity
+    path: Assets/MortalKombat/Scenes/MapContoller.unity
+    guid: 09d2387e76f1db14ca0b10c83ccc8b74
+  - enabled: 1
+    path: Assets/MortalKombat/Scenes/CharacterSelect.unity
+    guid: b6cd0d51bc545644a9fcf16f16397611
+  - enabled: 1
+    path: Assets/MortalKombat/Scenes/SelectMap.unity
+    guid: 2deae7ee13c17a34a8fbda594b524694
+  - enabled: 1
+    path: Assets/MortalKombat/Scenes/Maps/Forest.unity
     guid: 7769f33fb4fa2e5458344a36556ad760
+  - enabled: 1
+    path: Assets/MortalKombat/Scenes/Maps/SeaPort.unity
+    guid: 5fa1b336fa2f6d544adf157cb18b9247
   - enabled: 1
     path: Assets/Karting/Scenes/KartingIntro.unity
     guid: dff6b5a5e053a2d40867edd5449ef4c6
+  - enabled: 1
+    path: Assets/Karting/Scenes/KartingMapContoller.unity
+    guid: d863e189ea5f71748b5d11461420149b
+  - enabled: 1
+    path: Assets/Karting/AddOns/Simple Garage/Scenes/Garage Scene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Karting/Scenes/KartingChooseTrack.unity
     guid: 3be7247771235554e89c01bffef4dd3d
@@ -45,9 +60,6 @@ EditorBuildSettings:
     path: Assets/Karting/Scenes/RacingTracks/KartingTrack2.unity
     guid: aade33ef1596ff24cb19602ec4928844
   - enabled: 1
-    path: Assets/MortalKombat/Scenes/CharacterSelect.unity
-    guid: b6cd0d51bc545644a9fcf16f16397611
-  - enabled: 1
     path: Assets/Survival/Scenes/MainMenuScene.unity
     guid: 50ef2bc80f047d2419105ddccf5aee46
   - enabled: 1
@@ -60,9 +72,9 @@ EditorBuildSettings:
     path: Assets/Survival/Scenes/WinScene.unity
     guid: c2eb0a327a7083243aa8bed4a66c1165
   - enabled: 1
-    path: Assets/MortalKombat/Scenes/MapContoller.unity
-    guid: 09d2387e76f1db14ca0b10c83ccc8b74
+    path: Assets/EndlessRunner/Scenes/EndlessRunningMapContoller.unity
+    guid: f78c006f5d612a044b3388d5afede2eb
   - enabled: 1
-    path: Assets/Karting/Scenes/KartingMapContoller.unity
-    guid: d863e189ea5f71748b5d11461420149b
+    path: Assets/EndlessRunner/Scenes/EndlessRunning.unity
+    guid: 72f7f69f2a51b8041b728a6820312bc6
   m_configObjects: {}

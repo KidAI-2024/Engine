@@ -12,6 +12,7 @@ namespace Karting.UI
         public Button settingsButton;
         public Button exitButton;
         public Button returnToLobbyButton;
+        public Button returnToIntroButton;
         bool isSettingsPanelActive = false;
         void Start()
         {
@@ -36,9 +37,6 @@ namespace Karting.UI
             }
             if (exitButton != null)
             {
-                // change scene to kartingintro
-                // exitButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
-                // quit app
                 exitButton.onClick.AddListener(() => Quit());
             }
             else
@@ -53,6 +51,15 @@ namespace Karting.UI
             else
             {
                 Debug.Log("Return To Lobby Button is null in SettingsPanelController");
+            }
+            if (returnToIntroButton != null)
+            {
+                // change scene to intro
+                returnToIntroButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
+            }
+            else
+            {
+                Debug.Log("Return To Intro Button is null in SettingsPanelController");
             }
         }
         // This function will be called when the button is clicked

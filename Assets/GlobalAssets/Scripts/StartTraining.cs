@@ -4,53 +4,115 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 using GlobalAssets.UI;
+using GlobalAssets.Socket;
+using System;
+using UnityEngine.SceneManagement;
 
+
+public enum DisplayMessageType
+{
+    Success,
+    Error,
+    Warning
+}
 public class StartTraining : MonoBehaviour
 {
     public string trainingEvent;
+    public bool trainingInProgress = false;
     public GameObject saveProjectButton;
     public GameObject warningPanel;
+    public GameObject feebackPanel;
+    public GameObject predictButton;
+
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
     private bool isTrainingFinished = false;
     private bool isTrainingStarted = false;
     private GameObject TrainingButton;
+    private GameObject GraphImage;
+
+    public Sprite warningIcon;
+    public Sprite errorIcon;
+    public Sprite successIcon;
 
     void Start()
     {
         projectController = ProjectController.Instance;
         TrainingButton = this.gameObject;
+        if (feebackPanel.transform.childCount > 0)
+            GraphImage = feebackPanel.transform.GetChild(0).gameObject;
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
     void Update()
     {
-        if (!isTrainingFinished && isTrainingStarted)
+        trainingInProgress = !isTrainingFinished && isTrainingStarted;
+        if(trainingInProgress)
         {
             if (socketClient.isDataAvailable())
             {
+                Debug.Log("Training data Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                Debug.Log(response);
+                foreach (KeyValuePair<string, string> kvp in response)
+                {
+                   
+                        Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+                    
+                }
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")
                 {
+                    Debug.Log("In Train");
                     projectController.isTrained = true;
                     projectController.savedModelFileName = response["saved_model_name"];
                     projectController.Save();
                     isTrainingFinished = true;
+                    isTrainingStarted = false;
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
+
+                    if (response.ContainsKey("feature_importance_graph"))
+                    {
+                        string graph = response["feature_importance_graph"];
+                        byte[] imageBytes = Convert.FromBase64String(graph);
+                        Texture2D texture = new Texture2D(1000, 600);
+                        texture.LoadImage(imageBytes);
+                        GraphImage.GetComponent<RawImage>().texture = texture;
+                    }
+                    // unlock the predict button
+                    predictButton.GetComponent<Button>().interactable = true;
+                    DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
+                }
+                else if (response["status"] == "failed")
+                {
+                    if (response.ContainsKey("error"))
+                        DisplayWarning(response["error"], "OK");
+                    else
+                        DisplayWarning("Training failed", "OK");
+                    TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
+                    TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
+                    isTrainingFinished = true;
+                    isTrainingStarted = false;
                 }
             }
         }
     }
-    public void StartSocketTraining()
-    {
-        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
-        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
+    public void StartSocketTraining(){
+        if (SceneManager.GetActiveScene().name == "Audio")
+        {
+            saveProjectButton.GetComponent<SaveAudioProject>().Save();
+        }
+        else
+        {
+            saveProjectButton.GetComponent<SaveProject>().Save();
+        }
+        if (!Validate()) return; // return if validation fails
+        isTrainingFinished = false;
         isTrainingStarted = true;
         CreateClassMap();
-        saveProjectButton.GetComponent<SaveProject>().Save();
-        if (!Validate()) return;
+        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
+        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
         SocketTrain();
     }
     // This function creates a map of class names to class indices
@@ -67,6 +129,18 @@ public class StartTraining : MonoBehaviour
     }
     private bool Validate()
     {
+        // check if any 2 classes have same name
+        for (int i = 0; i < projectController.classes.Count; i++)
+        {
+            for (int j = i + 1; j < projectController.classes.Count; j++)
+            {
+                if (projectController.classes[i] == projectController.classes[j])
+                {
+                    DisplayWarning("Two classes cannot have the same name", "OK");
+                    return false;
+                }
+            }
+        }
         // check if number of classes is greater than 0
         if (projectController.numberOfClasses < 1)
         {
@@ -87,9 +161,9 @@ public class StartTraining : MonoBehaviour
         // check if number if image a class is less than 10
         foreach (string className in projectController.classes)
         {
-            if (projectController.imagesPerClass[className] < 10)
+            if (projectController.imagesPerClass[className] < 1)
             {
-                DisplayWarning("Add at least 10 images to each class", "OK");
+                DisplayWarning("Add at least 10 images to each class", "OK", DisplayMessageType.Warning);
                 return false;
             }
         }
@@ -105,25 +179,43 @@ public class StartTraining : MonoBehaviour
         return true;
     }
 
-    private void DisplayWarning(string message, string buttonText)
+    private void DisplayWarning(string message, string buttonText, DisplayMessageType messageType = DisplayMessageType.Error)
     {
         // enable warning panel
         warningPanel.SetActive(true);
+        // image 
+        switch (messageType)
+        {
+            case DisplayMessageType.Error:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = errorIcon;
+                break;
+            case DisplayMessageType.Warning:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = warningIcon;
+                break;
+            case DisplayMessageType.Success:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = successIcon;
+                break;
+        }
         // warning message
         warningPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
         // warning button text
         warningPanel.transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = buttonText;
     }
     private void SocketTrain()
-    {
+    {    
+        string projectPath = Path.Combine(projectController.directoryPath, projectController.projectName);
+        Debug.Log("Training Path: " + projectPath);
         // if (Input.GetKeyDown(KeyCode.Space))
         Dictionary<string, string> message = new Dictionary<string, string>
         {
-            { "path",  "Projects/"+ projectController.projectName },
-            { "event", trainingEvent },
+            { "path",  projectPath },
+            { "model", projectController.model },
+            { "feature_extraction_type", projectController.featureExtractionType },
+            { "features", string.Join(",", projectController.features) },
             {"num_classes", projectController.numberOfClasses.ToString() },
             {"epochs", projectController.epochs.ToString()},
-            {"max_lr", projectController.learningRate.ToString()}
+            {"max_lr", projectController.learningRate.ToString()},
+            { "event", trainingEvent }
 
         };
         socketClient.SendMessage(message);
