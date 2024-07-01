@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class RemoveImage : MonoBehaviour
 {
@@ -8,19 +9,25 @@ public class RemoveImage : MonoBehaviour
     public int ImageIndex;
     public bool isLoad = false;
     private Transform GrandParentObject;
+    private GameObject numberOFImagesOutside;
 
     void Start()
     {
         GrandParentObject = transform.parent.parent.parent.parent;
+        
         // if true => initialize remove image of the outside panel 
         // so we want to get the captured images from the inside panel ()
         if (GrandParentObject.name == "ClassesBox" && isLoad) // in case the load of the saved project instentiate images
         {
+
+            numberOFImagesOutside = GrandParentObject.transform.GetChild(4).gameObject;
+            numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
             return;
         }
         else if (GrandParentObject.name != "CameraPanel") // in case remove image from outside panel
         {
             GrandParentObject = GrandParentObject.parent.parent.parent.parent.GetChild(1);
+            numberOFImagesOutside = GrandParentObject.transform.GetChild(4).gameObject;
         }
         capturedImages = GrandParentObject.GetComponent<WebcamController>().capturedImages;
     }
@@ -49,8 +56,9 @@ public class RemoveImage : MonoBehaviour
         // Remove the last child (empty space)
         Destroy(gameObject);
         // Update the capturedImages list
-        Debug.Log("ImageIndex: " + ImageIndex + " capturedImages.Count: " + capturedImages.Count);
+        // Debug.Log("ImageIndex: " + ImageIndex + " capturedImages.Count: " + capturedImages.Count);
 
         capturedImages.RemoveAt(ImageIndex);
+        //numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
     }
 }

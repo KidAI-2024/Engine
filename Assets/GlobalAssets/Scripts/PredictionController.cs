@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
+using System.IO;
 
 public class PredictionController : MonoBehaviour
 {
@@ -13,9 +13,11 @@ public class PredictionController : MonoBehaviour
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
     public GameObject predictButton;
+    public GameObject predAnalysisScrollView;
+    public GameObject TrainingButton;
+    public GameObject CapturingImagesPanel;
 
     private bool nextFrameReady = true;
-    private bool startPrediction = false;
     private Color32[] frame;
     private Dictionary<string, string> classMap = new Dictionary<string, string>();
     private GlobalAssets.Socket.SocketUDP socketClient;
@@ -25,7 +27,6 @@ public class PredictionController : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Prediction Controller started");
         predictionText.text = "Predict";
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
@@ -47,7 +48,6 @@ public class PredictionController : MonoBehaviour
         if (togglePredicting)
         {
             predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stop";
-            startPrediction = true;
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
             {
@@ -61,7 +61,6 @@ public class PredictionController : MonoBehaviour
         else
         {
             predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Predict";
-            startPrediction = false;
             webcamTexture.Stop();
             webcamDisplay.texture = null;
             webcamDisplay.material.mainTexture = null;
@@ -73,10 +72,13 @@ public class PredictionController : MonoBehaviour
         // Construct dictionary to send to server
         Dictionary<string, string> message = new Dictionary<string, string>
         {
-            { "project_name", projectController.projectName},
+            { "path",  Path.Combine(projectController.directoryPath, projectController.projectName) },
             { "saved_model_name", projectController.savedModelFileName},
-            { "event", LoadModelEventName },
-            {"num_classes", projectController.numberOfClasses.ToString() }
+            { "model", projectController.model },
+            { "feature_extraction_type", projectController.featureExtractionType },
+            { "features", string.Join(",", projectController.features) },
+            { "num_classes", projectController.numberOfClasses.ToString() },
+            { "event", LoadModelEventName }
         };
         socketClient.SendMessage(message);
     }
@@ -88,7 +90,6 @@ public class PredictionController : MonoBehaviour
             if (webcamTexture.isPlaying)
             {
                 // Send the frame to the server
-                Debug.Log("Width: " + webcamTexture.width + " Height: " + webcamTexture.height);
                 frame = webcamTexture.GetPixels32();
                 byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
                 // Encode the byte array to a Base64 string
@@ -105,31 +106,46 @@ public class PredictionController : MonoBehaviour
                 nextFrameReady = false;
             }
         }
-        // Receive the response from the server
-        if (socketClient.isDataAvailable())
+        bool trainingInProgress = TrainingButton.GetComponent<StartTraining>().trainingInProgress;
+        bool isPreprossingInProgress = CapturingImagesPanel.GetComponent<WebcamController>().isPreprossingInProgress;
+        if (!trainingInProgress && !isPreprossingInProgress)
         {
-            Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-            if (response["event"] == PredictEventName)
-            {
-                string pred = response["prediction"];
-                Debug.Log("Received: " + pred);
-                predictionText.text = MapToClassName(pred);
-            }
-            else if (response["event"] == LoadModelEventName)
-            {
-                Debug.Log("Load Received: " + response["status"]);
-                if (response["status"] == "success") // Model loaded successfully
+            // Receive the response from the server
+            if (socketClient.isDataAvailable())
+            {  
+                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                if (response["event"] == PredictEventName)
                 {
-                    CreateClassMap();
-                    predictButton.GetComponent<Button>().interactable = true;
+                    string pred = response["prediction"];
+                    predictionText.text = MapToClassName(pred);
+                    // if (response.ContainsKey("preprocessed_image"))
+                    // {
+                    //     byte[] preprocessedImageBytes = Convert.FromBase64String(response["preprocessed_image"]);
+                    //     Texture2D preprocessedImage = new Texture2D(webcamTexture.width, webcamTexture.height);
+                    //     preprocessedImage.LoadImage(preprocessedImageBytes);
+                    //     webcamDisplay.texture = preprocessedImage;
+                    //     webcamDisplay.material.mainTexture = preprocessedImage;
+                    // }
                 }
-                else // Model loading failed.. lock the predict button
+                else if (response["event"] == LoadModelEventName)
                 {
-                    predictButton.GetComponent<Button>().interactable = false;
+                    Debug.Log("Data Available");
+                    if (response["status"] == "success") // Model loaded successfully
+                    {
+                        CreateClassMap();
+                        // unlock the predict button
+                        predictButton.GetComponent<Button>().interactable = true;
+                        // move the prediction analysis scroll view content to the end (most right) to show the predict button
+                        predAnalysisScrollView.GetComponent<ScrollRect>().normalizedPosition = new Vector2(1, 0);
+                    }
+                    else // Model loading failed.. lock the predict button
+                    {
+                        predictButton.GetComponent<Button>().interactable = false;
+                    }
                 }
+                nextFrameReady = true;
+                // Invoke("ResetNextFrameReady", 1.0f);
             }
-            nextFrameReady = true;
-            // Invoke("ResetNextFrameReady", 1.0f);
         }
     }
     // This function creates a map of class names to class indices

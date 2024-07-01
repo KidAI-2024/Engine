@@ -5660,6 +5660,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!224 &234648996506516028
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5776,6 +5777,7 @@ MonoBehaviour:
   audioSource: {fileID: 2891717004065631623}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &438316718971399025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6090,6 +6092,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &966090001290053586
 GameObject:
   m_ObjectHideFlags: 0
@@ -8984,6 +8987,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &2294982184994862400
 GameObject:
   m_ObjectHideFlags: 0
@@ -9158,6 +9162,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!222 &2684838537472655658
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9605,6 +9610,7 @@ MonoBehaviour:
   audioSource: {fileID: 113231064511742388}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &3189242686618050892
 GameObject:
   m_ObjectHideFlags: 0
@@ -12746,6 +12752,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &5186708546596987520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12762,6 +12769,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &5218060156208671851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13284,6 +13292,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &6065251167139769323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13830,6 +13839,7 @@ MonoBehaviour:
   audioSource: {fileID: 2891717004065631623}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &6708662653433221299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14048,6 +14058,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!224 &6821242999586018562
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14520,6 +14531,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &7145271229757034032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15166,6 +15178,7 @@ MonoBehaviour:
   audioSource: {fileID: 6716890704058219359}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!224 &7955885175887487830
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16718,9 +16731,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trainingEvent: start_audio_train
-  saveProjectButton: {fileID: 7757605286404077015}
   trainingInProgress: 0
+  saveProjectButton: {fileID: 7757605286404077015}
   warningPanel: {fileID: 4262488914061443957}
+  feebackPanel: {fileID: 3160493264389054997}
+  predictButton: {fileID: 8230324480947547600}
 --- !u!222 &8230324481312041695
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17484,6 +17499,7 @@ MonoBehaviour:
   audioSource: {fileID: 113231064511742388}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!114 &8526552299640681775
 MonoBehaviour:
   m_ObjectHideFlags: 0

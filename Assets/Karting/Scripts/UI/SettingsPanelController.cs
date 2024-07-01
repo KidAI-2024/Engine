@@ -39,7 +39,7 @@ namespace Karting.UI
                 // change scene to kartingintro
                 // exitButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
                 // quit app
-                exitButton.onClick.AddListener(() => Quit());
+                exitButton.onClick.AddListener(() => SceneManager.LoadScene("Lobby"));
             }
             else
             {
@@ -60,7 +60,7 @@ namespace Karting.UI
         {
             // Log a message in the console
             Debug.Log("Application is quitting");
-
+            
             // If we are running in a standalone build of the game
 #if UNITY_STANDALONE
             // Quit the application

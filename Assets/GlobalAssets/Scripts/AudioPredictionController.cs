@@ -76,7 +76,7 @@ public class AudioPredictionController : MonoBehaviour
         // Construct dictionary to send to server
         Dictionary<string, string> message = new Dictionary<string, string>
         {
-            { "project_name", projectController.projectName },
+            { "path",  Path.Combine(projectController.directoryPath, projectController.projectName) },
             { "saved_model_name", projectController.savedModelFileName },
             { "event", LoadModelEventName }
         };
@@ -166,9 +166,8 @@ public class AudioPredictionController : MonoBehaviour
                     }
                     else // Model loading failed
                     {
-                        Debug.LogError("Failed to load model.");
                         // Optionally disable predict button or handle failure
-                        predictButton.GetComponent<Button>().interactable = true;
+                        predictButton.GetComponent<Button>().interactable = false;
                     }
                 }
             }

@@ -308,7 +308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2470262055106028213, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: CharacterSelect
+      value: Handpose
       objectReference: {fileID: 0}
     - target: {fileID: 2470262055326493355, guid: 783835a8aa757544eaa6673a40e01b71, type: 3}
       propertyPath: m_text

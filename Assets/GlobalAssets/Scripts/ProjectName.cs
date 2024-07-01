@@ -31,17 +31,19 @@ public class ProjectName : MonoBehaviour
     }
 
     private ProjectController projectController;
+    private List<ProjectData> projectDataList = new List<ProjectData>();
+    public GameObject LoadingPanel;
     void Start()
     {
         projectController = ProjectController.Instance;
+        projectController.Reset();
         LoadProjectsList();
     }
     // sort by createdAt
     void LoadProjectsList()
     {
-        string projectsPath = Application.dataPath.Replace("/Assets", "/Projects") + "/";
+        string projectsPath = projectController.directoryPath;
         string[] projectFolders = Directory.GetDirectories(projectsPath);
-        List<ProjectData> projectDataList = new List<ProjectData>();
 
         foreach (string projectFolder in projectFolders)
         {
@@ -55,10 +57,16 @@ public class ProjectName : MonoBehaviour
         }
 
         projectDataList.Sort((x, y) => DateTime.Parse(y.createdAt).CompareTo(DateTime.Parse(x.createdAt)));
-
+        int i = 0;
         foreach (ProjectData projectData in projectDataList)
         {
             InstantiateProjectBtn(projectData.projectName, projectData.projectType, projectData.createdAt, projectData.sceneName);
+            if(i >= 4)
+            {
+                RectTransform ProjectListPanelRectTransform = ProjectListPanel.GetComponent<RectTransform>();
+                ProjectListPanelRectTransform.sizeDelta = new Vector2(ProjectListPanelRectTransform.sizeDelta.x, ProjectListPanelRectTransform.sizeDelta.y + 65);
+            }
+            i++;
         }
     }
 
@@ -80,13 +88,13 @@ public class ProjectName : MonoBehaviour
             Debug.Log("*Project must have a name");
             return;
         }
+        LoadingPanel.SetActive(true);
         ErrorMessageText.text = "";
         string createdAt = System.DateTime.Now.ToString("yyyy-MM-dd");
         
         InstantiateProjectBtn(projectName, projectType, createdAt, nextSceneName);
         // Create project folder
-        string basePath = Application.dataPath.Replace("/Assets", "/Projects");
-        string classFolderPath = Path.Combine(basePath, projectName);
+        string classFolderPath = Path.Combine(projectController.directoryPath, projectName);
         if (!Directory.Exists(classFolderPath))
         {
             Directory.CreateDirectory(classFolderPath);
@@ -96,7 +104,6 @@ public class ProjectName : MonoBehaviour
         projectController.projectType = projectType;
         projectController.sceneName = nextSceneName;
         projectController.Save();
-
 
         SceneManager.LoadScene(nextSceneName);
     }
@@ -123,9 +130,8 @@ public class ProjectName : MonoBehaviour
     public void RenameProject(string oldProjectName, string newProjectName)
     {
         Debug.Log("Rename project from " + oldProjectName + " to " + newProjectName);
-        string basePath = Application.dataPath.Replace("/Assets", "/Projects");
-        string oldProjectFolderPath = Path.Combine(basePath, oldProjectName);
-        string newProjectFolderPath = Path.Combine(basePath, newProjectName);
+        string oldProjectFolderPath = Path.Combine(projectController.directoryPath, oldProjectName);
+        string newProjectFolderPath = Path.Combine(projectController.directoryPath, newProjectName);
         if (!Directory.Exists(newProjectFolderPath))
         {
             Directory.Move(oldProjectFolderPath, newProjectFolderPath);
@@ -146,6 +152,7 @@ public class ProjectName : MonoBehaviour
     }
     void LoadProject(string projectName, string sceneName)
     {
+        LoadingPanel.SetActive(true);
         projectController.Load(projectName);
         SceneManager.LoadScene(sceneName);
     }

@@ -31,7 +31,6 @@ namespace GlobalAssets.UI
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log("in save here");
             projectController = ProjectController.Instance;
             Load();
             this.gameObject.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => Save());
@@ -56,7 +55,7 @@ namespace GlobalAssets.UI
                 className.text = projectController.classes[i];
                 finalAudiosContainer = classBox.GetChild(0).GetChild(4).GetChild(0).GetChild(0).gameObject.transform; // AudiosContainer
                 EmptyAudio = finalAudiosContainer.parent.parent.transform.GetChild(2).gameObject;
-                string classFolderPath = Path.Combine(folderPath, projectController.projectName, i + "_" + projectController.classes[i]);
+                string classFolderPath =  Path.Combine(projectController.directoryPath, projectController.projectName, i + "_" + projectController.classes[i]);
                 if (Directory.Exists(classFolderPath))
                 {
                     string[] audioPaths = Directory.GetFiles(classFolderPath);
@@ -121,14 +120,12 @@ namespace GlobalAssets.UI
         private void SaveAudiosToPath()
         {
             // Define the base folder path
-            string basePath = folderPath;
-            savePath = basePath + "/" + projectController.projectName; // Project One be dynamic
+            savePath = Path.Combine(projectController.directoryPath, projectController.projectName); // Project One be dynamic
             // Save AudiosData to basePath/Project1/AudiosData.className/audios[i].wav
             for (int i = 0; i < AudiosData.Count; i++)
             {
                 // Construct the folder path for the current class
-                string classFolderPath = Path.Combine(basePath, projectController.projectName, i + "_" + AudiosData[i].className);
-
+                string classFolderPath = Path.Combine(savePath, i + "_" + AudiosData[i].className);
                 // delete directory that starts with i_
                 string[] directories = Directory.GetDirectories(savePath);
                 foreach (string directory in directories)
@@ -150,7 +147,6 @@ namespace GlobalAssets.UI
                 {
                     // Construct the file path for the current audio
                     string audioPath = Path.Combine(classFolderPath, i + "_" + AudiosData[i].className + "_" + j + ".wav");
-
                     // Convert the AudioClip to a byte array
                     byte[] bytes = WavUtility.FromAudioClipStream(AudiosData[i].audios[j]);
 
