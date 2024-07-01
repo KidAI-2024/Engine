@@ -13,6 +13,7 @@ public class PredictionController : MonoBehaviour
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
     public GameObject predictButton;
+    public GameObject uploadButton;
     public GameObject predAnalysisScrollView;
     public GameObject TrainingButton;
     public GameObject CapturingImagesPanel;
@@ -24,6 +25,8 @@ public class PredictionController : MonoBehaviour
     private WebCamTexture webcamTexture;
     private bool togglePredicting = false;
     private ProjectController projectController;
+    private Texture2D predictImagePlaceHolder;
+    private bool isPredictingUploadedImage = false;
 
     void Start()
     {
@@ -40,7 +43,15 @@ public class PredictionController : MonoBehaviour
         // Load the model to the server
         Debug.Log("Loading model to server");
         LoadModelToML();
-        predictButton.GetComponent<Button>().interactable = false;
+        SetButtonsInteractable(false);
+        predictImagePlaceHolder = predictButton.transform.parent.GetChild(2).GetComponent<RawImage>().texture as Texture2D;
+    }
+    public void StartUploadPrediction()
+    {
+        isPredictingUploadedImage = true;
+        // add code to upload image 
+        // webcamDisplay.texture =  uploaded image texture; 
+        // webcamDisplay.material.mainTexture = uploaded image texture;
     }
     public void StartPrediction()
     {
@@ -48,6 +59,7 @@ public class PredictionController : MonoBehaviour
         if (togglePredicting)
         {
             predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Stop";
+            predictButton.transform.GetChild(1).gameObject.SetActive(false); // set the image of the predict button to the stop icon
             // Check if the device supports webcam
             if (WebCamTexture.devices.Length == 0)
             {
@@ -60,10 +72,11 @@ public class PredictionController : MonoBehaviour
         }
         else
         {
-            predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "Predict";
+            predictButton.GetComponentInChildren<TextMeshProUGUI>().text = "";
+            predictButton.transform.GetChild(1).gameObject.SetActive(true); // set the image of the predict button to the play icon
             webcamTexture.Stop();
-            webcamDisplay.texture = null;
-            webcamDisplay.material.mainTexture = null;
+            webcamDisplay.texture = predictImagePlaceHolder;
+            webcamDisplay.material.mainTexture = predictImagePlaceHolder;
             predictionText.text = "Predict";
         }
     }
@@ -87,7 +100,7 @@ public class PredictionController : MonoBehaviour
         // if (Input.GetKeyDown(KeyCode.Space))
         if (nextFrameReady)
         {
-            if (webcamTexture.isPlaying)
+            if (webcamTexture.isPlaying || isPredictingUploadedImage)
             {
                 // Send the frame to the server
                 frame = webcamTexture.GetPixels32();
@@ -104,6 +117,7 @@ public class PredictionController : MonoBehaviour
                 };
                 socketClient.SendMessage(message);
                 nextFrameReady = false;
+                isPredictingUploadedImage = false;
             }
         }
         bool trainingInProgress = TrainingButton.GetComponent<StartTraining>().trainingInProgress;
@@ -134,13 +148,13 @@ public class PredictionController : MonoBehaviour
                     {
                         CreateClassMap();
                         // unlock the predict button
-                        predictButton.GetComponent<Button>().interactable = true;
+                        SetButtonsInteractable(true);
                         // move the prediction analysis scroll view content to the end (most right) to show the predict button
                         predAnalysisScrollView.GetComponent<ScrollRect>().normalizedPosition = new Vector2(1, 0);
                     }
                     else // Model loading failed.. lock the predict button
                     {
-                        predictButton.GetComponent<Button>().interactable = false;
+                        SetButtonsInteractable(false);
                     }
                 }
                 nextFrameReady = true;
@@ -168,12 +182,10 @@ public class PredictionController : MonoBehaviour
             return projectController.PythonClassesToUnityClassesMap[message];
         }
         //TODO: if class is -1, then return "No Prediction"
-        /*
-        if (message == "-1")
+        if (message == "-1" || message == "None")
         {
-            return "No Prediction";
+            return "";
         }
-        */
         return message;
     }
     void ResetNextFrameReady()
@@ -185,7 +197,11 @@ public class PredictionController : MonoBehaviour
         // Stop the webcam
         webcamTexture.Stop();
     }
-
+    public void SetButtonsInteractable(bool interactable)
+    {
+        predictButton.GetComponent<Button>().interactable = interactable;
+        uploadButton.GetComponent<Button>().interactable = interactable;
+    }
     private byte[] Color32ArrayToByteArrayWithoutAlpha(Color32[] colors)
     {
         if (colors == null || colors.Length == 0)
