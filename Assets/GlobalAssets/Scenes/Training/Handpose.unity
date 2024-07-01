@@ -290,13 +290,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OpenFileExplorer
       objectReference: {fileID: 0}
-    - target: {fileID: 4451610673248023244, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1735479326}
-    - target: {fileID: 4451610673248023244, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenFileExplorer
     - target: {fileID: 2395085763816455707, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: EnablePreprocessing
       value: 1
@@ -304,6 +297,18 @@ PrefabInstance:
     - target: {fileID: 2395085763816455707, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: PreprocessingEventName
       value: preprocess_hand_pose
+      objectReference: {fileID: 0}
+    - target: {fileID: 4262488912688447590, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451610673248023244, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1735479326}
+    - target: {fileID: 4451610673248023244, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenFileExplorer
       objectReference: {fileID: 0}
     - target: {fileID: 4995968369288576209, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_AnchorMax.x
@@ -324,6 +329,18 @@ PrefabInstance:
     - target: {fileID: 4995968370521879966, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.00091552734
+      objectReference: {fileID: 0}
+    - target: {fileID: 7761676684977314048, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7761676684977314048, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111515895099181595, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8230324479330642381, guid: 0ba0f9a490c8c1048bcaa3f0ad439a20, type: 3}
       propertyPath: trainingEvent
