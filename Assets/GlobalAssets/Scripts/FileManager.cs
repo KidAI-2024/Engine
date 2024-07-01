@@ -16,27 +16,34 @@ public class FileManager : MonoBehaviour
     public void OpenFileExplorer(GameObject outsideImagesContainer)
     {
         finalImagesContainer = outsideImagesContainer.transform;
-        Debug.Log("finalImagesContainer: " + finalImagesContainer);
+        // Debug.Log("finalImagesContainer: " + finalImagesContainer);
 
-        path = EditorUtility.OpenFilePanel("Select images", "", "png,jpg,jpeg");
-        // path = EditorUtility.OpenFolderPanel("Select images", "", "");
+        // path = EditorUtility.OpenFilePanel("Select images", "", "png,jpg,jpeg");
+        path = EditorUtility.OpenFolderPanel("Select images", "./", "");
         Debug.Log("path: " + path);
 
-        // string[] files = Directory.GetFiles(path);
+        string[] files = Directory.GetFiles(path);
 
-        // foreach (string file in files)
-        //     if (file.EndsWith(".png") || file.EndsWith(".jpg") || file.EndsWith(".jpeg") || file.EndsWith(".PNG") || file.EndsWith(".JPG") || file.EndsWith(".JPEG"))
-        //         // File.Copy(file, EditorApplication.currentScene);
-        //         Debug.Log("file:" + file);
+        foreach (string file in files)
+        {
+            if (file.EndsWith(".png") || file.EndsWith(".jpg") || file.EndsWith(".jpeg") || file.EndsWith(".PNG") || file.EndsWith(".JPG") || file.EndsWith(".JPEG"))
+            {
 
-        GetImg();
+                // File.Copy(file, EditorApplication.currentScene);
+                // Debug.Log("file:" + path + "/" + Path.GetFileName(file));
+
+                GetImg(path + "/" + Path.GetFileName(file));
+            }
+        }
+        // empty the list of captured images
+        capturedImages.Clear();
     }
 
-    public void GetImg()
+    public void GetImg(string imgPath)
     {
-        if (path != null)
+        if (imgPath != null)
         {
-            UpdateImage();
+            UpdateImage(imgPath);
         }
     }
     public void OnSelectImageFinish()
@@ -69,13 +76,13 @@ public class FileManager : MonoBehaviour
             i++;
         }
     }
-    public void UpdateImage()
+    public void UpdateImage(string imgPath)
     {
-        WWW www = new WWW("file://" + path);
+        WWW www = new WWW("file://" + imgPath);
         // add the texture to the list of captured images
         capturedImages.Add(www.texture);
         // print the length of the list of captured images
-        Debug.Log(capturedImages.Count);
+        // Debug.Log(capturedImages.Count);
         OnSelectImageFinish();
 
     }
