@@ -2,21 +2,101 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
+
 // using SFB; // Import the namespace for NativeFilePicker
+// using AnotherFileBrowser.Windows; // Import the namespace for AnotherFileBrowser
+
 
 public class UploadImageController : MonoBehaviour
 {
     public GameObject imagePrefab; // Prefab of RawImage to instantiate
     public Transform finalImagesContainer; // Parent transform for instantiated RawImages
-    
+
     private List<Texture2D> capturedImages = new List<Texture2D>();
 
-    // This function should open the file explorer to select an image
+    string path;
+    public RawImage rawImage;
     public void SelectImagesFromFileExplorer()
-    {   
-        
+    {
+
+    }
+    public void OpenFileExplorer()
+    {
+        path = EditorUtility.OpenFilePanel("Overwrite with png", "", "png");
+        GetImg();
     }
 
+    public void GetImg()
+    {
+        if (path != null)
+        {
+            UpdateImage();
+        }
+    }
+    public void UpdateImage()
+    {
+        WWW www = new WWW("file://" + path);
+        rawImage.texture = www.texture;
+
+    }
+    // This function should open the file explorer to select an image
+    // public void SelectImagesFromFileExplorer()
+    // {
+    // var bp = new BrowserProperties();
+    // bp.filter = "Image files (*.png, *.jpg)|*.png;*.jpg";
+    // bp.filterIndex = 0;
+    // bp.defaultExt = "png";
+    // bp.title = "Select Image";
+    // bp.directory = Application.dataPath;
+    // bp.defaultFileName = "image.png";
+    // // bp.multiSelect = true;
+    // // bp.browserType = BrowserType.Open;
+    // // bp.browserSize = new Vector2(800, 600);
+    // // bp.browserPosition = new Vector2(200, 200);
+    // // bp.showMinimiseButton = true;
+    // new FileBrowser().OpenFileBrowser(bp, (path) =>
+    // {
+    //     if (path.Length == 0)
+    //     {
+    //         Debug.Log("No file selected");
+    //         return;
+    //     }
+    //     StartCoroutine(LoadImage(path));
+    // });
+    // }
+    /*IEnumerable LoadImage(string path)
+    {
+        // var url = "file://" + path;
+        // var www = new WWW(url);
+        // yield return www;
+        // if (string.IsNullOrEmpty(www.error))
+        // {
+        //     Texture2D texture = new Texture2D(2, 2);
+        //     www.LoadImageIntoTexture(texture);
+        //     capturedImages.Add(texture);
+        //     OnSelectImageFinish();
+        // }
+        // else
+        // {
+        //     Debug.Log("Error loading image: " + www.error);
+        // }
+        //using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(path))
+        //{
+        //    yield return www.SendWebRequest();
+        //    if (www.isNetworkError || www.isHttpError)
+        //    {
+        //        Debug.Log(www.error);
+        //    }
+        //    else
+        //    {
+        //        Texture2D texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+        //        capturedImages.Add(texture);
+        //        OnSelectImageFinish();
+        //    }
+        //}
+    }
+    */
     public void OnSelectImageFinish()
     {
         int i = 0;
@@ -38,7 +118,7 @@ public class UploadImageController : MonoBehaviour
 
             Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
             newImageObject.transform.localPosition = newPosition;
-            
+
             // get the imageContainer and increase its height
             if (col == 0 && capturedImages.Count > 8)
             {

@@ -6514,6 +6514,7 @@ GameObject:
   - component: {fileID: 8230324479376756113}
   - component: {fileID: 8230324479376756114}
   - component: {fileID: 6716890702220441676}
+  - component: {fileID: 315489057290621703}
   m_Layer: 5
   m_Name: Training Canvas
   m_TagString: Untagged
@@ -6740,6 +6741,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &315489057290621703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230324479376756124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c727ae36a6c0b4a8ff58a9f3ce04a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePrefab: {fileID: 6111039542854650643, guid: 5a9ca548f14413d40a3383a231221cf2, type: 3}
+  finalImagesContainer: {fileID: 0}
 --- !u!1 &8230324479498613707
 GameObject:
   m_ObjectHideFlags: 0
@@ -9165,6 +9180,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9005091871652939145}
     m_Modifications:
+    - target: {fileID: 3990965804237772403, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8230324479376756124}
     - target: {fileID: 3990965804599306531, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.00012207031
@@ -9350,6 +9369,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9005091871652939145}
     m_Modifications:
+    - target: {fileID: 3990965804237772403, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8230324479376756124}
     - target: {fileID: 3990965804599306531, guid: e1ede0745c70885478aa23d2341ca63c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.00012207031
