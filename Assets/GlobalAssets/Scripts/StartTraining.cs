@@ -16,7 +16,7 @@ public class StartTraining : MonoBehaviour
     public GameObject warningPanel;
     public GameObject feebackPanel;
     public GameObject predictButton;
-    
+
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
     private bool isTrainingFinished = false;
@@ -28,7 +28,8 @@ public class StartTraining : MonoBehaviour
     {
         projectController = ProjectController.Instance;
         TrainingButton = this.gameObject;
-        GraphImage = feebackPanel.transform.GetChild(0).gameObject;
+        if (feebackPanel.transform.childCount > 0)
+            GraphImage = feebackPanel.transform.GetChild(0).gameObject;
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
