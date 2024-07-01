@@ -13,7 +13,6 @@ public class PredictionController : MonoBehaviour
     public TextMeshProUGUI predictionText;
     public GameObject classesContainer;
     public GameObject predictButton;
-    public GameObject TrainingButton;
 
     private bool nextFrameReady = true;
     private bool startPrediction = false;
@@ -26,7 +25,7 @@ public class PredictionController : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("IN PRED CALSS");
+        Debug.Log("Prediction Controller started");
         predictionText.text = "Predict";
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
@@ -37,13 +36,11 @@ public class PredictionController : MonoBehaviour
             requestedWidth = 320,
             requestedHeight = 180
         };
+        // Load the model to the server
+        Debug.Log("Loading model to server");
         LoadModelToML();
         predictButton.GetComponent<Button>().interactable = false;
     }
-    
-    
-    
-    
     public void StartPrediction()
     {
         togglePredicting = !togglePredicting;
@@ -78,7 +75,8 @@ public class PredictionController : MonoBehaviour
         {
             { "project_name", projectController.projectName},
             { "saved_model_name", projectController.savedModelFileName},
-            { "event", LoadModelEventName }
+            { "event", LoadModelEventName },
+            {"num_classes", projectController.numberOfClasses.ToString() }
         };
         socketClient.SendMessage(message);
     }
@@ -107,34 +105,31 @@ public class PredictionController : MonoBehaviour
                 nextFrameReady = false;
             }
         }
-        //bool trainingInProgress = TrainingButton.GetComponent<StartTraining>().trainingInProgress;
-        bool trainingInProgress = true;
-        if (trainingInProgress)
-        { // Receive the response from the server
-            if (socketClient.isDataAvailable())
+        // Receive the response from the server
+        if (socketClient.isDataAvailable())
+        {
+            Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+            if (response["event"] == PredictEventName)
             {
-                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-                if (response["event"] == PredictEventName)
-                {
-                    string pred = response["prediction"];
-                    Debug.Log("Received: " + pred);
-                    predictionText.text = MapToClassName(pred);
-                }
-                else if (response["event"] == LoadModelEventName)
-                {
-                    if (response["status"] == "success") // Model loaded successfully
-                    {
-                        CreateClassMap();
-                        predictButton.GetComponent<Button>().interactable = true;
-                    }
-                    else // Model loading failed.. lock the predict button
-                    {
-                        predictButton.GetComponent<Button>().interactable = false;
-                    }
-                }
-                nextFrameReady = true;
-                // Invoke("ResetNextFrameReady", 1.0f);
+                string pred = response["prediction"];
+                Debug.Log("Received: " + pred);
+                predictionText.text = MapToClassName(pred);
             }
+            else if (response["event"] == LoadModelEventName)
+            {
+                Debug.Log("Load Received: " + response["status"]);
+                if (response["status"] == "success") // Model loaded successfully
+                {
+                    CreateClassMap();
+                    predictButton.GetComponent<Button>().interactable = true;
+                }
+                else // Model loading failed.. lock the predict button
+                {
+                    predictButton.GetComponent<Button>().interactable = false;
+                }
+            }
+            nextFrameReady = true;
+            // Invoke("ResetNextFrameReady", 1.0f);
         }
     }
     // This function creates a map of class names to class indices
@@ -156,6 +151,13 @@ public class PredictionController : MonoBehaviour
         {
             return projectController.PythonClassesToUnityClassesMap[message];
         }
+        //TODO: if class is -1, then return "No Prediction"
+        /*
+        if (message == "-1")
+        {
+            return "No Prediction";
+        }
+        */
         return message;
     }
     void ResetNextFrameReady()

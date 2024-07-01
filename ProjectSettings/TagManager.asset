@@ -12,6 +12,7 @@ TagManager:
   - Carpet
   - Tile
   - Enemy
+  - KartingCheckpoint
   layers:
   - Default
   - TransparentFX

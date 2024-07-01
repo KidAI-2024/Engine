@@ -17,7 +17,9 @@ namespace Survival
 
         public void B_QuitGame()
         {
-            Application.Quit();
+            // Application.Quit();
+            SceneManager.LoadScene("Lobby");
+
         }
     }
 }
