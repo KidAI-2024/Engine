@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 using GlobalAssets.UI;
+<<<<<<< HEAD
 using GlobalAssets.Socket;
 using System;
+=======
+using UnityEngine.SceneManagement;
+>>>>>>> 6e3b1c6a6289a88ae52c4a53bff1f411d9e27df5
 
 public class StartTraining : MonoBehaviour
 {
     public string trainingEvent;
     public GameObject saveProjectButton;
+    public bool trainingInProgress = false;
     public GameObject warningPanel;
     public GameObject feebackPanel;
     public GameObject predictButton;
@@ -39,9 +44,17 @@ public class StartTraining : MonoBehaviour
             {
                 Debug.Log("Training data Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+                Debug.Log(response);
+                foreach (KeyValuePair<string, string> kvp in response)
+                {
+                   
+                        Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+                    
+                }
                 // Debug.Log("Received: " + response["status"]);
                 if (response["status"] == "success")
                 {
+                    Debug.Log("In Train");
                     projectController.isTrained = true;
                     projectController.savedModelFileName = response["saved_model_name"];
                     projectController.Save();
@@ -75,8 +88,27 @@ public class StartTraining : MonoBehaviour
             }
         }
     }
+<<<<<<< HEAD
     public void StartSocketTraining(){
         saveProjectButton.GetComponent<SaveProject>().Save();
+=======
+    public void StartSocketTraining()
+    {
+        TrainingButton.transform.GetChild(0).gameObject.SetActive(false);
+        TrainingButton.transform.GetChild(1).gameObject.SetActive(true);
+        isTrainingStarted = true;
+        isTrainingFinished=false;
+        CreateClassMap();
+        if (SceneManager.GetActiveScene().name == "Audio")
+        {
+            saveProjectButton.GetComponent<SaveAudioProject>().Save();
+        }
+        else
+        {
+            saveProjectButton.GetComponent<SaveProject>().Save();
+        }
+       
+>>>>>>> 6e3b1c6a6289a88ae52c4a53bff1f411d9e27df5
         if (!Validate()) return;
         isTrainingFinished = false;
         isTrainingStarted = true;
@@ -119,7 +151,7 @@ public class StartTraining : MonoBehaviour
         // check if number if image a class is less than 10
         foreach (string className in projectController.classes)
         {
-            if (projectController.imagesPerClass[className] < 10)
+            if (projectController.imagesPerClass[className] < 1)
             {
                 DisplayWarning("Add at least 10 images to each class", "OK");
                 return false;

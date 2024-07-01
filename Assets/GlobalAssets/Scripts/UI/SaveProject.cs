@@ -113,6 +113,7 @@ namespace GlobalAssets.UI
 
         public void Save()
         {
+            //if()schene name
             GetImages();
             SaveImagesToPath();
             projectController.Save();

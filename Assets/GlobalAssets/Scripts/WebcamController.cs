@@ -38,7 +38,6 @@ public class WebcamController : MonoBehaviour
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         // EmptyImage = finalImagesContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
         // EmptyImageCaptureImages = imageContainer.parent.parent.gameObject.transform.GetChild(2).gameObject;
-        numberOFImagesOutside = finalImagesContainer.parent.parent.parent.gameObject.transform.GetChild(4).gameObject;
         // Add a listener to the capture button
         autoCaptureDDL = autoCaptureGO.GetComponent<TMP_Dropdown>();
         captureButton.onClick.AddListener(CapturePhoto);
