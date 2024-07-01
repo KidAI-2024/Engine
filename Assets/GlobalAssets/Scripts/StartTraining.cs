@@ -8,6 +8,13 @@ using GlobalAssets.Socket;
 using System;
 using UnityEngine.SceneManagement;
 
+
+public enum DisplayMessageType
+{
+    Success,
+    Error,
+    Warning
+}
 public class StartTraining : MonoBehaviour
 {
     public string trainingEvent;
@@ -23,6 +30,10 @@ public class StartTraining : MonoBehaviour
     private bool isTrainingStarted = false;
     private GameObject TrainingButton;
     private GameObject GraphImage;
+
+    public Sprite warningIcon;
+    public Sprite errorIcon;
+    public Sprite successIcon;
 
     void Start()
     {
@@ -71,6 +82,7 @@ public class StartTraining : MonoBehaviour
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
+                    DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
                 }
                 else if (response["status"] == "failed")
                 {
@@ -95,7 +107,7 @@ public class StartTraining : MonoBehaviour
         {
             saveProjectButton.GetComponent<SaveProject>().Save();
         }
-        if (!Validate()) return;
+        if (!Validate()) return; // return if validation fails
         isTrainingFinished = false;
         isTrainingStarted = true;
         CreateClassMap();
@@ -117,6 +129,18 @@ public class StartTraining : MonoBehaviour
     }
     private bool Validate()
     {
+        // check if any 2 classes have same name
+        for (int i = 0; i < projectController.classes.Count; i++)
+        {
+            for (int j = i + 1; j < projectController.classes.Count; j++)
+            {
+                if (projectController.classes[i] == projectController.classes[j])
+                {
+                    DisplayWarning("Two classes cannot have the same name", "OK");
+                    return false;
+                }
+            }
+        }
         // check if number of classes is greater than 0
         if (projectController.numberOfClasses < 1)
         {
@@ -139,7 +163,7 @@ public class StartTraining : MonoBehaviour
         {
             if (projectController.imagesPerClass[className] < 1)
             {
-                DisplayWarning("Add at least 10 images to each class", "OK");
+                DisplayWarning("Add at least 10 images to each class", "OK", DisplayMessageType.Warning);
                 return false;
             }
         }
@@ -155,10 +179,23 @@ public class StartTraining : MonoBehaviour
         return true;
     }
 
-    private void DisplayWarning(string message, string buttonText)
+    private void DisplayWarning(string message, string buttonText, DisplayMessageType messageType = DisplayMessageType.Error)
     {
         // enable warning panel
         warningPanel.SetActive(true);
+        // image 
+        switch (messageType)
+        {
+            case DisplayMessageType.Error:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = errorIcon;
+                break;
+            case DisplayMessageType.Warning:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = warningIcon;
+                break;
+            case DisplayMessageType.Success:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = successIcon;
+                break;
+        }
         // warning message
         warningPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
         // warning button text

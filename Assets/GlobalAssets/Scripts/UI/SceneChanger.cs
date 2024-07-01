@@ -8,7 +8,13 @@ namespace GlobalAssets.UI
     {
         public void LoadScene(string targetSceneName)
         {
-            SceneManager.LoadScene(targetSceneName);
+            try{
+                SceneManager.LoadScene(targetSceneName);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error loading scene: " + e.Message);
+            }
         }
 
         public void QuitGame()

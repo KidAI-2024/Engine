@@ -1395,7 +1395,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 47}
-  m_SizeDelta: {x: 80, y: 70}
+  m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4956705392776295316
 CanvasRenderer:
@@ -5171,6 +5171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ba3fb4e440eef4da59e9d58f9f8693, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnablePreprocessing: 0
+  PreprocessingEventName: 
   webcamDisplay: {fileID: 1021631110374400562}
   imagePrefab: {fileID: 6111039542854650643, guid: 5a9ca548f14413d40a3383a231221cf2, type: 3}
   imageContainer: {fileID: 602559174158058004}
@@ -6144,7 +6146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7390322769046719187
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6354,11 +6356,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trainingEvent: 
+  trainingInProgress: 0
   saveProjectButton: {fileID: 7757605288314992324}
   warningPanel: {fileID: 4262488912688447590}
   feebackPanel: {fileID: 3160493266296037638}
   predictButton: {fileID: 8230324479711915715}
-  trainingInProgress: 0
+  warningIcon: {fileID: 21300000, guid: 6e4fa80ae159bcf47aaf93afbdff4afa, type: 3}
+  errorIcon: {fileID: 21300000, guid: 602a7ab193c97374a8f872d6ca0d0853, type: 3}
+  successIcon: {fileID: 21300000, guid: 894b9a39001ebab468b0796da3fd8b4d, type: 3}
 --- !u!114 &957079022398751654
 MonoBehaviour:
   m_ObjectHideFlags: 0
