@@ -18,20 +18,17 @@ EditorBuildSettings:
     path: Assets/GlobalAssets/Scenes/Training/Image.unity
     guid: a99c7161320617c409fb2998f3eecbb8
   - enabled: 1
-    path: Assets/GlobalAssets/Scenes/Training/Audio_2.unity
-    guid: d524e0b4a3ca4d14dbb1151ac1e0c67e
+    path: Assets/GlobalAssets/Scenes/Training/Audio.unity
+    guid: 505b2353b31a75044afac850ba967592
   - enabled: 1
-    path: Assets/Karting/Scenes/KartingMapContoller.unity
-    guid: d863e189ea5f71748b5d11461420149b
+    path: Assets/MortalKombat/Scenes/MapContoller.unity
+    guid: 09d2387e76f1db14ca0b10c83ccc8b74
   - enabled: 1
     path: Assets/MortalKombat/Scenes/CharacterSelect.unity
     guid: b6cd0d51bc545644a9fcf16f16397611
   - enabled: 1
     path: Assets/MortalKombat/Scenes/SelectMap.unity
     guid: 2deae7ee13c17a34a8fbda594b524694
-  - enabled: 1
-    path: Assets/MortalKombat/Scenes/MapContoller.unity
-    guid: 09d2387e76f1db14ca0b10c83ccc8b74
   - enabled: 1
     path: Assets/MortalKombat/Scenes/Maps/Forest.unity
     guid: 7769f33fb4fa2e5458344a36556ad760
@@ -71,12 +68,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Survival/Scenes/WinScene.unity
     guid: c2eb0a327a7083243aa8bed4a66c1165
-  - enabled: 1
-    path: Assets/GlobalAssets/Scenes/Training/Audio.unity
-    guid: 505b2353b31a75044afac850ba967592
-  - enabled: 1
-    path: Assets/Karting/Scenes/KartingMapContoller.unity
-    guid: d863e189ea5f71748b5d11461420149b
   - enabled: 1
     path: Assets/EndlessRunner/Scenes/EndlessRunningMapContoller.unity
     guid: f78c006f5d612a044b3388d5afede2eb
