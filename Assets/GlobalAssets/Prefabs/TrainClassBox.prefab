@@ -1670,6 +1670,7 @@ MonoBehaviour:
   dialog: {fileID: 0}
   IscaptureCameraPanel: 1
   captureImageCanvas: {fileID: 3990965805350471358}
+  isAudio: 0
 --- !u!1 &5414318649511764301
 GameObject:
   m_ObjectHideFlags: 0

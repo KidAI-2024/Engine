@@ -168,8 +168,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   for_speed: 22
   current_position: 1
-  side_speed: 6
-  jump_force: 18
+  side_speed: 10
+  jump_force: 28
+  predicted_control: 
   rb: {fileID: 203810945}
 --- !u!114 &203810943
 MonoBehaviour:
