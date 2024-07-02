@@ -80,6 +80,7 @@ public class ProjectName : MonoBehaviour
     }
     public void CreateProject()
     {
+        projectController.Reset();
         string projectName = ProjectNameTextField.GetComponentInChildren<TMP_InputField>().text;
         TextMeshProUGUI ErrorMessageText = ErrorMessageTextField.GetComponentInChildren<TextMeshProUGUI>();
         if(projectName == "")
@@ -103,6 +104,7 @@ public class ProjectName : MonoBehaviour
         projectController.createdAt = createdAt;
         projectController.projectType = projectType;
         projectController.sceneName = nextSceneName;
+        projectController.isCreated = true;
         projectController.Save();
 
         SceneManager.LoadScene(nextSceneName);

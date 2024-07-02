@@ -119,6 +119,11 @@ public class ConfigureModel : MonoBehaviour
     }
     void LoadFeatures()
     {
+        if (ProjectController.isCreated)
+        {
+            ProjectController.isCreated = false;
+            return;
+        }
         // loop on features children (each child is a toggle) if the child.name is in the ProjectController.features then set the toggle to on
         foreach (Transform child in features.transform)
         {
@@ -126,11 +131,15 @@ public class ConfigureModel : MonoBehaviour
             {
                 child.GetComponent<Toggle>().isOn = true;
             }
+            else
+            {
+                child.GetComponent<Toggle>().isOn = false;
+            }
         }
     }
     void LoadModel()
     {
-        if (ProjectController.model == "SVM")
+        if (ProjectController.model == "SVM" || ProjectController.model == "")
         {
             SVMtoggle.GetComponent<Toggle>().isOn = true;
         }
@@ -141,7 +150,7 @@ public class ConfigureModel : MonoBehaviour
     }
     void LoadTrainingMode()
     {
-        if (ProjectController.featureExtractionType == "mediapipe")
+        if (ProjectController.featureExtractionType == "mediapipe" || ProjectController.featureExtractionType == "")
         {
             mediaPipeToggle.GetComponent<Toggle>().isOn = true;
             featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
