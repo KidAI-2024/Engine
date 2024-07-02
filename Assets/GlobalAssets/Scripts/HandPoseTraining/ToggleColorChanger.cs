@@ -5,7 +5,7 @@ namespace GlobalAssets.HandPoseTraining
     public class ToggleColorChanger : MonoBehaviour
     {
         Toggle toggle;
-        Image toggleBackground;
+        public Image toggleBackground;
 
         void Start()
         {
@@ -20,7 +20,7 @@ namespace GlobalAssets.HandPoseTraining
             toggle.onValueChanged.AddListener(UpdateColor);
         }
 
-        void UpdateColor(bool isOn)
+        public void UpdateColor(bool isOn)
         {
             if (isOn)
             {
