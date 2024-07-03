@@ -182,6 +182,7 @@ MonoBehaviour:
   audioSource: {fileID: 808335791215519256}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &3990965804400285526
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,7 +759,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3990965805350471344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1427,6 +1428,7 @@ MonoBehaviour:
   audioSource: {fileID: 808335791215519256}
   hoverSound: {fileID: 8300000, guid: bcd6be2870213a540bde407948dc468f, type: 3}
   isSelectable: 0
+  isSelected: 0
 --- !u!1 &3990965806218516844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1668,6 +1670,7 @@ MonoBehaviour:
   dialog: {fileID: 0}
   IscaptureCameraPanel: 1
   captureImageCanvas: {fileID: 3990965805350471358}
+  isAudio: 0
 --- !u!1 &4170738261297595936
 GameObject:
   m_ObjectHideFlags: 0
