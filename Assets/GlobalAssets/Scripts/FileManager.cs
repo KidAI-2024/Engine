@@ -35,6 +35,7 @@ public class FileManager : MonoBehaviour
                 GetImg(path + "/" + Path.GetFileName(file));
             }
         }
+        OnSelectImageFinish();
         // empty the list of captured images
         capturedImages.Clear();
     }
@@ -83,7 +84,7 @@ public class FileManager : MonoBehaviour
         capturedImages.Add(www.texture);
         // print the length of the list of captured images
         // Debug.Log(capturedImages.Count);
-        OnSelectImageFinish();
+        // OnSelectImageFinish();
 
     }
 }
