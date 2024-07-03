@@ -12,7 +12,6 @@ public class ProjectName : MonoBehaviour
     public GameObject ErrorMessageTextField;
     public GameObject ProjectListPanel;    
     public GameObject ProjectBtnPrefab;
-    public GameObject warningPanel;
     public string projectType;
     public string nextSceneName;
     
@@ -39,31 +38,9 @@ public class ProjectName : MonoBehaviour
     void Start()
     {
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
-        PingServer();
         projectController = ProjectController.Instance;
         projectController.Reset();
         LoadProjectsList();
-    }
-    void Update()
-    {
-        try
-        {
-            if (socketClient.isDataAvailable())
-            {
-                Debug.Log("Server Alive");
-                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Server is not available");
-            warningPanel.SetActive(true);
-        }
-    }
-
-    void PingServer()
-    {
-        socketClient.SendMessage(new Dictionary<string, string> { { "event", "ping" } });
     }
     // sort by createdAt
     void LoadProjectsList()
