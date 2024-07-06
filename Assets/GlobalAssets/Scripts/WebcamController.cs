@@ -176,7 +176,6 @@ public class WebcamController : MonoBehaviour
 
         // Add the captured photo to the list
         capturedImages.Add(photo);
-
         Vector3 newPosition = new Vector3(col * spacingX + 15, -row * spacingY - 10, 0);
         newImageObject.transform.localPosition = newPosition;
         newImageObject.GetComponent<RemoveImage>().ImageIndex = capturedImages.Count - 1;
@@ -193,6 +192,12 @@ public class WebcamController : MonoBehaviour
 
     public void CloseCamera()
     {
+        // Debug.Log("Caputred "+capturedImages.Count+" Images Increasing height");
+        finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x,
+            137.5f
+        );
+        numberOFImagesOutside = finalImagesContainer.parent.parent.parent.gameObject.transform.GetChild(4).gameObject;
         isPreprossingInProgress = false;
         nextFrameReady = true;
         // stop the InvokeRepeating
@@ -227,21 +232,25 @@ public class WebcamController : MonoBehaviour
             newImageObject.transform.localPosition = newPosition;
             
             // get the imageContainer and increase its height
-            if (col == 0 && capturedImages.Count > 8)
+            if (col == 0 && i > 5)
             {
                 finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
-                finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70
+                );
             }
             i++;
         }
         EmptyImage.SetActive(capturedImages.Count == 0);
-        //numberOFImagesOutside.GetComponent<TextMeshProUGUI>().text = capturedImages.Count > 1? capturedImages.Count + " IMAGES": capturedImages.Count + " IMAGE";
     }
 
     // This function is called by the popup activate to show the captured images of the class clicked
     public void InstantiateCapturedImages()
     {
+        imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            200.54f,
+            210.63f
+        );
         int i = 0;
         foreach (Texture2D image in capturedImages)
         {
