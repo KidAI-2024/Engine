@@ -12,6 +12,7 @@ public class FileManager : MonoBehaviour
     public GameObject imagePrefab; // Prefab of RawImage to instantiate
     List<Texture2D> capturedImages = new List<Texture2D>();
     public Transform finalImagesContainer; // Parent transform for instantiated RawImages
+    private GameObject EmptyImage; // GameObject to display when there are no images
 
     public void OpenFileExplorer(GameObject outsideImagesContainer)
     {
@@ -21,6 +22,8 @@ public class FileManager : MonoBehaviour
         try
         {
             finalImagesContainer = outsideImagesContainer.transform;
+            EmptyImage = outsideImagesContainer.transform.parent.parent.transform.GetChild(2).gameObject;
+            GetPreviousCapturedImages();
             path = EditorUtility.OpenFolderPanel("Select images", "./", "");
             string[] files = Directory.GetFiles(path);
 
@@ -55,7 +58,13 @@ public class FileManager : MonoBehaviour
         }
 
     }
-
+    private void GetPreviousCapturedImages()
+    {
+        foreach (Transform child in finalImagesContainer)
+        {
+            capturedImages.Add(child.GetComponent<RawImage>().texture as Texture2D);
+        }
+    }
     public void GetImg(string imgPath)
     {
         if (imgPath != null)
@@ -65,6 +74,10 @@ public class FileManager : MonoBehaviour
     }
     public void OnSelectImageFinish()
     {
+        foreach (Transform child in finalImagesContainer)
+        {
+            Destroy(child.gameObject);
+        }
         int i = 0;
         // add all the captured images to the finalImagesContainer
         foreach (Texture2D image in capturedImages)
@@ -88,10 +101,14 @@ public class FileManager : MonoBehaviour
             // get the imageContainer and increase its height
             if (col == 0 && capturedImages.Count > 8)
             {
-                finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70);
+                finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70
+                );
             }
             i++;
         }
+        EmptyImage.SetActive(capturedImages.Count == 0);
     }
     public void UpdateImage(string imgPath)
     {
