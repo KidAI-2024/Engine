@@ -48,7 +48,7 @@ public class StartTraining : MonoBehaviour
     }
     void Update()
     {
-        // Check available messages incoming from the server 
+        // Check available messages incoming from the server
         // only if the training is in progress (started and not finished yet)
         trainingInProgress = !isTrainingFinished && isTrainingStarted;
         if (trainingInProgress)
@@ -98,13 +98,21 @@ public class StartTraining : MonoBehaviour
     // Type Audio save audio project (.wav) have different save function
     public void StartSocketTraining()
     {
-        if (SceneManager.GetActiveScene().name == "Audio")
+        try
         {
-            saveProjectButton.GetComponent<SaveAudioProject>().Save();
+            if (SceneManager.GetActiveScene().name == "Audio")
+            {
+                saveProjectButton.GetComponent<SaveAudioProject>().Save();
+            }
+            else
+            {
+                saveProjectButton.GetComponent<SaveProject>().Save();
+            }
         }
-        else
+        catch (Exception e)
         {
-            saveProjectButton.GetComponent<SaveProject>().Save();
+            DisplayWarning("Class names must not be empty or be the same", "OK");
+            return;
         }
         if (!Validate()) return; // validate the project before training
         // set the training in progress flags

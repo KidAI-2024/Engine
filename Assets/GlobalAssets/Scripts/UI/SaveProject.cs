@@ -102,7 +102,7 @@ namespace GlobalAssets.UI
                 newImageObject.GetComponent<RemoveImage>().capturedImages = capturedImages;
                 newImageObject.GetComponent<RemoveImage>().isLoad = true;
                 // get the imageContainer and increase its height
-                if (col == 0 && i > 8)
+                if (col == 0 && i > 5)
                 {
                     finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
                         finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 

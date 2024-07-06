@@ -36,6 +36,7 @@ public class ConfigureModel : MonoBehaviour
         LoadFeatures();
         LoadModel();
         LoadTrainingMode();
+        Save();
     }
     public void Save()
     {
@@ -62,7 +63,6 @@ public class ConfigureModel : MonoBehaviour
                 featuresList.Add(child.name);
             }
         }
-        Debug.Log("Features List: " + string.Join(", ", featuresList));
         return featuresList;
     }
     string GetModel()
@@ -76,7 +76,6 @@ public class ConfigureModel : MonoBehaviour
         {
             model = "NeuralNetwork";
         }
-        Debug.Log("Model: " + model);
         return model;
     }
     string GetTrainingMode()
@@ -94,7 +93,6 @@ public class ConfigureModel : MonoBehaviour
             mediapipeSkeleton.SetActive(false);
             classicalWarning.SetActive(true);
         }
-        Debug.Log("Training Type: " + model);
         return model;
     }
     void MediaPipeToggle(bool value)

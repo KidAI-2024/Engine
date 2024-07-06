@@ -202,7 +202,6 @@ public class WebcamController : MonoBehaviour
     // to copy the captured images (from the capturing panel) to the finalImagesContainer (corresponding class box)
     public void CloseCamera()
     {
-        // Debug.Log("Caputred "+capturedImages.Count+" Images Increasing height");
         finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
             finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x,
             137.5f
