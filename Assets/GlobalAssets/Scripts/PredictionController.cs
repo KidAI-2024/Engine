@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 using TMPro;
 using System.IO;
-
 public class PredictionController : MonoBehaviour
 {
     public string PredictEventName = "";
@@ -27,7 +27,8 @@ public class PredictionController : MonoBehaviour
     private ProjectController projectController;
     private Texture2D predictImagePlaceHolder;
     private bool isPredictingUploadedImage = false;
-
+    string uploadedImgPath;
+    private Texture2D uploadedImage;
     void Start()
     {
         predictionText.text = "Predict";
@@ -50,8 +51,18 @@ public class PredictionController : MonoBehaviour
     {
         isPredictingUploadedImage = true;
         // add code to upload image 
-        // webcamDisplay.texture =  uploaded image texture; 
-        // webcamDisplay.material.mainTexture = uploaded image texture;
+        uploadedImgPath = EditorUtility.OpenFilePanel("Select image to predict", "", "png,jpg,jpeg");
+        if (uploadedImgPath.Length == 0)
+        {
+            return;
+        }
+        if (uploadedImgPath != null)
+        {
+            WWW www = new WWW("file://" + uploadedImgPath);
+            webcamDisplay.texture = www.texture; // uploaded image texture; 
+            webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
+            uploadedImage = www.texture;
+        }
     }
     public void StartPrediction()
     {
@@ -100,10 +111,10 @@ public class PredictionController : MonoBehaviour
         // if (Input.GetKeyDown(KeyCode.Space))
         if (nextFrameReady)
         {
-            if (webcamTexture.isPlaying || isPredictingUploadedImage)
+            if (webcamTexture.isPlaying)
             {
-                // Send the frame to the server
                 frame = webcamTexture.GetPixels32();
+                // Send the frame to the server
                 byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
                 // Encode the byte array to a Base64 string
                 string frameBase64 = Convert.ToBase64String(frameBytes);
@@ -117,6 +128,24 @@ public class PredictionController : MonoBehaviour
                 };
                 socketClient.SendMessage(message);
                 nextFrameReady = false;
+            }
+            else if (isPredictingUploadedImage)
+            {
+                frame = uploadedImage.GetPixels32();
+                // Send the frame to the server
+                byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
+                // Encode the byte array to a Base64 string
+                string frameBase64 = Convert.ToBase64String(frameBytes);
+                // Construct dictionary to send to server
+                Dictionary<string, string> message = new Dictionary<string, string>
+                {
+                    { "frame", frameBase64 },
+                    { "width", uploadedImage.width.ToString() },
+                    { "height", uploadedImage.height.ToString() },
+                    { "event", PredictEventName }
+                };
+                socketClient.SendMessage(message);
+                nextFrameReady = false;
                 isPredictingUploadedImage = false;
             }
         }
@@ -126,7 +155,7 @@ public class PredictionController : MonoBehaviour
         {
             // Receive the response from the server
             if (socketClient.isDataAvailable())
-            {  
+            {
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 if (response["event"] == PredictEventName)
                 {

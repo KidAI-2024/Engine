@@ -30,6 +30,21 @@ public class ProjectController : MonoBehaviour
 
     public int epochs = 10;
     public float learningRate = 0.01f;
+    public int classicalModelType = 0;
+    /*
+    if classical model:
+    0: SVM
+    1: Logistic Regression
+    2: Random Forest
+    */
+    public int featureExtractionTypeImg = 0;
+    /*
+    this is for classical model:
+    0: SIFT
+    1: HOG
+    2: LBP
+    */
+    public int modelCategory = 0; // 0 for classical, 1 for resnet, 2 for CNN
     // Ensure only one instance of ProjectController exists
     private void Awake()
     {

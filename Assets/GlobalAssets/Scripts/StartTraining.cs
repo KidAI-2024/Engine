@@ -23,6 +23,7 @@ public class StartTraining : MonoBehaviour
     public GameObject warningPanel;
     public GameObject feebackPanel;
     public GameObject predictButton;
+    public GameObject uploadButton;
 
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
@@ -50,7 +51,7 @@ public class StartTraining : MonoBehaviour
         // Check available messages incoming from the server 
         // only if the training is in progress (started and not finished yet)
         trainingInProgress = !isTrainingFinished && isTrainingStarted;
-        if(trainingInProgress)
+        if (trainingInProgress)
         {
             if (socketClient.isDataAvailable())
             {
@@ -76,6 +77,7 @@ public class StartTraining : MonoBehaviour
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
+                    uploadButton.GetComponent<Button>().interactable = true;
                     DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
                 }
                 else if (response["status"] == "failed") // training failed for a server side error
@@ -92,9 +94,10 @@ public class StartTraining : MonoBehaviour
             }
         }
     }
-    public void StartSocketTraining(){
-        // save the project before training
-        // Type Audio save audio project (.wav) have different save function
+    // save the project before training
+    // Type Audio save audio project (.wav) have different save function
+    public void StartSocketTraining()
+    {
         if (SceneManager.GetActiveScene().name == "Audio")
         {
             saveProjectButton.GetComponent<SaveAudioProject>().Save();
@@ -219,6 +222,9 @@ public class StartTraining : MonoBehaviour
             {"num_classes", projectController.numberOfClasses.ToString() },
             {"epochs", projectController.epochs.ToString()},
             {"max_lr", projectController.learningRate.ToString()},
+            {"model_category", projectController.modelCategory.ToString()},
+            {"classical_model_type", projectController.classicalModelType.ToString()},
+            { "feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString()},
             { "event", trainingEvent }
         };
         socketClient.SendMessage(message);
