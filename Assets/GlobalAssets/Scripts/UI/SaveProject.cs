@@ -72,7 +72,10 @@ namespace GlobalAssets.UI
         }
         public void LoadImages()
         {
-            
+            finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x,
+                137.5f
+            );
             foreach (Transform child in finalImagesContainer)
             {
                 Destroy(child.gameObject);
@@ -99,7 +102,7 @@ namespace GlobalAssets.UI
                 newImageObject.GetComponent<RemoveImage>().capturedImages = capturedImages;
                 newImageObject.GetComponent<RemoveImage>().isLoad = true;
                 // get the imageContainer and increase its height
-                if (col == 0 && capturedImages.Count > 8)
+                if (col == 0 && i > 5)
                 {
                     finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
                         finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
@@ -108,7 +111,7 @@ namespace GlobalAssets.UI
                 }
                 i++;
             }
-            EmptyImage.SetActive(capturedImages.Count == 0);
+            EmptyImage.SetActive(i == 0);
         }
 
         public void Save()
