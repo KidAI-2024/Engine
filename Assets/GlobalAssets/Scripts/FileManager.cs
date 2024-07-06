@@ -15,29 +15,45 @@ public class FileManager : MonoBehaviour
 
     public void OpenFileExplorer(GameObject outsideImagesContainer)
     {
-        finalImagesContainer = outsideImagesContainer.transform;
         // Debug.Log("finalImagesContainer: " + finalImagesContainer);
 
         // path = EditorUtility.OpenFilePanel("Select images", "", "png,jpg,jpeg");
-        path = EditorUtility.OpenFolderPanel("Select images", "./", "");
-        Debug.Log("path: " + path);
-
-        string[] files = Directory.GetFiles(path);
-
-        foreach (string file in files)
+        try
         {
-            if (file.EndsWith(".png") || file.EndsWith(".jpg") || file.EndsWith(".jpeg") || file.EndsWith(".PNG") || file.EndsWith(".JPG") || file.EndsWith(".JPEG"))
+            finalImagesContainer = outsideImagesContainer.transform;
+            path = EditorUtility.OpenFolderPanel("Select images", "./", "");
+            string[] files = Directory.GetFiles(path);
+
+            // check if size of the array is zero then return
+            if (files.Length == 0)
             {
-
-                // File.Copy(file, EditorApplication.currentScene);
-                // Debug.Log("file:" + path + "/" + Path.GetFileName(file));
-
-                GetImg(path + "/" + Path.GetFileName(file));
+                return;
             }
+            Debug.Log("path: " + path);
+
+
+            foreach (string file in files)
+            {
+                if (file.EndsWith(".png") || file.EndsWith(".jpg") || file.EndsWith(".jpeg") || file.EndsWith(".PNG") || file.EndsWith(".JPG") || file.EndsWith(".JPEG"))
+                {
+
+                    // File.Copy(file, EditorApplication.currentScene);
+                    // Debug.Log("file:" + path + "/" + Path.GetFileName(file));
+
+                    GetImg(path + "/" + Path.GetFileName(file));
+                }
+            }
+            OnSelectImageFinish();
+            // empty the list of captured images
+            capturedImages.Clear();
         }
-        OnSelectImageFinish();
-        // empty the list of captured images
-        capturedImages.Clear();
+        catch (System.Exception e)
+        {
+            Debug.Log("Error in uploading images: " + e.Message);
+            return;
+
+        }
+
     }
 
     public void GetImg(string imgPath)
