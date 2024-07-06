@@ -11,6 +11,7 @@ public class NumberOfSamples : MonoBehaviour
         SetNumberOfClassesSamples();
     }
 
+    // Update the number of samples for each class every frame
     void SetNumberOfClassesSamples()
     {
         int numClasses = ClassesContainer.transform.childCount;

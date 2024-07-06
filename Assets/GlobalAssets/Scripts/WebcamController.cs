@@ -61,6 +61,7 @@ public class WebcamController : MonoBehaviour
             ReceivePreprocessedImage();
         }
     }
+    // This function is called when the server sends a preprocessed image (case of hand/body pose)
     void SendFrameFromUnityCamera()
     {
         if (nextFrameReady)
@@ -87,6 +88,7 @@ public class WebcamController : MonoBehaviour
             }
         }
     }
+    // This function is called when the server sends a preprocessed image (case of hand/body pose)
     void ReceivePreprocessedImage()
     {
         if (socketClient.isDataAvailable())
@@ -107,6 +109,9 @@ public class WebcamController : MonoBehaviour
             nextFrameReady = true;
         }
     }
+
+    // This function is called when the camera button of a class is clicked
+    // outsideImagesContainer is passed to this function to determine where the images should be displayed after closing the panel
     public void OpenCamera(GameObject outsideImagesContainer)
     {   
         isPreprossingInProgress = true;
@@ -122,7 +127,6 @@ public class WebcamController : MonoBehaviour
         }
 
         // Get the default webcam and start streaming
-        // webcamTexture = new WebCamTexture();
         webcamTexture = new WebCamTexture
         {
             // reduce the resolution of the webcam
@@ -153,6 +157,9 @@ public class WebcamController : MonoBehaviour
         autoCaptureButton.onClick.RemoveAllListeners();
         autoCaptureButton.onClick.AddListener(AutoCapture);
     }
+
+    // This function is called when the capture button is clicked
+    // to capture a photo from the webcam feed and display it in the image container of the camera panel
     public void CapturePhoto()
     {
         // Create a texture with the same dimensions as the webcam feed
@@ -190,6 +197,9 @@ public class WebcamController : MonoBehaviour
         }
     }
 
+
+    // This function is called once the close button of the camera panel is clicked
+    // to copy the captured images (from the capturing panel) to the finalImagesContainer (corresponding class box)
     public void CloseCamera()
     {
         // Debug.Log("Caputred "+capturedImages.Count+" Images Increasing height");
@@ -241,10 +251,11 @@ public class WebcamController : MonoBehaviour
             }
             i++;
         }
+        // if there is not images in the finalImagesContainer show the empty image placeholder
         EmptyImage.SetActive(capturedImages.Count == 0);
     }
 
-    // This function is called by the popup activate to show the captured images of the class clicked
+    // This function is called by the popup activate to put the captured images of the class clicked inside the camera panel
     public void InstantiateCapturedImages()
     {
         imageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
