@@ -9,20 +9,15 @@ namespace GlobalAssets.HandPoseTraining
     public class HandPoseConfigureModel : MonoBehaviour
     {
         public GameObject features;
-        //public GameObject models;
+        public GameObject models;
         //public GameObject featureExtarction;
 
         public GameObject mediaPipeToggle;
         //public GameObject classicalToggle;
         public GameObject featureExtractionTypeNotes;
-
-        public GameObject SVMtoggle;
-        public GameObject NeuralNetworktoggle;
-
-        private string mediapipeNote = "High performance, Accurate feature extraction, and Real-time processing.";
+        private const string mediapipeNote = "High performance, Accurate feature extraction, and Real-time processing.";
         //private string classicalNote = "Traditional training mode, Time-consuming process.";
         private ProjectController ProjectController;
-        private GameObject mediapipeSkeleton;
         //private GameObject classicalWarning;
 
         void Start()
@@ -35,16 +30,24 @@ namespace GlobalAssets.HandPoseTraining
             {
                 Debug.LogError("MediaPipeToggle GameObject is not set in the HandPoseConfigureModel script.");
             }
-            
-            //if (SVMtoggle != null)
-            //{
+            if (featureExtractionTypeNotes == null)
+            {
+                Debug.LogError("FeatureExtractionTypeNotes GameObject is not set in the HandPoseConfigureModel script.");
+            }
+            ProjectController = ProjectController.Instance;
+            LoadFeatures();
+            LoadModel();
+            LoadTrainingMode();
 
-            //    SVMtoggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => NeuralNetworktoggle.GetComponent<Toggle>().isOn = !value);
-            //}
-            //if (NeuralNetworktoggle != null)
-            //{
-            //    NeuralNetworktoggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => SVMtoggle.GetComponent<Toggle>().isOn = !value);
-            //}
+            if (models == null)
+            {
+                Debug.LogError("Models GameObject is not set in the HandPoseConfigureModel script.");
+            }
+            else
+            {
+                AddModelTogglesListeners();
+            }
+            
             if (mediaPipeToggle != null)
             {
                 featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
@@ -55,10 +58,54 @@ namespace GlobalAssets.HandPoseTraining
 
             //classicalWarning = features.transform.parent.parent.GetChild(2).gameObject;
 
-            ProjectController = ProjectController.Instance;
-            LoadFeatures();
-            LoadModel();
-            LoadTrainingMode();
+            
+        }
+        void AddModelTogglesListeners()
+        {
+            foreach (Transform child in models.transform)
+            {
+                Toggle toggle = child.GetComponent<Toggle>();
+
+                if (toggle != null)
+                {
+                    toggle.onValueChanged.RemoveAllListeners(); // Remove any existing listeners
+                    toggle.onValueChanged.AddListener((value) => OnToggleClicked(toggle));
+                }
+            }
+        }
+
+        void OnToggleClicked(Toggle clickedToggle)
+        {
+            if (!clickedToggle.isOn)
+            {
+                // Prevent unchecking the last toggle
+                int checkedCount = 0;
+                foreach (Transform child in models.transform)
+                {
+                    Toggle toggle = child.GetComponent<Toggle>();
+                    if (toggle.isOn)
+                    {
+                        checkedCount++;
+                    }
+                }
+
+                if (checkedCount == 0)
+                {
+                    // Re-check the toggle to ensure at least one is always checked
+                    clickedToggle.isOn = true;
+                    return;
+                }
+            }
+
+            // Toggle off all other models
+            foreach (Transform child in models.transform)
+            {
+                Toggle toggle = child.GetComponent<Toggle>();
+                if (toggle != clickedToggle)
+                {
+                    toggle.isOn = false;
+                }
+            }
         }
         public void Save()
         {
@@ -117,16 +164,16 @@ namespace GlobalAssets.HandPoseTraining
         //}
         string GetModel()
         {
-            string model = "SVM";
-            if (SVMtoggle.GetComponent<Toggle>().isOn)
+            string model = "";
+            //loop on all models, get the one with on toggle
+            foreach (Transform child in models.transform)
             {
-                model = "SVM";
+                if (child.GetComponent<Toggle>().isOn)
+                {
+                    model = child.name;
+                    break;
+                }
             }
-            else
-            {
-                model = "";
-            }
-            Debug.Log("Model: " + model);
             return model;
         }
         string GetFeatureExtractionMethod()
@@ -135,13 +182,11 @@ namespace GlobalAssets.HandPoseTraining
             if (mediaPipeToggle.GetComponent<Toggle>().isOn)
             {
                 featureExtraction = "mediapipe";
-                //mediapipeSkeleton.SetActive(true);
                 //classicalWarning.SetActive(false);
             }
             else
             {
                 //model = "Classical";
-                //mediapipeSkeleton.SetActive(false);
                 ////classicalWarning.SetActive(true);
             }
             Debug.Log("Feature Extraction: " + featureExtraction);
@@ -153,7 +198,6 @@ namespace GlobalAssets.HandPoseTraining
             {
                 //classicalToggle.GetComponent<Toggle>().isOn = false;
                 featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
-                //mediapipeSkeleton.SetActive(true);
                 //classicalWarning.SetActive(false);
             }
         }
@@ -177,14 +221,19 @@ namespace GlobalAssets.HandPoseTraining
         }
         void LoadModel()
         {
-            if (ProjectController.model == "SVM")
+            Debug.Log("Loading Model: " + ProjectController.model);
+            for (int i = 0; i < models.transform.childCount; i++)
             {
-                SVMtoggle.GetComponent<Toggle>().isOn = true;
+                if (models.transform.GetChild(i).name == ProjectController.model)
+                {
+                    models.transform.GetChild(i).GetComponent<Toggle>().isOn = true;
+                }
+                else
+                {
+                    models.transform.GetChild(i).GetComponent<Toggle>().isOn = false;
+                }
             }
-            else
-            {
-                //NeuralNetworktoggle.GetComponent<Toggle>().isOn = true;
-            }
+
         }
         void LoadTrainingMode()
         {
