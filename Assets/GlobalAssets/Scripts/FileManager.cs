@@ -74,6 +74,10 @@ public class FileManager : MonoBehaviour
     }
     public void OnSelectImageFinish()
     {
+        finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x,
+            137.5f
+        );
         foreach (Transform child in finalImagesContainer)
         {
             Destroy(child.gameObject);
@@ -95,11 +99,11 @@ public class FileManager : MonoBehaviour
             int row = i / maxColumns; // Calculate the row index
             int col = i % maxColumns; // Calculate the column index
 
-            Vector3 newPosition = new Vector3(col * spacingX, -row * spacingY, 0);
+            Vector3 newPosition = new Vector3(col * spacingX + 5, -row * spacingY - 5, 0);
             newImageObject.transform.localPosition = newPosition;
 
             // get the imageContainer and increase its height
-            if (col == 0 && capturedImages.Count > 8)
+            if (col == 0 && capturedImages.Count > 5)
             {
                 finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
                     finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 

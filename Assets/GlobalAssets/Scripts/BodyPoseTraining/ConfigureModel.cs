@@ -36,6 +36,7 @@ public class ConfigureModel : MonoBehaviour
         LoadFeatures();
         LoadModel();
         LoadTrainingMode();
+        Save();
     }
     public void Save()
     {
@@ -62,7 +63,6 @@ public class ConfigureModel : MonoBehaviour
                 featuresList.Add(child.name);
             }
         }
-        Debug.Log("Features List: " + string.Join(", ", featuresList));
         return featuresList;
     }
     string GetModel()
@@ -76,7 +76,6 @@ public class ConfigureModel : MonoBehaviour
         {
             model = "NeuralNetwork";
         }
-        Debug.Log("Model: " + model);
         return model;
     }
     string GetTrainingMode()
@@ -94,7 +93,6 @@ public class ConfigureModel : MonoBehaviour
             mediapipeSkeleton.SetActive(false);
             classicalWarning.SetActive(true);
         }
-        Debug.Log("Training Type: " + model);
         return model;
     }
     void MediaPipeToggle(bool value)
@@ -119,6 +117,11 @@ public class ConfigureModel : MonoBehaviour
     }
     void LoadFeatures()
     {
+        if (ProjectController.isCreated)
+        {
+            ProjectController.isCreated = false;
+            return;
+        }
         // loop on features children (each child is a toggle) if the child.name is in the ProjectController.features then set the toggle to on
         foreach (Transform child in features.transform)
         {
@@ -126,11 +129,15 @@ public class ConfigureModel : MonoBehaviour
             {
                 child.GetComponent<Toggle>().isOn = true;
             }
+            else
+            {
+                child.GetComponent<Toggle>().isOn = false;
+            }
         }
     }
     void LoadModel()
     {
-        if (ProjectController.model == "SVM")
+        if (ProjectController.model == "SVM" || ProjectController.model == "")
         {
             SVMtoggle.GetComponent<Toggle>().isOn = true;
         }
@@ -141,7 +148,7 @@ public class ConfigureModel : MonoBehaviour
     }
     void LoadTrainingMode()
     {
-        if (ProjectController.featureExtractionType == "mediapipe")
+        if (ProjectController.featureExtractionType == "mediapipe" || ProjectController.featureExtractionType == "")
         {
             mediaPipeToggle.GetComponent<Toggle>().isOn = true;
             featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
