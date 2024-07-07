@@ -50,16 +50,35 @@ public class ConfigureModel : MonoBehaviour
         ProjectController.featureExtractionType = GetTrainingMode();
         ProjectController.Save();
     }
-    void ManageToggles(Toggle toggle)
+    void ManageToggles(Toggle clickedToggle)
     {
-        if (toggle.isOn)
+        if (!clickedToggle.isOn)
         {
+            // Prevent unchecking the last toggle
+            int checkedCount = 0;
             foreach (Transform child in SelectModelTogglesParent.transform)
             {
-                if (child != toggle.transform)
+                Toggle toggle = child.GetComponent<Toggle>();
+                if (toggle.isOn)
                 {
-                    child.GetComponent<Toggle>().isOn = false;
+                    checkedCount++;
                 }
+            }
+            if (checkedCount == 0)
+            {
+                // Re-check the toggle to ensure at least one is always checked
+                clickedToggle.isOn = true;
+                return;
+            }
+        }
+    
+        // Toggle off all other models
+        foreach (Transform child in SelectModelTogglesParent.transform)
+        {
+            Toggle toggle = child.GetComponent<Toggle>();
+            if (toggle != clickedToggle)
+            {
+                toggle.isOn = false;
             }
         }
     }
