@@ -1,81 +1,80 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public class playerMovement : MonoBehaviour
 {
     public float for_speed;
-    //public Transform center_position;
-    //public Transform left_position;
-    //public Transform right_position;
     public float current_position;
     public float side_speed;
     private float original_force;
     public float jump_force;
     public string predicted_control;
+    public Vector3 initial_po;
     public Rigidbody rb;
+    public float right_off;
+    public float left_off;
     private GlobalAssets.Socket.SocketUDP socketClient;
     private ProjectController projectController;
-
-
-    //public int pythonPredictedClass { get; private set; } = -1;
-    //public string UnityPredictedClass { get; private set; } = "";
-    // Start is called before the first frame update
+    private bool start_run = false;
+    public float blinkDuration = 0.1f; // Duration for which the player is invisible
+    public float blinkInterval = 0.1f; // Interval between each blink
+    public int blinkCount = 2; // Number of times to blink
+    private Animator animator;
+    private Renderer[] renderers;
+    //public bool is_jumping_up = false;
     void Start()
     {
+      
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
         current_position = 1;
-        Physics.gravity = new Vector3(0, -60f, 0);
-
+        Physics.gravity = new Vector3(0, -9.8f, 0);
+        transform.position = initial_po;
         predicted_control = "";
-        // Check if the device supports microphone
-        Dictionary<string, string> message = new Dictionary<string, string>
-        {
-
-            { "event", "predict_audio" }
-        };
-
-        // Send the message to the server
-        socketClient.SendMessage(message);
+       
     }
- 
+
     private void OnTriggerEnter(Collider other)
     {
-
-
-        //Debug.Log("HELLLLLLLLLLLLLLLLL");
-       
         if (other.gameObject.tag == "obstacle")
         {
-
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
-            //gameManager.instance.score++;
-            //gameManager.instance.scoreText.text=gameManager.instance.score.ToString();
+            other.gameObject.SetActive(false);
             gameManager.instance.eraseScore();
-
-
         }
     }
-    //IEnumerable forward_jump()
-    //{
+  
 
-    //    yield return new WaitForSeconds(5f);
-    //    rb.velocity = Vector3.zero;
-    //}
-    // Update is called once per frame
+    public IEnumerator BlinkPlayerRoutine()
+    {
+        Vector3 scale_original=gameObject.transform.localScale;
+        for (int i = 0; i < blinkCount; i++)
+        {
+            gameObject.transform.localScale = Vector3.zero;
+           
+            yield return new WaitForSeconds(blinkDuration);
+
+            gameObject.transform.localScale = scale_original;
+            // Restore the animation state
+           
+
+            // Wait for the interval
+            yield return new WaitForSeconds(blinkInterval);
+        }
+    }
     public IEnumerator freezeMoving(float period)
     {
         original_force = for_speed;
         for_speed = 0;
         yield return new WaitForSeconds(period);
         for_speed = original_force;
-
-
     }
+
     void OnDestroy()
     {
-        Physics.gravity = new Vector3(0,-9.81f,0);
+        Debug.Log("stop prediction");
+        Physics.gravity = new Vector3(0, -9.81f, 0);
         Dictionary<string, string> message = new Dictionary<string, string>
         {
 
@@ -85,6 +84,7 @@ public class playerMovement : MonoBehaviour
         // Send the message to the server
         socketClient.SendMessage(message);
     }
+
     string PythonToUnityClassName(string message)
     {
         if (projectController.PythonClassesToUnityClassesMap.ContainsKey(message))
@@ -93,79 +93,110 @@ public class playerMovement : MonoBehaviour
         }
         return message;
     }
+
+    void FixedUpdate()
+    {
+        if (start_run)
+        {
+            transform.position += new Vector3(0, 0, for_speed * Time.fixedDeltaTime);
+        }
+        else
+        {
+            transform.position = initial_po;
+        }
+    }
+
     void Update()
     {
         string pred_class = "";
         string pred_control = "";
         predicted_control = "";
-        // Receive the response from the server (Python)
         if (socketClient.isDataAvailable())
         {
+
             Dictionary<string, string> response = socketClient.ReceiveDictMessage();
 
             if (response["event"] == "predict_audio")
             {
+                DateTime currentTime = DateTime.Now;
+
+                // Print the current system time with high accuracy
+                Debug.Log("Current time: " + currentTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
                 string pred = response["prediction"];
-                  pred_class = PythonToUnityClassName(pred);
-                    if(pred_class!="none")
-                pred_control = projectController.classesToControlsMap[pred_class];
-            predicted_control=pred_control;
+                Debug.Log("prediction " + pred);
+                pred_class = PythonToUnityClassName(pred);
+                Debug.Log("prediction class map" + pred_class);
+                if (pred_class != "none")
+                    pred_control = projectController.classesToControlsMap[pred_class];
+                Debug.Log("prediction zction map" + pred_control);
+                predicted_control = pred_control;
+                gameManager.instance.change_class_ui(predicted_control);
                 //Debug.Log("Received Prediction: " + MapToClassName(pred) + " " + pred);
                 //predictionText.text = MapToClassName(pred);
             }
-           
+
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            start_run = true;
+            Dictionary<string, string> message = new Dictionary<string, string>
+        {
+
+            { "event", "predict_audio" }
+        };
+
+            // Send the message to the server
+            socketClient.SendMessage(message);
         }
 
+        if (start_run)
+        {
+            UpdatePosition();
+            HandleInput();
+        }
+    }
 
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + for_speed * Time.deltaTime);
-        //transform.position += transform.forward * for_speed * Time.deltaTime;
+    private void UpdatePosition()
+    {
+        Vector3 targetPosition = initial_po;
 
         if (current_position == 0)
         {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(-5.5f, transform.position.y, transform.position.z),side_speed*Time.deltaTime);
-
-        }
-        else if (current_position == 1)
-        {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(0, transform.position.y, transform.position.z), side_speed * Time.deltaTime);
+            targetPosition.x -= left_off;
         }
         else if (current_position == 2)
         {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(5.5f, transform.position.y, transform.position.z), side_speed * Time.deltaTime);
+            targetPosition.x += right_off;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow)|| pred_control == "Right")
-        {
-            if (current_position == 0)
-            {
-                current_position = 1;
-            }
-            else if (current_position == 1)
-            {
-                current_position = 2;
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)|| pred_control == "Left")
-        {
-            if (current_position == 1)
-            {
-                current_position = 0;
-            }
-            else if (current_position == 2)
-            {
-                current_position = 1;
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow)|| pred_control == "Jump")
-        {
 
-            if (transform.position.y <= 1)
-            {
-                // Stop applying upward force
+        transform.position = Vector3.Lerp(transform.position, new Vector3(targetPosition.x, transform.position.y, transform.position.z), side_speed * Time.deltaTime);
+    }
 
+    private void HandleInput()
+    {
+        //if (transform.position.y < 0.2) is_jumping_up = false;
+        if (Input.GetKeyDown(KeyCode.RightArrow) || predicted_control == "Right")
+        {
+            if (current_position < 2)
+            {
+                current_position++;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || predicted_control == "Left")
+        {
+            if (current_position > 0)
+            {
+                current_position--;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || predicted_control == "Jump")
+        {
+            if (transform.position.y < 0.5)
+            {
                 rb.AddForce(Vector3.up * jump_force, ForceMode.Impulse);
                 rb.AddForce(transform.forward * 60, ForceMode.Impulse);
+                //is_jumping_up = true;
+            }
         }
     }
-    }
-    
 }

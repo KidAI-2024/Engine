@@ -77,6 +77,7 @@ public class StartTraining : MonoBehaviour
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
+                    if(uploadButton != null)
                     uploadButton.GetComponent<Button>().interactable = true;
                     DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
                 }
