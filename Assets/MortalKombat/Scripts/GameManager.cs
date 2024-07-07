@@ -25,7 +25,7 @@ namespace MortalKombat
         
         public float volume = 1f;
         public bool mute = false;
-        public bool predictIsOn = true;
+        public bool predictIsOn = false;
 
         public GameObject player1;
         public GameObject player2;
