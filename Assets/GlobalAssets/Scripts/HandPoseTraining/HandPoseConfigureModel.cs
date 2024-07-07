@@ -10,15 +10,22 @@ namespace GlobalAssets.HandPoseTraining
     {
         public GameObject features;
         public GameObject models;
-        //public GameObject featureExtarction;
-
-        public GameObject mediaPipeToggle;
-        //public GameObject classicalToggle;
-        public GameObject featureExtractionTypeNotes;
-        private const string mediapipeNote = "High performance, Accurate feature extraction, and Real-time processing.";
-        //private string classicalNote = "Traditional training mode, Time-consuming process.";
+        public GameObject featureExtarction;
+        public TMP_Text featureExtractionDescription;
+        public TMP_Text modelDescription;
         private ProjectController ProjectController;
-        //private GameObject classicalWarning;
+        [System.Serializable]
+        public class ToggleDescription
+        {
+            public Toggle button;
+            public string description;
+        }
+
+        public List<ToggleDescription> featureExtractionButtonsWithDescriptions;
+        public List<ToggleDescription> modelButtonsWithDescriptions;
+
+        private string selectedModelDescription;
+        private string selectedFeatureExtractionDescription;
 
         void Start()
         {
@@ -26,18 +33,15 @@ namespace GlobalAssets.HandPoseTraining
             {
                 Debug.LogError("Features GameObject is not set in the HandPoseConfigureModel script.");
             }
-            if (mediaPipeToggle == null)
-            {
-                Debug.LogError("MediaPipeToggle GameObject is not set in the HandPoseConfigureModel script.");
-            }
-            if (featureExtractionTypeNotes == null)
+         
+            if (featureExtractionDescription == null)
             {
                 Debug.LogError("FeatureExtractionTypeNotes GameObject is not set in the HandPoseConfigureModel script.");
             }
             ProjectController = ProjectController.Instance;
             LoadFeatures();
             LoadModel();
-            LoadTrainingMode();
+            LoadFeatureExtractionMode();
 
             if (models == null)
             {
@@ -45,42 +49,70 @@ namespace GlobalAssets.HandPoseTraining
             }
             else
             {
-                AddModelTogglesListeners();
+                AddChildrenTogglesListeners(models);
+            }
+            if (featureExtarction == null)
+            {
+                Debug.LogError("FeatureExtarction GameObject is not set in the HandPoseConfigureModel script.");
+            }
+            else
+            {
+                AddChildrenTogglesListeners(featureExtarction);
             }
             
-            if (mediaPipeToggle != null)
-            {
-                featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
-
-                mediaPipeToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => MediaPipeToggle(value));
-            }
-            //classicalToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => ClassicalToggle(value));
-
-            //classicalWarning = features.transform.parent.parent.GetChild(2).gameObject;
+           
 
             
         }
-        void AddModelTogglesListeners()
+        void AddChildrenTogglesListeners(GameObject parentObj)
         {
-            foreach (Transform child in models.transform)
+            foreach (Transform child in parentObj.transform)
             {
                 Toggle toggle = child.GetComponent<Toggle>();
 
                 if (toggle != null)
                 {
                     toggle.onValueChanged.RemoveAllListeners(); // Remove any existing listeners
-                    toggle.onValueChanged.AddListener((value) => OnToggleClicked(toggle));
+                    toggle.onValueChanged.AddListener((value) => { 
+                        OnToggleClicked(toggle, parentObj);
+                        //set description to the selected model or feature extraction
+                        if (parentObj == models)
+                        {
+                            foreach (ToggleDescription buttonDescription in modelButtonsWithDescriptions)
+                            {
+                                if (buttonDescription.button.name == toggle.name)
+                                {
+                                    selectedModelDescription = buttonDescription.description;
+                                    modelDescription.text = selectedModelDescription;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (parentObj == featureExtarction)
+                        {
+                            foreach (ToggleDescription buttonDescription in featureExtractionButtonsWithDescriptions)
+                            {
+                                if (buttonDescription.button.name == toggle.name)
+                                {
+                                    selectedFeatureExtractionDescription = buttonDescription.description;
+                                    featureExtractionDescription.text = selectedFeatureExtractionDescription;
+                                    break;
+                                }
+                            }
+                        }
+
+                    });
                 }
             }
         }
 
-        void OnToggleClicked(Toggle clickedToggle)
+        void OnToggleClicked(Toggle clickedToggle, GameObject parentObj)
         {
             if (!clickedToggle.isOn)
             {
                 // Prevent unchecking the last toggle
                 int checkedCount = 0;
-                foreach (Transform child in models.transform)
+                foreach (Transform child in parentObj.transform)
                 {
                     Toggle toggle = child.GetComponent<Toggle>();
                     if (toggle.isOn)
@@ -98,7 +130,7 @@ namespace GlobalAssets.HandPoseTraining
             }
 
             // Toggle off all other models
-            foreach (Transform child in models.transform)
+            foreach (Transform child in parentObj.transform)
             {
                 Toggle toggle = child.GetComponent<Toggle>();
                 if (toggle != clickedToggle)
@@ -135,33 +167,7 @@ namespace GlobalAssets.HandPoseTraining
             Debug.Log("Features List: " + string.Join(", ", featuresList));
             return featuresList;
         }
-        //public void SetModel(string name)
-        //{
-        //    // loop on features children (each child is a toggle) and set all to off
-        //    foreach (Transform child in models.transform)
-        //    {
-        //        if (child.name == name)
-        //        {
-        //            child.GetComponent<Toggle>().isOn = true;
-        //        }
-        //        else
-        //        {
-        //            child.GetComponent<Toggle>().isOn = false;
-        //        }
-        //    }
-        //}
-        //string GetModel()
-        //{
-        //    for (int i = 0; i < models.transform.childCount; i++)
-        //    {
-        //        if (models.transform.GetChild(i).GetComponent<Toggle>().isOn)
-        //        {
-        //            Debug.Log("Model: " + models.transform.GetChild(i).name);
-        //            return models.transform.GetChild(i).name;
-        //        }
-        //    }
-        //    return "";
-        //}
+       
         string GetModel()
         {
             string model = "";
@@ -178,28 +184,17 @@ namespace GlobalAssets.HandPoseTraining
         }
         string GetFeatureExtractionMethod()
         {
-            string featureExtraction = "mediapipe";
-            if (mediaPipeToggle.GetComponent<Toggle>().isOn)
+            string featureExtraction = "";
+            foreach (Transform child in featureExtarction.transform)
             {
-                featureExtraction = "mediapipe";
-                //classicalWarning.SetActive(false);
-            }
-            else
-            {
-                //model = "Classical";
-                ////classicalWarning.SetActive(true);
+                if (child.GetComponent<Toggle>().isOn)
+                {
+                    featureExtraction = child.name;
+                    break;
+                }
             }
             Debug.Log("Feature Extraction: " + featureExtraction);
             return featureExtraction;
-        }
-        void MediaPipeToggle(bool value)
-        {
-            if (value)
-            {
-                //classicalToggle.GetComponent<Toggle>().isOn = false;
-                featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
-                //classicalWarning.SetActive(false);
-            }
         }
         
         void LoadFeatures()
@@ -233,20 +228,49 @@ namespace GlobalAssets.HandPoseTraining
                     models.transform.GetChild(i).GetComponent<Toggle>().isOn = false;
                 }
             }
+            //set description to the selected model
+            //loop on modelButtonsWithDescriptions list, if the button name is the same as the selected model then set the description to the button description
+            foreach (ToggleDescription buttonDescription in modelButtonsWithDescriptions)
+            {
+                if (buttonDescription.button.name == ProjectController.model)
+                {
+                    selectedModelDescription = buttonDescription.description;
+                    modelDescription.text = selectedModelDescription;
+                    break;
+                }
+            }
+            //adjust the scrollbar to the selected model
+
 
         }
-        void LoadTrainingMode()
+        void LoadFeatureExtractionMode()
         {
-            if (ProjectController.featureExtractionType == "mediapipe")
+            Debug.Log("Loading Feature Extraction: " + ProjectController.featureExtractionType);
+            for (int i = 0; i < featureExtarction.transform.childCount; i++)
             {
-                mediaPipeToggle.GetComponent<Toggle>().isOn = true;
-                featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = mediapipeNote;
+                if (featureExtarction.transform.GetChild(i).name == ProjectController.featureExtractionType)
+                {
+                    featureExtarction.transform.GetChild(i).GetComponent<Toggle>().isOn = true;
+                }
+                else
+                {
+                    featureExtarction.transform.GetChild(i).GetComponent<Toggle>().isOn = false;
+                }
             }
-            else
+            //set description to the selected feature extraction
+            //loop on featureExtractionButtonsWithDescriptions list, if the button name is the same as the selected feature extraction then set the description to the button description
+            foreach (ToggleDescription buttonDescription in featureExtractionButtonsWithDescriptions)
             {
-                //classicalToggle.GetComponent<Toggle>().isOn = true;
-                //featureExtractionTypeNotes.GetComponent<TextMeshProUGUI>().text = classicalNote;
+                if (buttonDescription.button.name == ProjectController.featureExtractionType)
+                {
+                    selectedFeatureExtractionDescription = buttonDescription.description;
+                    featureExtractionDescription.text = selectedFeatureExtractionDescription;
+                    break;
+                }
             }
+
         }
+
+
     }
 }
