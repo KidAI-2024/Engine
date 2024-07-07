@@ -14,6 +14,8 @@
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
 
+# ignore all inside the Projects folder
+/[Pp]rojects/
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
@@ -70,3 +72,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+# VS
+.vsconfig
+# Testing
+ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
+
