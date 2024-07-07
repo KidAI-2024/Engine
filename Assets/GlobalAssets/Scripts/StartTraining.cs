@@ -78,7 +78,12 @@ public class StartTraining : MonoBehaviour
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
                     uploadButton.GetComponent<Button>().interactable = true;
-                    DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
+                    string message = "Training completed successfully";
+                    if (response.ContainsKey("training_accuracy"))
+                    {
+                        message += ", With Training accuracy: " + response["training_accuracy"];
+                    }
+                    DisplayWarning(message, "OK", DisplayMessageType.Success);
                 }
                 else if (response["status"] == "failed") // training failed for a server side error
                 {
