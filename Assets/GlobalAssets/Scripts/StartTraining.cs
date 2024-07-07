@@ -134,7 +134,6 @@ public class StartTraining : MonoBehaviour
         foreach (string className in projectController.classes)
         {
             projectController.PythonClassesToUnityClassesMap.Add(j.ToString(), className);
-            Debug.Log("Class: " + j.ToString() + " Name: " + className);
             j++;
         }
     }

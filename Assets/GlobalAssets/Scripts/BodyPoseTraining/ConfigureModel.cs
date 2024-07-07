@@ -54,7 +54,7 @@ public class ConfigureModel : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            foreach (Transform child in toggle.transform.parent)
+            foreach (Transform child in SelectModelTogglesParent.transform)
             {
                 if (child != toggle.transform)
                 {
@@ -80,12 +80,13 @@ public class ConfigureModel : MonoBehaviour
     }
     string GetModel()
     {
-        string model = "NeuralNetwork";
+        string model = "SVM";
         foreach (Transform child in SelectModelTogglesParent.transform)
         {
             if (child.GetComponent<Toggle>().isOn)
             {
                 model = child.name;
+                break;
             }
         }
         return model;
