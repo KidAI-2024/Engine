@@ -161,14 +161,14 @@ public class PredictionController : MonoBehaviour
                 {
                     string pred = response["prediction"];
                     predictionText.text = MapToClassName(pred);
-                    // if (response.ContainsKey("preprocessed_image"))
-                    // {
-                    //     byte[] preprocessedImageBytes = Convert.FromBase64String(response["preprocessed_image"]);
-                    //     Texture2D preprocessedImage = new Texture2D(webcamTexture.width, webcamTexture.height);
-                    //     preprocessedImage.LoadImage(preprocessedImageBytes);
-                    //     webcamDisplay.texture = preprocessedImage;
-                    //     webcamDisplay.material.mainTexture = preprocessedImage;
-                    // }
+                    if (response.ContainsKey("preprocessed_image") && response["preprocessed_image"] != "" && togglePredicting)
+                    {
+                        byte[] preprocessedImageBytes = Convert.FromBase64String(response["preprocessed_image"]);
+                        Texture2D preprocessedImage = new Texture2D(webcamTexture.width, webcamTexture.height);
+                        preprocessedImage.LoadImage(preprocessedImageBytes);
+                        webcamDisplay.texture = preprocessedImage;
+                        webcamDisplay.material.mainTexture = preprocessedImage;
+                    }
                 }
                 else if (response["event"] == LoadModelEventName)
                 {

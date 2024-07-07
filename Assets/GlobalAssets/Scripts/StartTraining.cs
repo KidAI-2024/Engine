@@ -67,7 +67,7 @@ public class StartTraining : MonoBehaviour
                     isTrainingStarted = false;
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
-                    if (response.ContainsKey("feature_importance_graph"))
+                    if (response.ContainsKey("feature_importance_graph") && response["feature_importance_graph"] != "")
                     {
                         string graph = response["feature_importance_graph"];
                         byte[] imageBytes = Convert.FromBase64String(graph);
@@ -134,7 +134,6 @@ public class StartTraining : MonoBehaviour
         foreach (string className in projectController.classes)
         {
             projectController.PythonClassesToUnityClassesMap.Add(j.ToString(), className);
-            Debug.Log("Class: " + j.ToString() + " Name: " + className);
             j++;
         }
     }

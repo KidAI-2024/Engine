@@ -796,6 +796,8 @@ MonoBehaviour:
   CameraToggleButton: {fileID: 770614058}
   MuteToggleButton: {fileID: 1849663262}
   VolumeSlider: {fileID: 322680229}
+  ExitButton: {fileID: 595561981}
+  BackToLobbyButton: {fileID: 595561980}
 --- !u!4 &536301275
 Transform:
   m_ObjectHideFlags: 0
@@ -928,6 +930,16 @@ PrefabInstance:
       objectReference: {fileID: 377236629}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bef521d65ba1f844a1d57e44860c2e4, type: 3}
+--- !u!1 &595561980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 383070083910895868, guid: 4bef521d65ba1f844a1d57e44860c2e4, type: 3}
+  m_PrefabInstance: {fileID: 595561979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &595561981 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 383070083375980174, guid: 4bef521d65ba1f844a1d57e44860c2e4, type: 3}
+  m_PrefabInstance: {fileID: 595561979}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &659064405
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,8 +12,7 @@ public class ConfigureModel : MonoBehaviour
     public GameObject classicalToggle;
     public GameObject featureExtractionTypeNotes;
 
-    public GameObject SVMtoggle;
-    public GameObject NeuralNetworktoggle;
+    public GameObject SelectModelTogglesParent;
 
     private string mediapipeNote = "High performance, Accurate feature extraction, and Real-time processing.";
     private string classicalNote = "Traditional training mode, Time-consuming process.";
@@ -23,8 +22,10 @@ public class ConfigureModel : MonoBehaviour
 
     void Start()
     {
-        SVMtoggle.GetComponent<Toggle>().onValueChanged.AddListener((value) =>  NeuralNetworktoggle.GetComponent<Toggle>().isOn = !value);
-        NeuralNetworktoggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => SVMtoggle.GetComponent<Toggle>().isOn = !value);
+        foreach (Transform child in SelectModelTogglesParent.transform)
+        {
+            child.GetComponent<Toggle>().onValueChanged.AddListener((value) => ManageToggles(child.GetComponent<Toggle>()));
+        }
 
         mediaPipeToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => MediaPipeToggle(value));
         classicalToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => ClassicalToggle(value));
@@ -49,7 +50,38 @@ public class ConfigureModel : MonoBehaviour
         ProjectController.featureExtractionType = GetTrainingMode();
         ProjectController.Save();
     }
-
+    void ManageToggles(Toggle clickedToggle)
+    {
+        if (!clickedToggle.isOn)
+        {
+            // Prevent unchecking the last toggle
+            int checkedCount = 0;
+            foreach (Transform child in SelectModelTogglesParent.transform)
+            {
+                Toggle toggle = child.GetComponent<Toggle>();
+                if (toggle.isOn)
+                {
+                    checkedCount++;
+                }
+            }
+            if (checkedCount == 0)
+            {
+                // Re-check the toggle to ensure at least one is always checked
+                clickedToggle.isOn = true;
+                return;
+            }
+        }
+    
+        // Toggle off all other models
+        foreach (Transform child in SelectModelTogglesParent.transform)
+        {
+            Toggle toggle = child.GetComponent<Toggle>();
+            if (toggle != clickedToggle)
+            {
+                toggle.isOn = false;
+            }
+        }
+    }
 
 
     List<string> GetFeaturesList()
@@ -67,14 +99,14 @@ public class ConfigureModel : MonoBehaviour
     }
     string GetModel()
     {
-        string model = "NeuralNetwork";
-        if (SVMtoggle.GetComponent<Toggle>().isOn)
+        string model = "SVM";
+        foreach (Transform child in SelectModelTogglesParent.transform)
         {
-            model = "SVM";
-        }
-        else
-        {
-            model = "NeuralNetwork";
+            if (child.GetComponent<Toggle>().isOn)
+            {
+                model = child.name;
+                break;
+            }
         }
         return model;
     }
@@ -137,13 +169,16 @@ public class ConfigureModel : MonoBehaviour
     }
     void LoadModel()
     {
-        if (ProjectController.model == "SVM" || ProjectController.model == "")
+        foreach (Transform child in SelectModelTogglesParent.transform)
         {
-            SVMtoggle.GetComponent<Toggle>().isOn = true;
-        }
-        else
-        {
-            NeuralNetworktoggle.GetComponent<Toggle>().isOn = true;
+            if (child.name == ProjectController.model || ProjectController.model == "")
+            {
+                child.GetComponent<Toggle>().isOn = true;
+            }
+            else
+            {
+                child.GetComponent<Toggle>().isOn = false;
+            }
         }
     }
     void LoadTrainingMode()
