@@ -10,6 +10,7 @@ namespace Karting.UI
     {
         public Button quickMatchButton;
         public Button customMatchButton;
+        public GlobalAssets.UI.LoadingPanelController loadingPanelContoller;
         // Start is called before the first frame update
         void Start()
         {
@@ -20,7 +21,10 @@ namespace Karting.UI
             }
             if (quickMatchButton != null)
             {
-                quickMatchButton.onClick.AddListener(() => gameManager.StartQuickMatch());
+                quickMatchButton.onClick.AddListener(() => {
+                    loadingPanelContoller.ShowLoadingPanel();
+                    gameManager.StartQuickMatch(); 
+                });
             }
             else
             {
@@ -28,7 +32,10 @@ namespace Karting.UI
             }
             if (customMatchButton != null)
             {
-                customMatchButton.onClick.AddListener(() => SceneManager.LoadScene("KartingChooseTrack"));
+                customMatchButton.onClick.AddListener(() => {
+                    loadingPanelContoller.ShowLoadingPanel();
+                    SceneManager.LoadScene("KartingChooseTrack");
+                });
             }
             else
             {

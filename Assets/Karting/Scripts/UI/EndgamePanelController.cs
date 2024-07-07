@@ -16,6 +16,7 @@ namespace Karting.UI
         public GameObject gamePlayManagerObj;
         Karting.Game.GameplayManager gamePlayManager;
         public Button exitButton;
+        public GlobalAssets.UI.LoadingPanelController loadingPanelContoller;
 
         // Start is called before the first frame update
         void Start()
@@ -24,8 +25,10 @@ namespace Karting.UI
             gamePlayManager = gamePlayManagerObj.GetComponent<Karting.Game.GameplayManager>();
             if (exitButton != null)
             {
-                // change scene to kartingintro
-                exitButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
+                exitButton.onClick.AddListener(() => {
+                    loadingPanelContoller.ShowLoadingPanel();
+                    SceneManager.LoadScene("KartingIntro");
+                });
             }
             else
             {
@@ -36,7 +39,7 @@ namespace Karting.UI
         {
             if (gamePlayManager.win)
             {
-                Debug.Log("Game Over");
+                //Debug.Log("Game Over");
                 // Set the time text
                 int minutes = Mathf.FloorToInt(gamePlayManager.time / 60);
                 int seconds = Mathf.FloorToInt(gamePlayManager.time % 60);

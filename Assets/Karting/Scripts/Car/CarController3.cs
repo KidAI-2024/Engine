@@ -126,6 +126,12 @@ namespace Karting.Car
         public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
         public void SetCanMove(bool move) => m_CanMove = move;
         public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
+        public void StopTheCarSlowly()
+        {
+
+            Rigidbody.velocity = Vector3.MoveTowards(Rigidbody.velocity, new Vector3(0, Rigidbody.velocity.y, 0), Time.fixedDeltaTime * m_FinalStats.CoastingDrag);
+            m_CanMove = false;
+        }
 
         private GameObject webcamFeedController;
         private ProjectController projectController;
@@ -156,8 +162,8 @@ namespace Karting.Car
             lastVelocity = currVelocity;
 
             UpdateAllSuspensionParams();
-
             GatherInputs();
+
 
             // apply powerups
             TickPowerups();
@@ -278,8 +284,9 @@ namespace Karting.Car
             }
             else
             {
-                // use this value to play kart sound when it is waiting the race start countdown.
-                return Input.Accelerate ? 1.0f : 0.0f;
+                //use this value to play kart sound when it is waiting the race start countdown.
+                //return Input.Accelerate ? 1.0f : 0.0f;
+                return 0f;
             }
         }
         void MoveVehicle(bool accelerate, bool brake, float turnInput)
