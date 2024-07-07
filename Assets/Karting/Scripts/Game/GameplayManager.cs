@@ -7,12 +7,14 @@ namespace Karting.Game
 
         public float time { get; set; } = 0.0f;
         public GameObject checkpoints;
+        public GameObject hiddenCheckpoints;
 
         private GameObject instantiatedCar;
         private Karting.Game.RestartCheckpoint restartCheckpoint;
+        private Karting.Game.RestartCheckpoint restartHiddenCheckpoint;
 
         public bool win { get; private set; } = false;
-
+        private Karting.Car.CarController3 carController;
 
         // Start is called before the first frame update
         void Awake()
@@ -32,6 +34,17 @@ namespace Karting.Game
             {
                 Debug.LogError("No RestartCheckpoint component found in GameplayManager");
             }
+            // Get the RestartHiddenCheckpoint component
+            restartHiddenCheckpoint = hiddenCheckpoints.GetComponent<Karting.Game.RestartCheckpoint>();
+            if (restartHiddenCheckpoint == null)
+            {
+                Debug.LogError("No RestartHiddenCheckpoint component found in GameplayManager");
+            }
+            carController = instantiatedCar.GetComponent<Karting.Car.CarController3>();
+            if (carController == null)
+            {
+                Debug.LogError("No CarController3 component found in GameplayManager");
+            }
         }
         public void RestartGame()
         {
@@ -39,12 +52,14 @@ namespace Karting.Game
             if (restartCheckpoint != null)
             {
                 restartCheckpoint.RestartCheckpoints();
+                restartHiddenCheckpoint.RestartCheckpoints();
             }
             else
             {
                 Debug.LogError("No RestartCheckpoint component found in GameplayManager");
             }
             time = 0.0f;
+            carController.SetCanMove(true);
             win = false;
         }
         public void ResetCarToSpawnPoint()
@@ -59,6 +74,12 @@ namespace Karting.Game
         public void Win()
         {
             win = true;
+            //set velocity to zero gradually using lerp
+            //instantiatedCar.GetComponent<Rigidbody>().velocity = Vector3.Lerp(instantiatedCar.GetComponent<Rigidbody>().velocity, Vector3.zero, 0.1f);
+            //set angular velocity to zero gradually using lerp
+            //instantiatedCar.GetComponent<Rigidbody>().angularVelocity = Vector3.Lerp(instantiatedCar.GetComponent<Rigidbody>().angularVelocity, Vector3.zero, 0.1f);
+
+            //carController.SetCanMove(false);
 
         }
     }
