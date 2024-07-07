@@ -67,7 +67,7 @@ public class StartTraining : MonoBehaviour
                     isTrainingStarted = false;
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
-                    if (response.ContainsKey("feature_importance_graph"))
+                    if (response.ContainsKey("feature_importance_graph") && response["feature_importance_graph"] != "")
                     {
                         string graph = response["feature_importance_graph"];
                         byte[] imageBytes = Convert.FromBase64String(graph);
