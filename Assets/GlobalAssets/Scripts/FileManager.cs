@@ -21,6 +21,7 @@ public class FileManager : MonoBehaviour
         // path = EditorUtility.OpenFilePanel("Select images", "", "png,jpg,jpeg");
         try
         {
+#if UNITY_EDITOR
             finalImagesContainer = outsideImagesContainer.transform;
             EmptyImage = outsideImagesContainer.transform.parent.parent.transform.GetChild(2).gameObject;
             GetPreviousCapturedImages();
@@ -49,6 +50,11 @@ public class FileManager : MonoBehaviour
             OnSelectImageFinish();
             // empty the list of captured images
             capturedImages.Clear();
+#else
+
+            throw new System.Exception("This code is running outside the Unity Editor");
+#endif
+
         }
         catch (System.Exception e)
         {
