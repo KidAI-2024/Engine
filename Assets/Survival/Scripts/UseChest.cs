@@ -5,7 +5,7 @@ namespace Survival
 {
     public class UseChest : MonoBehaviour
     {
-        private GameObject OB;
+        private GameObject OB; //this is the chest
         public GameObject handUI;
         public GameObject objToActivate;
 
