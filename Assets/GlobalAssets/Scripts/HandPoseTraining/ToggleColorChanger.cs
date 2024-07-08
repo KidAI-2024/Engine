@@ -35,7 +35,7 @@ namespace GlobalAssets.HandPoseTraining
         void OnDestroy()
         {
             // Remove listener when the script is destroyed to avoid memory leaks
-            toggle.onValueChanged.RemoveListener(UpdateColor);
+            if (toggle != null) toggle.onValueChanged.RemoveListener(UpdateColor);
         }
     }
 
