@@ -55,7 +55,14 @@ namespace Survival
         // //Initialization
         void Start()
         {
-            GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
+            try
+            {
+                GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e);
+            }
             // Ensure We Are Using The Character Controller Component:
             characterController = GetComponent<CharacterController>();
 
