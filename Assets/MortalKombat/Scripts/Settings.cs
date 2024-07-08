@@ -14,6 +14,8 @@ namespace MortalKombat
         public GameObject CameraToggleButton;
         public GameObject MuteToggleButton;
         public GameObject VolumeSlider;
+        public GameObject ExitButton;
+        public GameObject BackToLobbyButton;
 
         private GameObject player1;
         private GameObject player2;
@@ -44,6 +46,13 @@ namespace MortalKombat
             // add listener to the volume slider
             VolumeSlider.GetComponent<UnityEngine.UI.Slider>().onValueChanged.AddListener(delegate {
                 Volume(VolumeSlider.GetComponent<UnityEngine.UI.Slider>().value);
+            });
+
+            ExitButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate {
+                ResetGameManager();
+            });
+            BackToLobbyButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate {
+                ResetGameManager();
             });
         }
         public void ToggleMute()
@@ -102,6 +111,9 @@ namespace MortalKombat
                 Camera.SetActive(false);
             }
         }
-
+        public void ResetGameManager()
+        {
+            gameManager.Reset();
+        }
     }
 }
