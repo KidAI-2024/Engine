@@ -86,7 +86,7 @@ public class StartTraining : MonoBehaviour
                     string message = "Training completed successfully";
                     if (response.ContainsKey("training_accuracy"))
                     {
-                        message += ", With Training accuracy: " + response["training_accuracy"];
+                        message += ", With Training accuracy: " + response["training_accuracy"] + "%";
                     }
                     DisplayWarning(message, "OK", DisplayMessageType.Success);
                 }
