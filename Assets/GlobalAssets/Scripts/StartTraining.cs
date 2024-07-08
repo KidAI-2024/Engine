@@ -77,7 +77,12 @@ public class StartTraining : MonoBehaviour
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
-                    uploadButton.GetComponent<Button>().interactable = true;
+                    try{
+                        uploadButton.GetComponent<Button>().interactable = true;
+                    }
+                    catch(Exception e){
+                        Debug.Log("Upload button not found");
+                    }
                     string message = "Training completed successfully";
                     if (response.ContainsKey("training_accuracy"))
                     {
