@@ -26,6 +26,7 @@ namespace GlobalAssets.HandPoseTraining
 
         private string selectedModelDescription;
         private string selectedFeatureExtractionDescription;
+       
 
         void Start()
         {
@@ -39,6 +40,7 @@ namespace GlobalAssets.HandPoseTraining
                 Debug.LogError("FeatureExtractionTypeNotes GameObject is not set in the HandPoseConfigureModel script.");
             }
             ProjectController = ProjectController.Instance;
+
             LoadFeatures();
             LoadModel();
             LoadFeatureExtractionMode();
@@ -145,7 +147,7 @@ namespace GlobalAssets.HandPoseTraining
             {
                 return;
             }
-            ProjectController.features = GetFeaturesList();
+            ProjectController.features = GetSelectedFeaturesList();
             ProjectController.model = GetModel();
             ProjectController.featureExtractionType = GetFeatureExtractionMethod();
             ProjectController.Save();
@@ -153,7 +155,7 @@ namespace GlobalAssets.HandPoseTraining
 
 
 
-        List<string> GetFeaturesList()
+        List<string> GetSelectedFeaturesList()
         {
             List<string> featuresList = new List<string>();
             // loop on features children (each child is a toggle) if on then add the child.name to the list
@@ -167,7 +169,18 @@ namespace GlobalAssets.HandPoseTraining
             Debug.Log("Features List: " + string.Join(", ", featuresList));
             return featuresList;
         }
-       
+        List<string> GetAllFeaturesList()
+        {
+            List<string> featuresList = new List<string>();
+            // loop on features children (each child is a toggle) if on then add the child.name to the list
+            foreach (Transform child in features.transform)
+            {
+                featuresList.Add(child.name);
+            }
+            Debug.Log("Features List: " + string.Join(", ", featuresList));
+            return featuresList;
+        }
+
         string GetModel()
         {
             string model = "";
