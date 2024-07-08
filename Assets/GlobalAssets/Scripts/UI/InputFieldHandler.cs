@@ -29,6 +29,8 @@ namespace GlobalAssets.UI
                 if (int.Parse(userInput) > 0)
                 {
                     projectController.epochs = int.Parse(userInput);
+                    emptyErrorText();
+
                 }
                 else
                 {
@@ -40,7 +42,7 @@ namespace GlobalAssets.UI
                 Debug.Log(e);
                 errorText.text = "Invalid Number Of Epochs. Please enter a number greater than 0";
             }
-            Debug.Log("User Input: " + userInput);
+            Debug.Log("User Input: " + projectController.epochs);
         }
         // read the input field value and set the value of learning rate in the project controller
         public void ReadInputFieldLearningRate()
@@ -52,6 +54,8 @@ namespace GlobalAssets.UI
                 if (float.Parse(userInput) > 0)
                 {
                     projectController.learningRate = float.Parse(userInput);
+                    emptyErrorText();
+
                 }
                 else
                 {
@@ -65,7 +69,7 @@ namespace GlobalAssets.UI
 
                 errorText.text = "Invalid Learning Rate. Please enter a number that is greater than 0";
             }
-            Debug.Log("User Input: " + userInput);
+            Debug.Log("User Input: " + projectController.learningRate);
         }
         // read the input field value and set the value of classical model type in the project controller
         public void ReadInputFieldClassicalModelType()
@@ -77,6 +81,8 @@ namespace GlobalAssets.UI
                 if (int.Parse(userInput) >= 0 && int.Parse(userInput) <= 2)
                 {
                     projectController.classicalModelType = int.Parse(userInput);
+                    emptyErrorText();
+
                 }
                 else
                 {
@@ -100,6 +106,8 @@ namespace GlobalAssets.UI
                 if (int.Parse(userInput) >= 0 && int.Parse(userInput) <= 2)
                 {
                     projectController.featureExtractionTypeImg = int.Parse(userInput);
+                    emptyErrorText();
+
                 }
                 else
                 {
