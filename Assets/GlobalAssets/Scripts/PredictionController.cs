@@ -102,6 +102,9 @@ public class PredictionController : MonoBehaviour
             { "feature_extraction_type", projectController.featureExtractionType },
             { "features", string.Join(",", projectController.features) },
             { "num_classes", projectController.numberOfClasses.ToString() },
+            {"model_category", projectController.modelCategory.ToString() },
+            {"classical_model_type", projectController.classicalModelType.ToString() },
+            {"feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString() },
             { "event", LoadModelEventName }
         };
         socketClient.SendMessage(message);

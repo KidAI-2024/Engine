@@ -27,8 +27,10 @@ public class ProjectController : MonoBehaviour
 
     public string directoryPath;
 
-    public int epochs = 10;
+    public int epochs = 5;
     public float learningRate = 0.01f;
+    public int modelCategory = 2; // 0 for classical, 1 for resnet, 2 for CNN
+    // Ensure only one instance of ProjectController exists
     public int classicalModelType = 0;
     /*
     if classical model:
@@ -43,8 +45,6 @@ public class ProjectController : MonoBehaviour
     1: HOG
     2: LBP
     */
-    public int modelCategory = 0; // 0 for classical, 1 for resnet, 2 for CNN
-    // Ensure only one instance of ProjectController exists
     private void Awake()
     {
         if (Instance == null)
