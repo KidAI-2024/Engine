@@ -77,4 +77,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/EndlessRunner/Scenes/EndlessRunning.unity
     guid: 72f7f69f2a51b8041b728a6820312bc6
+  - enabled: 1
+    path: Assets/EndlessRunner/Scenes/outpost with snow.unity
+    guid: 70a700c0665c96b4da23ff261a7cc314
   m_configObjects: {}

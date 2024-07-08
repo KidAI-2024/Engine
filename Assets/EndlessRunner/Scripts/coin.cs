@@ -13,9 +13,11 @@ public class coin : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
+          
        
         if (other.gameObject.tag == "Player")
         {
+           
             transform.SetParent(null);
 
             //gameManager.instance.score++;

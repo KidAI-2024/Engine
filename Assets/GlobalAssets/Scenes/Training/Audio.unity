@@ -2198,6 +2198,42 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000030517578, y: -25.050003}
   m_SizeDelta: {x: 192.36, y: 224}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &980992933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 980992934}
+  m_Layer: 5
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &980992934
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980992933}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.583389}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4451610673157423423}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -73.27001, y: -137.59001}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &982777525
 GameObject:
   m_ObjectHideFlags: 0
@@ -4836,6 +4872,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791791331}
   m_CullTransparentMesh: 1
+--- !u!1 &1797814085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1797814086}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1797814086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797814085}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1473937207066111244}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1814060556
 GameObject:
   m_ObjectHideFlags: 0
@@ -6820,6 +6887,7 @@ Transform:
   - {fileID: 1473937207896713039}
   - {fileID: 1473937208078081515}
   - {fileID: 1473937207206167457}
+  - {fileID: 1797814086}
   - {fileID: 1473937207575132680}
   m_Father: {fileID: 1473937207030844717}
   m_RootOrder: 0
@@ -7317,7 +7385,7 @@ RectTransform:
   - {fileID: 1473937207980580042}
   - {fileID: 3143913281579615843}
   m_Father: {fileID: 1473937207066111244}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -11014,7 +11082,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4451610672621393792}
   m_HandleRect: {fileID: 4451610672621393793}
   m_Direction: 3
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11313,7 +11381,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 6.7078, y: 0}
+  m_AnchoredPosition: {x: 6.7078, y: -0.000030517578}
   m_SizeDelta: {x: 193.8322, y: 76.8711}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4451610672981925583
@@ -11526,7 +11594,7 @@ RectTransform:
   - {fileID: 4451610672377311481}
   - {fileID: 149280960035514960}
   m_Father: {fileID: 4451610673157423423}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -11582,6 +11650,7 @@ Transform:
   - {fileID: 4451610672326822780}
   - {fileID: 4451610672541954520}
   - {fileID: 4451610673281740690}
+  - {fileID: 980992934}
   - {fileID: 4451610673045427771}
   m_Father: {fileID: 4451610673591673118}
   m_RootOrder: 0
@@ -16736,6 +16805,10 @@ MonoBehaviour:
   warningPanel: {fileID: 4262488914061443957}
   feebackPanel: {fileID: 3160493264389054997}
   predictButton: {fileID: 8230324480947547600}
+  uploadButton: {fileID: 0}
+  warningIcon: {fileID: 21300000, guid: 6e4fa80ae159bcf47aaf93afbdff4afa, type: 3}
+  errorIcon: {fileID: 21300000, guid: 602a7ab193c97374a8f872d6ca0d0853, type: 3}
+  successIcon: {fileID: 21300000, guid: 894b9a39001ebab468b0796da3fd8b4d, type: 3}
 --- !u!222 &8230324481312041695
 CanvasRenderer:
   m_ObjectHideFlags: 0
