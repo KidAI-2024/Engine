@@ -8,7 +8,7 @@ namespace Survival
     public class Pistol : MonoBehaviour
     {
         public int maxAmmoInMag = 10;       // Maximum ammo capacity in the magazine
-        public int maxAmmoInStorage = 30;   // Maximum ammo capacity in the storage
+        public int maxAmmoInStorage = 100;   // Maximum ammo capacity in the storage
         public float shootCooldown = 0.5f;  // Cooldown time between shots
         public float reloadCooldown = 0.5f;  // Cooldown time between shots
         private float switchCooldown = 0.5f;  // Cooldown time between shots

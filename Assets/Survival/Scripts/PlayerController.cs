@@ -55,6 +55,7 @@ namespace Survival
         // //Initialization
         void Start()
         {
+            GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
             // Ensure We Are Using The Character Controller Component:
             characterController = GetComponent<CharacterController>();
 
@@ -173,19 +174,19 @@ namespace Survival
             if (other.CompareTag("Wood"))
             {
                 Debug.Log("Wood");
-                
+
                 currentFootstepSounds = woodFootstepSounds;
             }
             else if (other.CompareTag("Tile"))
             {
                 Debug.Log("Tile");
-                
+
                 currentFootstepSounds = tileFootstepSounds;
             }
             else if (other.CompareTag("Carpet"))
             {
                 Debug.Log("Carpet");
-                
+
                 currentFootstepSounds = carpetFootstepSounds;
             }
         }
