@@ -575,9 +575,9 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Armed with a trusty gun, you must navigate the maze, opening old, wooden
-    chests hidden in its corners. Each chest contains an image that you must identify
-    with the help of Pixel, your brave robot companion. For every correct identification,
-    you earn a survival point.
+    chests hidden in its corners. Each chest contains an image that you must classifiy
+    the image correctly using the image classifier you created, your brave robot
+    companion. For every correct identification, you earn a point.
 --- !u!222 &1161964663
 CanvasRenderer:
   m_ObjectHideFlags: 0

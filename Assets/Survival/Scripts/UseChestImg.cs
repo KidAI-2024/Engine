@@ -204,6 +204,9 @@ namespace Survival
                     if (pythonPredictedClass == randomClass)
                     {
                         predictionResult.text = "Correctly Classified, Class: " + UnityPredictedClass;
+                        // Access and modify the global variable
+                        PlayerController.Instance.numOfCorrectClassifiedImgs += 1;
+                        Debug.Log("PlayerController.Instance.numOfCorrectClassifiedImgs: " + PlayerController.Instance.numOfCorrectClassifiedImgs);
                     }
                     else
                     {
