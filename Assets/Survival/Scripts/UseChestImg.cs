@@ -26,12 +26,14 @@ namespace Survival
         public int pythonPredictedClass { get; private set; } = -1;
         public string UnityPredictedClass { get; private set; } = "";
         private Color32[] frame;
-        // fps text
-        public TMP_Text fpsText;
+
         // get socket from SocketClient
         private GlobalAssets.Socket.SocketUDP socketClient;
         public Text predictionResult;
+        private bool predictDone = false;
+        private bool reqSent = false;
 
+        private int randomClass = 0;
         IEnumerator LoadRandomImage(int randomClass, System.Action<Texture2D> callback)
         {
             // get the class name from the classes list
@@ -110,18 +112,7 @@ namespace Survival
             {
                 return projectController.PythonClassesToUnityClassesMap[message];
             }
-            if (message == "-1" || message == "None")
-            {
-                return "";
-            }
             return message;
-        }
-        void SetFPSText(string fps)
-        {
-            if (fpsText != null)
-            {
-                fpsText.text = "FPS: " + fps;
-            }
         }
         private byte[] Color32ArrayToByteArrayWithoutAlpha(Color32[] colors)
         {
@@ -158,14 +149,17 @@ namespace Survival
         {
             if (inReach && Input.GetButtonDown("Interact"))
             {
+
                 handUI.SetActive(false);
+                inReach = false;
                 // choose random number between 0 and numberOfClasses
                 // int randomClassIndex = Random.Range(0, numberOfClasses);
                 // Generate a random number between 0 (inclusive) and numberOfClasses (exclusive)
-                int randomClass = random.Next(0, numberOfClasses);
+                randomClass = random.Next(0, numberOfClasses);
                 // load the image from the disk
                 StartCoroutine(LoadRandomImage(randomClass, texture =>
                 {
+
                     // show the image
                     rawImageToPredict.SetActive(true);
                     OB.GetComponent<Animator>().SetBool("open", true);
@@ -178,147 +172,65 @@ namespace Survival
                     string frameBase64 = Convert.ToBase64String(frameBytes);
                     // Construct dictionary to send to server
                     Dictionary<string, string> message = new Dictionary<string, string>
-                {
-                    { "frame", frameBase64 },
-                    { "width", texture.width.ToString() },
-                    { "height", texture.height.ToString() },
-                    { "event", "predict_image_classifier" }
-                };
+                    {
+                            { "frame", frameBase64 },
+                            { "width", texture.width.ToString() },
+                            { "height", texture.height.ToString() },
+                            { "event", "predict_image_classifier" }
+                    };
                     socketClient.SendMessage(message);
                     Debug.Log("Req sent");
-                    if (socketClient.isDataAvailable())
+                    reqSent = true;
+
+
+                }));
+
+
+
+            }
+            if (socketClient.isDataAvailable() && !predictDone && reqSent)
+            {
+                Debug.Log("isDataAvailable");
+                Dictionary<string, string> response = socketClient.ReceiveDictMessage();
+
+                if (response["event"] == "predict_image_classifier")
+                {
+                    Debug.Log("predict_image_classifier");
+                    pythonPredictedClass = int.Parse(response["prediction"]);
+                    UnityPredictedClass = PythonToUnityClassName(response["prediction"]);
+                    Debug.Log("Python Prediction: " + pythonPredictedClass);
+                    Debug.Log("Unity Prediction: " + UnityPredictedClass);
+                    Debug.Log("randomClass: " + randomClass);
+                    if (pythonPredictedClass == randomClass)
                     {
-                        Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-                        SetFPSText(response["FPS"]);
-                        if (response["event"] == "predict_image_classifier")
+                        predictionResult.text = "Correctly Classified, Class: " + UnityPredictedClass;
+                    }
+                    else
+                    {
+                        predictionResult.text = "MisClassified, Class: " + UnityPredictedClass;
+                    }
+                    //hide the image
+                    // rawImageToPredict.SetActive(false);
+                    predictDone = true;
+                    Canvas canvasComponent = rawImageToPredict.GetComponentInChildren<Canvas>();
+                    if (canvasComponent != null)
+                    {
+                        // Get the Animator component from the target GameObject
+                        Animator animator = canvasComponent.GetComponent<Animator>();
+                        if (animator != null)
                         {
-                            pythonPredictedClass = int.Parse(response["prediction"]);
-                            UnityPredictedClass = PythonToUnityClassName(response["prediction"]);
-                            Debug.Log("Python Prediction: " + pythonPredictedClass);
-                            Debug.Log("Unity Prediction: " + UnityPredictedClass);
-                            if (pythonPredictedClass == randomClass)
-                            {
-                                predictionResult.text = "Correctly Classified, Class: " + UnityPredictedClass;
-                            }
-                            else
-                            {
-                                predictionResult.text = "MisClassified, Class: " + UnityPredictedClass;
-                            }
-                            //hide the image
-                            // rawImageToPredict.SetActive(false);
-                            // Get the Animator component from the target GameObject
-                            Animator animator = rawImageToPredict.GetComponent<Animator>();
-                            if (animator != null)
-                            {
-                                // Enable the Animator
-                                animator.enabled = true;
-                            }
-                            else
-                            {
-                                Debug.LogError("Animator component not found on the target GameObject.");
-                            }
+                            // Enable the Animator
+                            // animator.enabled = true;
+                            animator.SetTrigger("StartAnimation");
+
+                            Debug.Log("animator is activated");
+                        }
+                        else
+                        {
+                            Debug.LogError("Animator component not found on the target GameObject.");
                         }
                     }
-                }));
-                // choose random number between 0 and numberOfClasses
-                // int randomClassIndex = Random.Range(0, numberOfClasses);
-                // Generate a random number between 0 (inclusive) and numberOfClasses (exclusive)
-                // int randomClass = random.Next(0, numberOfClasses);
-                // // get the class name from the classes list
-                // string className = projectController.classes[randomClass];
-                // // get the path of the class folder
-                // string classPath = projectPath + "\\" + randomClass.ToString() + '_' + className;
-                // Debug.Log(classPath);
-                // // Get all image files from the specified folder
-                // List<string> imageFiles = Directory.GetFiles(classPath, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".png") || s.EndsWith(".jpg") || s.EndsWith(".jpeg")).ToList();
-
-                // if (imageFiles.Count == 0)
-                // {
-                //     Debug.LogError("No image files found in the specified folder.");
-                //     // yield break;
-                // }
-
-                // // Select a random file
-                // string randomImagePath = imageFiles[random.Next(0, imageFiles.Count)];
-
-                // // Load the image into a texture
-                // using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture("file:///" + randomImagePath))
-                // {
-                //     // yield return uwr.SendWebRequest();
-                //     uwr.SendWebRequest();
-                //     if (uwr.result != UnityWebRequest.Result.Success)
-                //     {
-                //         Debug.LogError("Failed to load image: " + uwr.error);
-                //     }
-                //     else
-                //     {
-                //         // Assign the texture to the RawImage
-                //         Texture2D texture = DownloadHandlerTexture.GetContent(uwr);
-
-                //         Canvas canvasComponent = rawImageToPredict.GetComponentInChildren<Canvas>();
-                //         if (canvasComponent != null)
-                //         {
-                //             // Get the RawImage component that is a child of the Canvas
-                //             RawImage rawImageComponent = canvasComponent.GetComponentInChildren<RawImage>();
-                //             if (rawImageComponent != null)
-                //             {
-                //                 // Assign the texture to the RawImage component
-                //                 rawImageComponent.texture = texture;
-                //                 // Call the call back function
-                //                 // callback(texture);
-                //                 // show the image
-                //                 rawImageToPredict.SetActive(true);
-                //                 OB.GetComponent<Animator>().SetBool("open", true);
-                //                 OB.GetComponent<BoxCollider>().enabled = false;
-                //                 // send request
-                //                 frame = texture.GetPixels32();
-                //                 // Send the frame to the server
-                //                 byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
-                //                 // Encode the byte array to a Base64 string
-                //                 string frameBase64 = Convert.ToBase64String(frameBytes);
-                //                 // Construct dictionary to send to server
-                //                 Dictionary<string, string> message = new Dictionary<string, string>
-                //                 {
-                //                     { "frame", frameBase64 },
-                //                     { "width", texture.width.ToString() },
-                //                     { "height", texture.height.ToString() },
-                //                     { "event", "predict_image_classifier" }
-                //                 };
-                //                 socketClient.SendMessage(message);
-                //                 Debug.Log("Req sent");
-                //                 if (socketClient.isDataAvailable())
-                //                 {
-                //                     Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-                //                     SetFPSText(response["FPS"]);
-                //                     if (response["event"] == "predict_image_classifier")
-                //                     {
-                //                         pythonPredictedClass = int.Parse(response["prediction"]);
-                //                         UnityPredictedClass = PythonToUnityClassName(response["prediction"]);
-                //                         Debug.Log("Python Prediction: " + pythonPredictedClass);
-                //                         Debug.Log("Unity Prediction: " + UnityPredictedClass);
-                //                         if (pythonPredictedClass == randomClass)
-                //                         {
-                //                             predictionResult.text = "Correctly Classified, Class: " + UnityPredictedClass;
-                //                         }
-                //                         else
-                //                         {
-                //                             predictionResult.text = "MisClassified, Class: " + UnityPredictedClass;
-                //                         }
-                //                         //hide the image
-                //                         rawImageToPredict.SetActive(false);
-                //                     }
-                //                 }
-
-                //             }
-                //             else
-                //             {
-                //                 Debug.LogError("RawImage component not found in children of Canvas.");
-                //             }
-                //         }
-                //     }
-                // }
-
-
+                }
             }
 
         }
