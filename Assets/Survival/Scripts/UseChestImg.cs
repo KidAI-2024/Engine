@@ -39,7 +39,7 @@ namespace Survival
             // get the class name from the classes list
             string className = projectController.classes[randomClass];
             // get the path of the class folder
-            string classPath = projectPath + "\\" + randomClass.ToString() + '_' + className;
+            string classPath = projectPath + "\\" + "test" + "\\" + randomClass.ToString() + '_' + className;
             Debug.Log(classPath);
             // Get all image files from the specified folder
             List<string> imageFiles = Directory.GetFiles(classPath, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".png") || s.EndsWith(".jpg") || s.EndsWith(".jpeg")).ToList();
