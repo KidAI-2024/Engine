@@ -49,7 +49,9 @@ namespace GlobalAssets.UI
 
             // Add Listener to the OpenCameraButton on click to call OpenCamera(outsideImagesContainer) that is in WebcamController of the CameraPanel
             UnityEngine.UI.Button btn = classBox.transform.GetChild(3).gameObject.GetComponent<UnityEngine.UI.Button>();
-            GameObject outsideImagesContainer = classBox.transform.GetChild(4).GetChild(0).GetChild(0).gameObject;
+            classBox.transform.GetChild(4).gameObject.SetActive(false);
+
+            GameObject outsideImagesContainer = classBox.transform.GetChild(5).GetChild(0).GetChild(0).gameObject;
             btn.onClick.AddListener(() => CameraPanel.GetComponent<MicController>().OpenCamera(outsideImagesContainer));
 
             // auto scroll to the end of the ClassesContainer.parent.parent that is a ScrollRect

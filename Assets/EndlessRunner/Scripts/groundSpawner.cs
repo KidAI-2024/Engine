@@ -4,53 +4,83 @@ using UnityEngine;
 
 public class groundSpawner : MonoBehaviour
 {
-
-
     public GameObject groundTile;
- 
-
     private Transform playerTransform;
-
-    private float spawnZ = 0.0f;
-    private float tileLength = 20f;
-    private int tilesCount = 8;
-
+    private float spawnZ = 0f;
+    private float tileLength = 487f;
+    private int tilesCount = 1;
     private float safeZone = 25f;
     private List<GameObject> activeTiles = new List<GameObject>();
-
+    public GameObject player;
     public GameObject[] obstacles;
     private int lastSpawnIndex;
     public GameObject coinPrefab;
     public bool toBeDeleted;
+    private Vector3 initial_po_player;
     GameObject spawning()
     {
         GameObject go = Instantiate(groundTile) as GameObject;
         go.transform.SetParent(transform);
-        go.transform.position=Vector3.forward*spawnZ;
+        go.transform.position = Vector3.forward * spawnZ;
         spawnZ += tileLength;
         activeTiles.Add(go);
         return go;
+        
     }
+
+    //void SpawnCoins(GameObject tile, List<Vector3> obstaclePositions)
+    //{
+    //    int coinsToSpawn =300;
+
+    //    for (int i = 0; i < coinsToSpawn; i++)
+    //    {
+    //        int spawnIndex = Random.Range(0, 3);
+    //        float val = 0;
+    //        if (spawnIndex == 0)
+    //            val = -4.1f;
+    //        else if (spawnIndex == 2)
+    //            val = 4.1f;
+
+    //        Vector3 coinPosition = new Vector3(initial_po_player.x+val, initial_po_player.y + 1f, spawnZ - 20 + Random.Range(0, 400));
+
+    //        bool overlap = false;
+    //        foreach (Vector3 obstaclePos in obstaclePositions)
+    //        {
+    //            if (Vector3.Distance(coinPosition, obstaclePos) < 2f)
+    //            {
+    //                overlap = true;
+    //                break;
+    //            }
+    //        }
+
+    //        if (!overlap)
+    //        {
+    //            GameObject coin = Instantiate(coinPrefab, coinPosition, Quaternion.identity, tile.transform);
+    //            coin.transform.localScale = new Vector3(0.5f, 10f, 0.5f); // Set the coin scale to 1
+    //        }
+    //    }
+    //}
+
 
     void SpawnCoins(GameObject tile, List<Vector3> obstaclePositions)
     {
-        // Number of coins to spawn
-        int coinsToSpawn = Random.Range(3,5);
+        int coinsToSpawn = 80; // Number of coins to spawn
+        //float tileLength = 400f; // Length of the tile
 
-        // Iterate to spawn each coin
         for (int i = 0; i < coinsToSpawn; i++)
         {
+            // Determine the lane (left, center, right)
             int spawnIndex = Random.Range(0, 3);
             float val = 0;
             if (spawnIndex == 0)
-                val = -5.5f;
+                val = -4.1f;
             else if (spawnIndex == 2)
-                val = 5.5f;
-            // Generate random position within the tile
+                val = 4.1f;
 
-            Vector3 coinPosition = new Vector3(val, transform.position.y + 4f, spawnZ - 20 + Random.Range(0, 20));
+            // Calculate coin position within the tile length
+            Vector3 coinPosition = new Vector3(initial_po_player.x + val, initial_po_player.y + 1f, tile.transform.position.z + Random.Range(0, tileLength));
 
-            // Check if the coin position overlaps with any obstacle position
+            // Check for overlaps with obstacles
             bool overlap = false;
             foreach (Vector3 obstaclePos in obstaclePositions)
             {
@@ -61,100 +91,74 @@ public class groundSpawner : MonoBehaviour
                 }
             }
 
-            // If no overlap, instantiate the coin
+            // Spawn the coin if there's no overlap
             if (!overlap)
             {
-                Instantiate(coinPrefab, coinPosition, Quaternion.identity, tile.transform);
+                GameObject coin = Instantiate(coinPrefab, coinPosition, Quaternion.identity, tile.transform);
+                coin.transform.localScale = new Vector3(0.5f, 3f, 0.5f); // Adjust the coin scale as needed
             }
         }
     }
-        //void obstaclesCreation()
-        //{
-        //    int index = Random.Range(0, 8);
-        //    Vector3 randomPosition = new Vector3();
-        //    Instantiate(obstacles[index], randomPosition, Quaternion.identity);
-        //}
+
     void SpawnObstacles(GameObject tile)
     {
-        // Calculate the number of obstacles to spawn for the current tile
-        int obstaclesToSpawn = Random.Range(1, 2);
+        int obstaclesToSpawn = 30;
         List<Vector3> obstaclePositions = new List<Vector3>();
 
-        // Spawn obstacles at random positions within the tile
         for (int i = 0; i < obstaclesToSpawn; i++)
         {
-            // Choose a random position index along the Z-axis
-            int spawnIndex = Random.Range(0, 3);
+            int spawnIndex =Random.Range(0,3);
             if (spawnIndex == lastSpawnIndex)
             {
-                // Ensure that obstacles are not spawned in the same position consecutively
                 spawnIndex = (spawnIndex + 2) % 3;
             }
             float val = 0;
             if (spawnIndex == 0)
-                val = -5.5f;
+                val = -4.1f;
             else if (spawnIndex == 2)
-                val = 5.5f;
+                val = 4.1f;
             int distance = Random.Range(0, 20);
-            // Calculate the position to spawn the obstacle
-            Vector3 spawnPosition = new Vector3(val, transform.position.y+4f, spawnZ-20+distance);
-
-            // Instantiate obstacle at the calculated position
-            int obsctacleIndex= Random.Range(0, 10);
-            Instantiate(obstacles[obsctacleIndex], spawnPosition, Quaternion.identity,tile.transform);
+            Vector3 spawnPosition = new Vector3(initial_po_player.x + val, initial_po_player.y + 0.5f, tile.transform.position.z + Random.Range(0, tileLength));
+            //Vector3 coinPosition = new Vector3(initial_po_player.x + val, initial_po_player.y + 1f, tile.transform.position.z + Random.Range(0, tileLength));
 
 
+            GameObject obs=Instantiate(obstacles[2], spawnPosition, Quaternion.identity, tile.transform);
+            //obs.transform.localScale = new Vector3(0.0005f, 0.006f, 0.0005f); // Adjust the coin scale as needed
             obstaclePositions.Add(spawnPosition);
-            
-            // Update the last spawn index
             lastSpawnIndex = spawnIndex;
         }
         SpawnCoins(tile, obstaclePositions);
-
-
     }
 
     void Start()
     {
         lastSpawnIndex = 0;
-        activeTiles =new List<GameObject>();
+        activeTiles = new List<GameObject>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         toBeDeleted = false;
-       for (int i = 0; i < tilesCount; i++)
+
+        for (int i = 0; i < tilesCount; i++)
         {
-           GameObject til= spawning();
-            SpawnObstacles(til);
+            GameObject tile = spawning();
+            SpawnObstacles(tile);
         }
-        
+        initial_po_player = player.GetComponent<playerMovement>().initial_po;
     }
+
     void deleting()
     {
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
-
     }
+
     private void Update()
     {
-        if (playerTransform.position.z-safeZone > (spawnZ - tilesCount * tileLength))
+        if (playerTransform.position.z - safeZone > (spawnZ - tilesCount * tileLength))
         {
-            GameObject til = spawning();
-            SpawnObstacles(til);
-
-            deleting();
-
-            //if(toBeDeleted==true)
-            //  {
-            //      deleting();
-            //      deleting();
-            //      toBeDeleted = false;
-            //  }
-            //  else
-            //  {
-            //      toBeDeleted = true;
-            //  }
-
+            GameObject tile = spawning();
+            SpawnObstacles(tile);
+            if (activeTiles.Count > 2)
+                deleting();
         }
     }
-
-
 }

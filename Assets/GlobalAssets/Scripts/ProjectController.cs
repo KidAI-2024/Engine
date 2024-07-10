@@ -15,6 +15,7 @@ public class ProjectController : MonoBehaviour
     public string sceneName;
     public int numberOfClasses { get { return classes.Count; } }
     public bool isTrained = false;
+    public bool isCreated = false;
     public string savedModelFileName;
     public List<string> classes = new List<string>();
     public Dictionary<string, int> imagesPerClass = new Dictionary<string, int>();  // Class : ImageCount
@@ -103,6 +104,7 @@ public class ProjectController : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             JsonUtility.FromJsonOverwrite(json, Instance);
+            isCreated = false;
             Debug.Log("Loaded project data from: " + path);
         }
         else
@@ -119,6 +121,9 @@ public class ProjectController : MonoBehaviour
         sceneName = "";
         isTrained = false;
         savedModelFileName = "";
+        model = "";
+        featureExtractionType = "";
+        features.Clear();
         classes.Clear();
         imagesPerClass.Clear();
         classesToControlsMap.Clear();

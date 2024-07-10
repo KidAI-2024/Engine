@@ -76,6 +76,11 @@ namespace MortalKombat
                     nextFrameReady = false;
                 }
             }
+            if (gameManager.predictIsOn == false)
+            {
+                predictionText.text = "";
+                player1.GetComponent<Player1Controller>().prediction = "_?";
+            }
             // Receive the response from the server
             if (socketClient.isDataAvailable())
             {

@@ -30,11 +30,14 @@ public class ProjectName : MonoBehaviour
         public Dictionary<string, string> classesToControlsMap; // Class : ControlName
     }
 
+    public GameObject LoadingPanel;
     private ProjectController projectController;
     private List<ProjectData> projectDataList = new List<ProjectData>();
-    public GameObject LoadingPanel;
+    
+    private GlobalAssets.Socket.SocketUDP socketClient;
     void Start()
     {
+        socketClient = GlobalAssets.Socket.SocketUDP.Instance;
         projectController = ProjectController.Instance;
         projectController.Reset();
         LoadProjectsList();
@@ -80,6 +83,7 @@ public class ProjectName : MonoBehaviour
     }
     public void CreateProject()
     {
+        projectController.Reset();
         string projectName = ProjectNameTextField.GetComponentInChildren<TMP_InputField>().text;
         TextMeshProUGUI ErrorMessageText = ErrorMessageTextField.GetComponentInChildren<TextMeshProUGUI>();
         if(projectName == "")
@@ -103,6 +107,7 @@ public class ProjectName : MonoBehaviour
         projectController.createdAt = createdAt;
         projectController.projectType = projectType;
         projectController.sceneName = nextSceneName;
+        projectController.isCreated = true;
         projectController.Save();
 
         SceneManager.LoadScene(nextSceneName);

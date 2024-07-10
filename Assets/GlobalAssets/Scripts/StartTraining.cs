@@ -13,7 +13,9 @@ public enum DisplayMessageType
 {
     Success,
     Error,
-    Warning
+    Warning,
+    HighAccuracy,
+    LowAccuracy
 }
 public class StartTraining : MonoBehaviour
 {
@@ -32,6 +34,8 @@ public class StartTraining : MonoBehaviour
     private GameObject TrainingButton;
     private GameObject GraphImage;
 
+    public Sprite HighAccuracyIcon;
+    public Sprite LowAccuracyIcon;
     public Sprite warningIcon;
     public Sprite errorIcon;
     public Sprite successIcon;
@@ -40,6 +44,7 @@ public class StartTraining : MonoBehaviour
     {
         projectController = ProjectController.Instance;
         TrainingButton = this.gameObject;
+        // get the graph image container
         if (feebackPanel.transform.childCount > 0)
             GraphImage = feebackPanel.transform.GetChild(0).gameObject;
         // get socket from SocketClient
@@ -47,6 +52,8 @@ public class StartTraining : MonoBehaviour
     }
     void Update()
     {
+        // Check available messages incoming from the server
+        // only if the training is in progress (started and not finished yet)
         trainingInProgress = !isTrainingFinished && isTrainingStarted;
         if (trainingInProgress)
         {
@@ -54,17 +61,9 @@ public class StartTraining : MonoBehaviour
             {
                 Debug.Log("Training data Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
-                Debug.Log(response);
-                foreach (KeyValuePair<string, string> kvp in response)
-                {
-
-                    Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
-
-                }
-                // Debug.Log("Received: " + response["status"]);
+                // If the training is completed successfully
                 if (response["status"] == "success")
                 {
-                    Debug.Log("In Train");
                     projectController.isTrained = true;
                     projectController.savedModelFileName = response["saved_model_name"];
                     projectController.Save();
@@ -72,8 +71,7 @@ public class StartTraining : MonoBehaviour
                     isTrainingStarted = false;
                     TrainingButton.transform.GetChild(0).gameObject.SetActive(true);
                     TrainingButton.transform.GetChild(1).gameObject.SetActive(false);
-
-                    if (response.ContainsKey("feature_importance_graph"))
+                    if (response.ContainsKey("feature_importance_graph") && response["feature_importance_graph"] != "")
                     {
                         string graph = response["feature_importance_graph"];
                         byte[] imageBytes = Convert.FromBase64String(graph);
@@ -83,10 +81,33 @@ public class StartTraining : MonoBehaviour
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
-                    uploadButton.GetComponent<Button>().interactable = true;
-                    DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
+                    try{
+                        uploadButton.GetComponent<Button>().interactable = true;
+                    }
+                    catch(Exception e){
+                        Debug.Log("Upload button not found");
+                    }
+                    string message = "Training completed successfully";
+                    DisplayMessageType messageType = DisplayMessageType.Success;
+                    if (response.ContainsKey("training_accuracy"))
+                    {
+                        float accuracy = float.Parse(response["training_accuracy"]) * 100;
+                        // round the accuracy to 1 decimal place
+                        accuracy = (float)Math.Round(accuracy, 1);
+                        if (accuracy > 90.0f)
+                        {
+                            message = "Training accuracy is " + accuracy + "%, Good Job!";
+                            messageType = DisplayMessageType.HighAccuracy;
+                        }
+                        else
+                        {
+                            message = "Training accuracy is " + accuracy + "%, Try modify input images or add more features";
+                            messageType = DisplayMessageType.LowAccuracy;
+                        }
+                    }
+                    DisplayWarning(message, "OK", messageType);
                 }
-                else if (response["status"] == "failed")
+                else if (response["status"] == "failed") // training failed for a server side error
                 {
                     if (response.ContainsKey("error"))
                         DisplayWarning(response["error"], "OK");
@@ -100,17 +121,28 @@ public class StartTraining : MonoBehaviour
             }
         }
     }
+    // save the project before training
+    // Type Audio save audio project (.wav) have different save function
     public void StartSocketTraining()
     {
-        if (SceneManager.GetActiveScene().name == "Audio")
+        try
         {
-            saveProjectButton.GetComponent<SaveAudioProject>().Save();
+            if (SceneManager.GetActiveScene().name == "Audio")
+            {
+                saveProjectButton.GetComponent<SaveAudioProject>().Save();
+            }
+            else
+            {
+                saveProjectButton.GetComponent<SaveProject>().Save();
+            }
         }
-        else
+        catch (Exception e)
         {
-            saveProjectButton.GetComponent<SaveProject>().Save();
+            DisplayWarning("Class names must not be empty or be the same", "OK");
+            return;
         }
-        if (!Validate()) return; // return if validation fails
+        if (!Validate()) return; // validate the project before training
+        // set the training in progress flags
         isTrainingFinished = false;
         isTrainingStarted = true;
         CreateClassMap();
@@ -119,6 +151,9 @@ public class StartTraining : MonoBehaviour
         SocketTrain();
     }
     // This function creates a map of class names to class indices
+    // because the server expects the class indices to be in the form of strings
+    // example { "0": "class1", "1": "class2", "2": "class3" }
+    // to be able to map classes from the server to the classes in the project
     void CreateClassMap()
     {
         projectController.PythonClassesToUnityClassesMap.Clear();
@@ -126,10 +161,10 @@ public class StartTraining : MonoBehaviour
         foreach (string className in projectController.classes)
         {
             projectController.PythonClassesToUnityClassesMap.Add(j.ToString(), className);
-            Debug.Log("Class: " + j.ToString() + " Name: " + className);
             j++;
         }
     }
+    // Client side validation of the project before training
     private bool Validate()
     {
         // check if any 2 classes have same name
@@ -182,6 +217,7 @@ public class StartTraining : MonoBehaviour
         return true;
     }
 
+    // Display a warning message to the user
     private void DisplayWarning(string message, string buttonText, DisplayMessageType messageType = DisplayMessageType.Error)
     {
         // enable warning panel
@@ -198,17 +234,25 @@ public class StartTraining : MonoBehaviour
             case DisplayMessageType.Success:
                 warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = successIcon;
                 break;
+            case DisplayMessageType.HighAccuracy:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = HighAccuracyIcon;
+                break;
+            case DisplayMessageType.LowAccuracy:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = LowAccuracyIcon;
+                break;
         }
         // warning message
         warningPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
         // warning button text
         warningPanel.transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = buttonText;
     }
+
+    // Send a message to the server to start training
     private void SocketTrain()
-    {
+    {    
+        // Absolute path to the project directory
         string projectPath = Path.Combine(projectController.directoryPath, projectController.projectName);
         Debug.Log("Training Path: " + projectPath);
-        // if (Input.GetKeyDown(KeyCode.Space))
         Dictionary<string, string> message = new Dictionary<string, string>
         {
             { "path",  projectPath },

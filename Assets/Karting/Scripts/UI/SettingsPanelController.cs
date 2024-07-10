@@ -9,6 +9,7 @@ namespace Karting.UI
     public class SettingsPanelController : MonoBehaviour
     {
         public GameObject settingsPanel;
+        public GlobalAssets.UI.LoadingPanelController loadingPanelContoller;
         public Button settingsButton;
         public Button exitButton;
         public Button returnToLobbyButton;
@@ -46,7 +47,10 @@ namespace Karting.UI
             if (returnToLobbyButton != null)
             {
                 // change scene to lobby
-                returnToLobbyButton.onClick.AddListener(() => SceneManager.LoadScene("Lobby"));
+                returnToLobbyButton.onClick.AddListener(() => {
+                    loadingPanelContoller.ShowLoadingPanel();
+                    SceneManager.LoadScene("Lobby"); 
+                });
             }
             else
             {
@@ -54,8 +58,11 @@ namespace Karting.UI
             }
             if (returnToIntroButton != null)
             {
-                // change scene to intro
-                returnToIntroButton.onClick.AddListener(() => SceneManager.LoadScene("KartingIntro"));
+                returnToIntroButton.onClick.AddListener(() =>{
+                    loadingPanelContoller.ShowLoadingPanel();
+                    SceneManager.LoadScene("KartingIntro");
+                });
+
             }
             else
             {

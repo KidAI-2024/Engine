@@ -49,19 +49,33 @@ public class PredictionController : MonoBehaviour
     }
     public void StartUploadPrediction()
     {
-        isPredictingUploadedImage = true;
-        // add code to upload image 
-        uploadedImgPath = EditorUtility.OpenFilePanel("Select image to predict", "", "png,jpg,jpeg");
-        if (uploadedImgPath.Length == 0)
+        try
         {
-            return;
+#if UNITY_EDITOR
+
+            isPredictingUploadedImage = true;
+            // add code to upload image 
+            uploadedImgPath = EditorUtility.OpenFilePanel("Select image to predict", "", "png,jpg,jpeg");
+            if (uploadedImgPath.Length == 0)
+            {
+                return;
+            }
+            if (uploadedImgPath != null)
+            {
+                WWW www = new WWW("file://" + uploadedImgPath);
+                webcamDisplay.texture = www.texture; // uploaded image texture; 
+                webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
+                uploadedImage = www.texture;
+            }
+#else
+
+            throw new System.Exception("This code is running outside the Unity Editor");
+#endif
         }
-        if (uploadedImgPath != null)
+        catch (System.Exception e)
         {
-            WWW www = new WWW("file://" + uploadedImgPath);
-            webcamDisplay.texture = www.texture; // uploaded image texture; 
-            webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
-            uploadedImage = www.texture;
+            Debug.Log("Error in uploading images: " + e.Message);
+            return;
         }
     }
     public void StartPrediction()
@@ -164,14 +178,14 @@ public class PredictionController : MonoBehaviour
                 {
                     string pred = response["prediction"];
                     predictionText.text = MapToClassName(pred);
-                    // if (response.ContainsKey("preprocessed_image"))
-                    // {
-                    //     byte[] preprocessedImageBytes = Convert.FromBase64String(response["preprocessed_image"]);
-                    //     Texture2D preprocessedImage = new Texture2D(webcamTexture.width, webcamTexture.height);
-                    //     preprocessedImage.LoadImage(preprocessedImageBytes);
-                    //     webcamDisplay.texture = preprocessedImage;
-                    //     webcamDisplay.material.mainTexture = preprocessedImage;
-                    // }
+                    if (response.ContainsKey("preprocessed_image") && response["preprocessed_image"] != "" && togglePredicting)
+                    {
+                        byte[] preprocessedImageBytes = Convert.FromBase64String(response["preprocessed_image"]);
+                        Texture2D preprocessedImage = new Texture2D(webcamTexture.width, webcamTexture.height);
+                        preprocessedImage.LoadImage(preprocessedImageBytes);
+                        webcamDisplay.texture = preprocessedImage;
+                        webcamDisplay.material.mainTexture = preprocessedImage;
+                    }
                 }
                 else if (response["event"] == LoadModelEventName)
                 {
