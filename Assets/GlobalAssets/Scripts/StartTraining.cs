@@ -13,7 +13,9 @@ public enum DisplayMessageType
 {
     Success,
     Error,
-    Warning
+    Warning,
+    HighAccuracy,
+    LowAccuracy
 }
 public class StartTraining : MonoBehaviour
 {
@@ -32,6 +34,8 @@ public class StartTraining : MonoBehaviour
     private GameObject TrainingButton;
     private GameObject GraphImage;
 
+    public Sprite HighAccuracyIcon;
+    public Sprite LowAccuracyIcon;
     public Sprite warningIcon;
     public Sprite errorIcon;
     public Sprite successIcon;
@@ -77,8 +81,31 @@ public class StartTraining : MonoBehaviour
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
-                    uploadButton.GetComponent<Button>().interactable = true;
-                    DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
+                    try{
+                        uploadButton.GetComponent<Button>().interactable = true;
+                    }
+                    catch(Exception e){
+                        Debug.Log("Upload button not found");
+                    }
+                    string message = "Training completed successfully";
+                    DisplayMessageType messageType = DisplayMessageType.Success;
+                    if (response.ContainsKey("training_accuracy"))
+                    {
+                        float accuracy = float.Parse(response["training_accuracy"]) * 100;
+                        // round the accuracy to 1 decimal place
+                        accuracy = (float)Math.Round(accuracy, 1);
+                        if (accuracy > 90.0f)
+                        {
+                            message = "Training accuracy is " + accuracy + "%, Good Job!";
+                            messageType = DisplayMessageType.HighAccuracy;
+                        }
+                        else
+                        {
+                            message = "Training accuracy is " + accuracy + "%, Try modify input images or add more features";
+                            messageType = DisplayMessageType.LowAccuracy;
+                        }
+                    }
+                    DisplayWarning(message, "OK", messageType);
                 }
                 else if (response["status"] == "failed") // training failed for a server side error
                 {
@@ -207,6 +234,12 @@ public class StartTraining : MonoBehaviour
             case DisplayMessageType.Success:
                 warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = successIcon;
                 break;
+            case DisplayMessageType.HighAccuracy:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = HighAccuracyIcon;
+                break;
+            case DisplayMessageType.LowAccuracy:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = LowAccuracyIcon;
+                break;
         }
         // warning message
         warningPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
@@ -234,6 +267,12 @@ public class StartTraining : MonoBehaviour
             { "feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString()},
             { "event", trainingEvent }
         };
+        // print the message
+        foreach (KeyValuePair<string, string> kvp in message)
+        {
+            Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+        }
+
         socketClient.SendMessage(message);
         Debug.Log("Training Started");
     }

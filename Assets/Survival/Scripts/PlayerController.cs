@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 namespace Survival
 {
     // This Will Auto Add Character Controller To Gameobject If It's Not Already Applied:
@@ -29,6 +31,8 @@ namespace Survival
         public AudioClip[] carpetFootstepSounds;
         public Transform footstepAudioPosition;
         public AudioSource audioSource;
+        // score
+        public Text score;
 
         Vector3 moveDirection = Vector3.zero;
         float rotationX = 0;
@@ -39,6 +43,7 @@ namespace Survival
         public int initialFOV;
         public float cameraZoomSmooth = 1;
 
+        public int numOfCorrectClassifiedImgs = 0;
         // // Private Variables
         private bool isWalking = false;
         private bool isFootstepCoroutineRunning = false;
@@ -52,9 +57,52 @@ namespace Survival
 
         CharacterController characterController;
 
+        // The static instance of the GameManager
+        private static PlayerController instance;
+
         // //Initialization
+        // Property to access the singleton instance
+        public static PlayerController Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    // Find the instance in the scene or create a new one
+                    instance = FindObjectOfType<PlayerController>();
+                    if (instance == null)
+                    {
+                        GameObject singleton = new GameObject(typeof(PlayerController).Name);
+                        instance = singleton.AddComponent<PlayerController>();
+                        DontDestroyOnLoad(singleton);
+                    }
+                }
+                return instance;
+            }
+        }
+        void Awake()
+        {
+            // Ensure the instance is set and persists between scenes
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
         void Start()
         {
+            try
+            {
+                GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e);
+            }
             // Ensure We Are Using The Character Controller Component:
             characterController = GetComponent<CharacterController>();
 
@@ -68,6 +116,8 @@ namespace Survival
 
         void Update()
         {
+            score.text = "Number of images classified correctly: " + numOfCorrectClassifiedImgs;
+
             // Walking / Running In Action:
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
@@ -173,19 +223,19 @@ namespace Survival
             if (other.CompareTag("Wood"))
             {
                 Debug.Log("Wood");
-                
+
                 currentFootstepSounds = woodFootstepSounds;
             }
             else if (other.CompareTag("Tile"))
             {
                 Debug.Log("Tile");
-                
+
                 currentFootstepSounds = tileFootstepSounds;
             }
             else if (other.CompareTag("Carpet"))
             {
                 Debug.Log("Carpet");
-                
+
                 currentFootstepSounds = carpetFootstepSounds;
             }
         }

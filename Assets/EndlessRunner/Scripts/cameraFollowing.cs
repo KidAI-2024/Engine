@@ -12,13 +12,14 @@ public class cameraFollowing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
+     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position= new Vector3(0,player.position.y+offset_y, player.position.z +offset_z);
+        transform.position = new Vector3(player.GetComponent<playerMovement>().initial_po.x, player.GetComponent<playerMovement>().initial_po.y + offset_y, player.position.z + offset_z);
+        //transform.position = new Vector3(player.position.x + offset_x, player.position.y + offset_y, player.position.z + offset_z);
+
     }
 
     public IEnumerator shaking(float period)
