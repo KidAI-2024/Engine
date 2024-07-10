@@ -167,7 +167,7 @@ namespace MortalKombat
                 }
                 RoundScore = player1.health <= 0 ? RoundScore - 1 : RoundScore + 1;
                 UpdateRoundScoreUI();
-                if (Player1ScoreValue > 2 ||  Player2ScoreValue > 2) // 3 rounds finished = game over
+                if (Player1ScoreValue > 2 ||  Player2ScoreValue > 2 || Round > 3) // 3 rounds finished = game over
                 {
                     PlayerPrefs.DeleteAll();
                     GameOverText.GetComponentInChildren<TextMeshProUGUI>(true).text = RoundScore > 0 ? "Player 1 Wins!" : "Player 2 Wins!"; // +ve means player 1 wins, -ve means player 2 wins
