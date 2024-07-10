@@ -267,6 +267,12 @@ public class StartTraining : MonoBehaviour
             { "feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString()},
             { "event", trainingEvent }
         };
+        // print the message
+        foreach (KeyValuePair<string, string> kvp in message)
+        {
+            Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+        }
+
         socketClient.SendMessage(message);
         Debug.Log("Training Started");
     }

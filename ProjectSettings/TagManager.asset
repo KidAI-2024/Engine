@@ -19,6 +19,7 @@ TagManager:
   - secondary1
   - primary2
   - secondary2
+  - music
   layers:
   - Default
   - TransparentFX
