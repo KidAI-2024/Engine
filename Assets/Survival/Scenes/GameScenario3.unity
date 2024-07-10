@@ -575,8 +575,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Collect all the survival points by correctly identifying the images and
-    make your way to the locked gate at the maze's center. Only with all the points
-    can you unlock the gate and escape to safety. Prepare yourself for a thrilling
+    make your way to the locked gate at the maze's center. With at least 5 points
+    you can unlock the gate and escape to safety. Prepare yourself for a thrilling
     adventure where every step could be your last, and only the sharpest minds and
     steadiest hands will survive the Maze of Shadows.
 --- !u!222 &1161964663

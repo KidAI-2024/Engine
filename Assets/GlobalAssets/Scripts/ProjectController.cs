@@ -29,16 +29,16 @@ public class ProjectController : MonoBehaviour
 
     public int epochs = 5;
     public float learningRate = 0.01f;
-    public int modelCategory = 2; // 0 for classical, 1 for resnet, 2 for CNN
+    public int modelCategory = 0; // 0 for classical, 1 for resnet, 2 for CNN
     // Ensure only one instance of ProjectController exists
-    public int classicalModelType = 0;
+    public int classicalModelType = 2;
     /*
     if classical model:
     0: SVM
     1: Logistic Regression
     2: Random Forest
     */
-    public int featureExtractionTypeImg = 0;
+    public int featureExtractionTypeImg = 1;
     /*
     this is for classical model:
     0: SIFT
