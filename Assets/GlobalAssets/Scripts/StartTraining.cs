@@ -33,6 +33,7 @@ public class StartTraining : MonoBehaviour
     private bool isTrainingStarted = false;
     private GameObject TrainingButton;
     private GameObject GraphImage;
+    private Texture DefaultGraphImage;
 
     public Sprite HighAccuracyIcon;
     public Sprite LowAccuracyIcon;
@@ -46,7 +47,10 @@ public class StartTraining : MonoBehaviour
         TrainingButton = this.gameObject;
         // get the graph image container
         if (feebackPanel.transform.childCount > 0)
+        {
+            DefaultGraphImage = feebackPanel.transform.GetChild(0).gameObject.transform.GetComponent<RawImage>().texture;
             GraphImage = feebackPanel.transform.GetChild(0).gameObject;
+        }
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
@@ -78,6 +82,12 @@ public class StartTraining : MonoBehaviour
                         Texture2D texture = new Texture2D(1000, 600);
                         texture.LoadImage(imageBytes);
                         GraphImage.GetComponent<RawImage>().texture = texture;
+                    }
+                    else
+                    {
+                        // Restore the default graph image
+                        GraphImage.GetComponent<RawImage>().texture = DefaultGraphImage;
+
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
