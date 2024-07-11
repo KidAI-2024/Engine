@@ -28,7 +28,8 @@ namespace GlobalAssets.HandPoseTraining
             }
             else
             {
-                toggleBackground.color = Color.red; // Change to red when off
+                //black with alpha 70
+                toggleBackground.color = new Color(0, 0, 0, 0.7f);
             }
         }
 
