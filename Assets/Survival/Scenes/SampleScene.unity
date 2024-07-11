@@ -1530,27 +1530,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f651192e54830c940b1703cedb4bb14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCam: {fileID: 963194227}
-  walkSpeed: 3
-  runSpeed: 5
-  jumpPower: 5
-  gravity: 10
-  lookSpeed: 2
-  lookXLimit: 75
-  cameraRotationSmooth: 5
-  woodFootstepSounds:
+  playerCamera: {fileID: 963194227}
+  walkingSpeed: 3
+  runingSpeed: 5
+  jumpingPower: 5
+  gravityForce: 10
+  lookingSpeed: 2
+  lookInXLimit: 75
+  cameraRotationSmoothness: 5
+  woodFootStepSoundsArr:
   - {fileID: 8300000, guid: 1320ccff9662bba47ad4f75e640f55a2, type: 3}
   - {fileID: 8300000, guid: 789017df22e30094092c75d5893a80fe, type: 3}
   - {fileID: 8300000, guid: 885c2835ded9d9e489449b62ad98efe4, type: 3}
   - {fileID: 8300000, guid: 2d58e47ca89eb4643b3414095cde6e6c, type: 3}
-  tileFootstepSounds: []
-  carpetFootstepSounds: []
-  footstepAudioPosition: {fileID: 180610306}
+  tileFootStepSoundsArr: []
+  carpetFootStepSoundsArr: []
+  footStepAudioPosition: {fileID: 180610306}
   audioSource: {fileID: 180610309}
   score: {fileID: 712742276}
-  ZoomFOV: 50
-  initialFOV: 80
-  cameraZoomSmooth: 5
+  zoomFieldOfView: 50
+  initialFieldOfView: 80
+  cameraZoomSmoothness: 5
   numOfCorrectClassifiedImgs: 0
 --- !u!143 &180610308
 CharacterController:
@@ -2393,7 +2393,7 @@ MonoBehaviour:
   - {fileID: 1054565962}
   idleTime: 4
   walkSpeed: 1
-  chaseSpeed: 2
+  chaseSpeed: 3
   sightDistance: 20
   idleSound: {fileID: 8300000, guid: 727cc9b5b68ce4a4da1968c42eda6842, type: 3}
   walkingSound: {fileID: 8300000, guid: 727cc9b5b68ce4a4da1968c42eda6842, type: 3}
@@ -4053,8 +4053,8 @@ MonoBehaviour:
   - {fileID: 2062023558}
   idleTime: 4
   walkSpeed: 1
-  chaseSpeed: 2
-  sightDistance: 15
+  chaseSpeed: 3
+  sightDistance: 20
   idleSound: {fileID: 8300000, guid: 727cc9b5b68ce4a4da1968c42eda6842, type: 3}
   walkingSound: {fileID: 8300000, guid: 727cc9b5b68ce4a4da1968c42eda6842, type: 3}
   chasingSound: {fileID: 8300000, guid: 14ba1465b94f97242abee9521cae3db2, type: 3}
@@ -11924,10 +11924,10 @@ MonoBehaviour:
   - {fileID: 309455245}
   - {fileID: 2062023558}
   - {fileID: 1054565962}
-  idleTime: 4
+  idleTime: 2
   walkSpeed: 1
-  chaseSpeed: 2
-  sightDistance: 10
+  chaseSpeed: 3
+  sightDistance: 20
   idleSound: {fileID: 8300000, guid: 727cc9b5b68ce4a4da1968c42eda6842, type: 3}
   walkingSound: {fileID: 8300000, guid: 727cc9b5b68ce4a4da1968c42eda6842, type: 3}
   chasingSound: {fileID: 8300000, guid: 14ba1465b94f97242abee9521cae3db2, type: 3}
