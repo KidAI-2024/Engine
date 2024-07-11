@@ -61,7 +61,6 @@ public class PredictionController : MonoBehaviour
         {
             // #if UNITY_EDITOR
 
-            isPredictingUploadedImage = true;
             // add code to upload image 
             // uploadedImgPath = EditorUtility.OpenFilePanel("Select image to predict", "", "png,jpg,jpeg");
             await Task.Yield();
@@ -81,6 +80,7 @@ public class PredictionController : MonoBehaviour
                 webcamDisplay.texture = www.texture; // uploaded image texture; 
                 webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
                 uploadedImage = www.texture;
+                isPredictingUploadedImage = true;
             }
             else
             {
