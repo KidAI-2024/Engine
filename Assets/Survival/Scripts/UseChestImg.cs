@@ -13,14 +13,14 @@ namespace Survival
 {
     public class UseChestImg : MonoBehaviour
     {
-        private GameObject OB; //this is the chest
+        private GameObject chestObj; //this is the chest
         public GameObject handUI;
         // public RawImage rawImageToPredict;
         public GameObject rawImageToPredict;
         private ProjectController projectController;
         private string projectPath = "";
         private System.Random random = new System.Random();
-        private bool inReach;
+        private bool canReach;
         // get the number of classes in the project folder
         private int numberOfClasses;
         public int pythonPredictedClass { get; private set; } = -1;
@@ -92,7 +92,7 @@ namespace Survival
         {
             if (other.gameObject.tag == "Reach")
             {
-                inReach = true;
+                canReach = true;
                 handUI.SetActive(true);
             }
 
@@ -102,7 +102,7 @@ namespace Survival
         {
             if (other.gameObject.tag == "Reach")
             {
-                inReach = false;
+                canReach = false;
                 handUI.SetActive(false);
             }
         }
@@ -130,7 +130,7 @@ namespace Survival
         void Start()
         {
 
-            OB = this.gameObject;
+            chestObj = this.gameObject;
 
             handUI.SetActive(false);
 
@@ -147,11 +147,11 @@ namespace Survival
 
         void Update()
         {
-            if (inReach && Input.GetButtonDown("Interact"))
+            if (canReach && Input.GetButtonDown("Interact"))
             {
 
                 handUI.SetActive(false);
-                inReach = false;
+                canReach = false;
                 // choose random number between 0 and numberOfClasses
                 // int randomClassIndex = Random.Range(0, numberOfClasses);
                 // Generate a random number between 0 (inclusive) and numberOfClasses (exclusive)
@@ -162,8 +162,8 @@ namespace Survival
 
                     // show the image
                     rawImageToPredict.SetActive(true);
-                    OB.GetComponent<Animator>().SetBool("open", true);
-                    OB.GetComponent<BoxCollider>().enabled = false;
+                    chestObj.GetComponent<Animator>().SetBool("open", true);
+                    chestObj.GetComponent<BoxCollider>().enabled = false;
                     // send request
                     frame = texture.GetPixels32();
                     // Send the frame to the server

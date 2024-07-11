@@ -4471,8 +4471,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f393d2b76d09f0648a227bc799c5d854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handUI: {fileID: 554415752}
-  objToActivate: {fileID: 167605822}
+  handImg: {fileID: 554415752}
+  objInChest: {fileID: 167605822}
 --- !u!95 &563410450
 Animator:
   serializedVersion: 5
@@ -5674,8 +5674,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f393d2b76d09f0648a227bc799c5d854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handUI: {fileID: 554415752}
-  objToActivate: {fileID: 1206500555}
+  handImg: {fileID: 554415752}
+  objInChest: {fileID: 1206500555}
 --- !u!95 &774195949
 Animator:
   serializedVersion: 5
@@ -10910,8 +10910,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f393d2b76d09f0648a227bc799c5d854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handUI: {fileID: 554415752}
-  objToActivate: {fileID: 664461224}
+  handImg: {fileID: 554415752}
+  objInChest: {fileID: 664461224}
 --- !u!95 &1226015724
 Animator:
   serializedVersion: 5
@@ -11473,10 +11473,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAmmoInMag: 10
-  maxAmmoInStorage: 30
+  maxAmmoInStorage: 20
   shootCooldown: 0.75
   reloadCooldown: 0.5
-  shootRange: 250
+  shootRange: 200
   impactEffect: {fileID: 19800002, guid: 20b31fcfaed0cb842a56fbbe2419428f, type: 3}
   currentAmmoInMag: 0
   currentAmmoInStorage: 0
@@ -14064,8 +14064,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f393d2b76d09f0648a227bc799c5d854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handUI: {fileID: 554415752}
-  objToActivate: {fileID: 1702517984}
+  handImg: {fileID: 554415752}
+  objInChest: {fileID: 1702517984}
 --- !u!95 &1810306255
 Animator:
   serializedVersion: 5
@@ -14500,8 +14500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f393d2b76d09f0648a227bc799c5d854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handUI: {fileID: 554415752}
-  objToActivate: {fileID: 1710701734}
+  handImg: {fileID: 554415752}
+  objInChest: {fileID: 1710701734}
 --- !u!95 &1829174981
 Animator:
   serializedVersion: 5
@@ -14765,8 +14765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f393d2b76d09f0648a227bc799c5d854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handUI: {fileID: 554415752}
-  objToActivate: {fileID: 258983230}
+  handImg: {fileID: 554415752}
+  objInChest: {fileID: 258983230}
 --- !u!95 &1884615378
 Animator:
   serializedVersion: 5
