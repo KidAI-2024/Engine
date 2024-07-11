@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+    Script Name: UseChestImg
+    Purpose: This script facilitates interaction with a chest GameObject in a game environment,
+*/
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,41 +12,40 @@ using UnityEngine.Networking;
 using System.Linq;
 using TMPro;
 
-
 namespace Survival
 {
     public class UseChestImg : MonoBehaviour
     {
-        private GameObject chestObj; //this is the chest
-        public GameObject handUI;
-        // public RawImage rawImageToPredict;
-        public GameObject rawImageToPredict;
-        private ProjectController projectController;
-        private string projectPath = "";
-        private System.Random random = new System.Random();
-        private bool canReach;
-        // get the number of classes in the project folder
-        private int numberOfClasses;
-        public int pythonPredictedClass { get; private set; } = -1;
-        public string UnityPredictedClass { get; private set; } = "";
-        private Color32[] frame;
+        private GameObject chestObj; // Reference to the chest GameObject
+        public GameObject handUI; // UI element for indicating interaction with the chest
+        public GameObject rawImageToPredict; // GameObject containing RawImage for displaying images to predict
+        private ProjectController projectController; // Reference to the project controller for managing project-related data
+        private string projectPath = ""; // Path to the project directory
+        private System.Random random = new System.Random(); // Random number generator
+        private bool canReach; // Flag to track if the player is within reach of the chest
+        private int numberOfClasses; // Number of classes (categories) in the project
+        public int pythonPredictedClass { get; private set; } = -1; // Predicted class ID from Python model
+        public string UnityPredictedClass { get; private set; } = ""; // Predicted class name mapped to Unity
+        private Color32[] frame; // Array of colors representing the current frame
 
-        // get socket from SocketClient
-        private GlobalAssets.Socket.SocketUDP socketClient;
-        public Text predictionResult;
-        private bool predictDone = false;
-        private bool reqSent = false;
+        private GlobalAssets.Socket.SocketUDP socketClient; // Socket client for sending and receiving messages
+        public Text predictionResult; // Text UI element to display prediction result
+        private bool predictDone = false; // Flag to track if prediction process is completed
+        private bool reqSent = false; // Flag to track if prediction request has been sent
 
-        private int randomClass = 0;
+        private int randomClass = 0; // Index of the randomly chosen class
+
+        // Coroutine to load a random image from a specific class folder
         IEnumerator LoadRandomImage(int randomClass, System.Action<Texture2D> callback)
         {
-            // get the class name from the classes list
+            // Get the class name from the classes list
             string className = projectController.classes[randomClass];
-            // get the path of the class folder
+            // Get the path of the class folder
             string classPath = projectPath + "\\" + "test" + "\\" + randomClass.ToString() + '_' + className;
             Debug.Log(classPath);
             // Get all image files from the specified folder
-            List<string> imageFiles = Directory.GetFiles(classPath, "*.*", SearchOption.TopDirectoryOnly).Where(s => s.EndsWith(".png") || s.EndsWith(".jpg") || s.EndsWith(".jpeg")).ToList();
+            List<string> imageFiles = Directory.GetFiles(classPath, "*.*", SearchOption.TopDirectoryOnly)
+                .Where(s => s.EndsWith(".png") || s.EndsWith(".jpg") || s.EndsWith(".jpeg")).ToList();
 
             if (imageFiles.Count == 0)
             {
@@ -76,9 +79,8 @@ namespace Survival
                         {
                             // Assign the texture to the RawImage component
                             rawImageComponent.texture = texture;
-                            // Call the call back function
+                            // Call the callback function with the loaded texture
                             callback(texture);
-
                         }
                         else
                         {
@@ -88,24 +90,28 @@ namespace Survival
                 }
             }
         }
+
+        // Called when another collider enters the trigger zone of this GameObject
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.tag == "Reach")
             {
                 canReach = true;
-                handUI.SetActive(true);
+                handUI.SetActive(true); // Activate the hand UI for interaction
             }
-
         }
 
+        // Called when another collider exits the trigger zone of this GameObject
         void OnTriggerExit(Collider other)
         {
             if (other.gameObject.tag == "Reach")
             {
                 canReach = false;
-                handUI.SetActive(false);
+                handUI.SetActive(false); // Deactivate the hand UI
             }
         }
+
+        // Converts a class name received from Python to the corresponding Unity class name
         string PythonToUnityClassName(string message)
         {
             if (projectController.PythonClassesToUnityClassesMap.ContainsKey(message))
@@ -114,6 +120,8 @@ namespace Survival
             }
             return message;
         }
+
+        // Converts an array of Color32 to a byte array without alpha channel
         private byte[] Color32ArrayToByteArrayWithoutAlpha(Color32[] colors)
         {
             if (colors == null || colors.Length == 0)
@@ -127,106 +135,102 @@ namespace Survival
             }
             return bytes;
         }
+
+        // Initialization method called once when the script starts
         void Start()
         {
+            chestObj = this.gameObject; // Assign the current GameObject (chest) to chestObj
+            handUI.SetActive(false); // Deactivate the hand UI initially
+            rawImageToPredict.SetActive(false); // Deactivate the image to predict initially
 
-            chestObj = this.gameObject;
-
-            handUI.SetActive(false);
-
-            // rawImageToPredict.gameObject.SetActive(false);
-            rawImageToPredict.SetActive(false);
-            // get socket from SocketClient
-            socketClient = GlobalAssets.Socket.SocketUDP.Instance;
-            projectController = ProjectController.Instance;
-            projectPath = projectController.directoryPath + "\\" + projectController.projectName;
-            Debug.Log("project path" + projectPath);
-            numberOfClasses = projectController.numberOfClasses;
-
+            // Get references and initialize variables
+            socketClient = GlobalAssets.Socket.SocketUDP.Instance; // Get socket client instance
+            projectController = ProjectController.Instance; // Get project controller instance
+            projectPath = projectController.directoryPath + "\\" + projectController.projectName; // Construct project path
+            Debug.Log("Project path: " + projectPath);
+            numberOfClasses = projectController.numberOfClasses; // Get number of classes in the project
         }
 
+        // Update is called once per frame
         void Update()
         {
+            // Check if the player is in reach and presses the interact button
             if (canReach && Input.GetButtonDown("Interact"))
             {
+                handUI.SetActive(false); // Deactivate the hand UI
+                canReach = false; // Player can no longer interact with the chest until the next trigger enter
 
-                handUI.SetActive(false);
-                canReach = false;
-                // choose random number between 0 and numberOfClasses
-                // int randomClassIndex = Random.Range(0, numberOfClasses);
-                // Generate a random number between 0 (inclusive) and numberOfClasses (exclusive)
+                // Generate a random class index between 0 and numberOfClasses
                 randomClass = random.Next(0, numberOfClasses);
-                // load the image from the disk
+
+                // Load a random image from the selected class folder asynchronously
                 StartCoroutine(LoadRandomImage(randomClass, texture =>
                 {
-
-                    // show the image
+                    // Show the image to predict
                     rawImageToPredict.SetActive(true);
-                    chestObj.GetComponent<Animator>().SetBool("open", true);
-                    chestObj.GetComponent<BoxCollider>().enabled = false;
-                    // send request
+                    chestObj.GetComponent<Animator>().SetBool("open", true); // Open the chest animation
+                    chestObj.GetComponent<BoxCollider>().enabled = false; // Disable the chest collider to prevent further interactions
+
+                    // Prepare frame data to send to the server
                     frame = texture.GetPixels32();
-                    // Send the frame to the server
                     byte[] frameBytes = Color32ArrayToByteArrayWithoutAlpha(frame);
-                    // Encode the byte array to a Base64 string
                     string frameBase64 = Convert.ToBase64String(frameBytes);
-                    // Construct dictionary to send to server
+
+                    // Construct message to send to the server
                     Dictionary<string, string> message = new Dictionary<string, string>
                     {
-                            { "frame", frameBase64 },
-                            { "width", texture.width.ToString() },
-                            { "height", texture.height.ToString() },
-                            { "event", "predict_image_classifier" }
+                        { "frame", frameBase64 },
+                        { "width", texture.width.ToString() },
+                        { "height", texture.height.ToString() },
+                        { "event", "predict_image_classifier" }
                     };
+
+                    // Send prediction request to the server via socket
                     socketClient.SendMessage(message);
-                    Debug.Log("Req sent");
+                    Debug.Log("Prediction request sent");
                     reqSent = true;
-
-
                 }));
-
-
-
             }
+
+            // Check if data is available from the socket and prediction process is ongoing
             if (socketClient.isDataAvailable() && !predictDone && reqSent)
             {
-                Debug.Log("isDataAvailable");
+                // Receive and process prediction result from the server
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
 
                 if (response["event"] == "predict_image_classifier")
                 {
                     Debug.Log("predict_image_classifier");
-                    pythonPredictedClass = int.Parse(response["prediction"]);
-                    UnityPredictedClass = PythonToUnityClassName(response["prediction"]);
+                    pythonPredictedClass = int.Parse(response["prediction"]); // Get predicted class ID from Python
+                    UnityPredictedClass = PythonToUnityClassName(response["prediction"]); // Map Python class name to Unity class name
+
                     Debug.Log("Python Prediction: " + pythonPredictedClass);
                     Debug.Log("Unity Prediction: " + UnityPredictedClass);
-                    Debug.Log("randomClass: " + randomClass);
+                    Debug.Log("Random Class: " + randomClass);
+
+                    // Display prediction result based on correctness
                     if (pythonPredictedClass == randomClass)
                     {
                         predictionResult.text = "Correctly Classified, Class: " + UnityPredictedClass;
-                        // Access and modify the global variable
-                        PlayerController.Instance.numOfCorrectClassifiedImgs += 1;
-                        Debug.Log("PlayerController.Instance.numOfCorrectClassifiedImgs: " + PlayerController.Instance.numOfCorrectClassifiedImgs);
+                        PlayerController.Instance.numOfCorrectClassifiedImgs += 1; // Increment correct predictions count
+                        Debug.Log("Number of correct predictions: " + PlayerController.Instance.numOfCorrectClassifiedImgs);
                     }
                     else
                     {
-                        predictionResult.text = "MisClassified, Class: " + UnityPredictedClass;
+                        predictionResult.text = "Misclassified, Class: " + UnityPredictedClass;
                     }
-                    //hide the image
-                    // rawImageToPredict.SetActive(false);
+
                     predictDone = true;
+
+                    // Activate animation if available
                     Canvas canvasComponent = rawImageToPredict.GetComponentInChildren<Canvas>();
                     if (canvasComponent != null)
                     {
-                        // Get the Animator component from the target GameObject
                         Animator animator = canvasComponent.GetComponent<Animator>();
                         if (animator != null)
                         {
-                            // Enable the Animator
-                            // animator.enabled = true;
-                            animator.SetTrigger("StartAnimation");
-
-                            Debug.Log("animator is activated");
+                            animator.SetTrigger("StartAnimation"); // Trigger animation
+                            Debug.Log("Animator activated");
                         }
                         else
                         {
@@ -235,7 +239,6 @@ namespace Survival
                     }
                 }
             }
-
         }
     }
 }

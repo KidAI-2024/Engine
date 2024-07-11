@@ -65,6 +65,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Survival/Scenes/HowToPlay.unity
     guid: ea19d8ec7690c6648baf0a6c7c85d4bb
+  - enabled: 1
+    path: Assets/Survival/Scenes/GameScenario3.unity
+    guid: a9b1c46d61b8265459406fc6c829d300
+  - enabled: 1
+    path: Assets/Survival/Scenes/GameScenario2.unity
+    guid: a2776ca8c36a53143a22de62059bbbad
+  - enabled: 1
+    path: Assets/Survival/Scenes/GameScenario1.unity
+    guid: 546f4464e994b074b87580daaa754f3f
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
