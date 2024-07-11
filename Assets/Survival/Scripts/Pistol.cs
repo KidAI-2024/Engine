@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 namespace Survival
 {
 
@@ -9,8 +11,8 @@ namespace Survival
     {
         public int maxAmmoInMag = 10;       // Maximum ammo capacity in the magazine
         public int maxAmmoInStorage = 100;   // Maximum ammo capacity in the storage
-        public float shootCooldown = 0.5f;  // Cooldown time between shots
-        public float reloadCooldown = 0.5f;  // Cooldown time between shots
+        public float shootCooldown = 0.2f;  // Cooldown time between shots
+        public float reloadCooldown = 0.5f;  // Cooldown time between reloads
         private float switchCooldown = 0.5f;  // Cooldown time between shots
         public float shootRange = 100f;     // Range of the raycast
 
@@ -18,7 +20,7 @@ namespace Survival
 
         public int currentAmmoInMag;       // Current ammo in the magazine
         public int currentAmmoInStorage;   // Current ammo in the storage
-        public int damager;   // Current ammo in the storage
+        public int damager;
         public bool canShoot = true;       // Flag to check if shooting is allowed
         public bool canSwitch = true;       // Flag to check if shooting is allowed
         private bool isReloading = false;   // Flag to check if reloading is in progress
@@ -29,6 +31,8 @@ namespace Survival
         public float cartridgeEjectionForce = 5f; // Force applied to the cartridge
 
 
+        public Text ammoText;
+        public Text storageText;
 
         public Animator gun;
         public ParticleSystem muzzleFlash;
@@ -49,7 +53,8 @@ namespace Survival
             // Update current ammo counts
             currentAmmoInMag = Mathf.Clamp(currentAmmoInMag, 0, maxAmmoInMag);
             currentAmmoInStorage = Mathf.Clamp(currentAmmoInStorage, 0, maxAmmoInStorage);
-
+            ammoText.text = "Current Ammo: " + currentAmmoInMag.ToString();
+            storageText.text = "Current Storage: " + currentAmmoInStorage.ToString();
             // Check for shoot input
             if (Input.GetButtonDown("Fire1") && canShoot && !isReloading)
             {

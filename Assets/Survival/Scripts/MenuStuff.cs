@@ -1,110 +1,86 @@
-﻿using System.Collections;
+﻿/*
+Purpose of the Script
+The MenuStuff script is responsible for handling various menu actions, such as loading scenes and quitting the game. 
+It ensures that the appropriate music control actions are taken when switching scenes and prevents duplication of the PlayerController instance between scenes.
+*/
+//This script is attached to "Canvas: in MainMenuScene
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement; // Imports the SceneManager for scene management
 
-namespace Survival
+namespace Survival // Defines the namespace "Survival" to organize the code
 {
-    public class MenuStuff : MonoBehaviour
+    public class MenuStuff : MonoBehaviour // Defines a public class named "MenuStuff" that inherits from MonoBehaviour
     {
         public string nextSceneName; // Name of the next scene to load
+
         void Start()
         {
+            // Finds the GameObject with the tag "music" and gets its MusicControl component to play music
             GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().PlayMusic();
         }
+
         public void B_LoadScene()
         {
+            // Checks if the next scene to load is "SampleScene"
             if (nextSceneName == "SampleScene")
             {
                 try
                 {
+                    // Attempts to stop the music if the tag "music" GameObject has a MusicControl component
                     GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
                 }
                 catch (System.Exception e)
                 {
+                    // Logs any exception that occurs during the process
                     Debug.Log(e);
                 }
             }
+            // Loads the specified next scene
             SceneManager.LoadScene(nextSceneName);
+            // Destroys the PlayerController instance to prevent duplication between scenes
             Destroy(PlayerController.Instance.gameObject);
-
-            // Get the current active scene
-            // Scene currentScene = SceneManager.GetActiveScene();
-            // // Destroy the current scene
-            // SceneManager.UnloadSceneAsync(currentScene);
-            // StartCoroutine(LoadSceneAndUnloadCurrent(nextSceneName));
-
         }
 
         public void LoadScene(string sceneName)
         {
+            // Checks if the specified scene name is "SampleScene"
             if (sceneName == "SampleScene")
             {
                 try
                 {
+                    // Attempts to stop the music if the tag "music" GameObject has a MusicControl component
                     GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
                 }
                 catch (System.Exception e)
                 {
+                    // Logs any exception that occurs during the process
                     Debug.Log(e);
                 }
             }
-            // Get the current active scene
-            // Scene currentScene = SceneManager.GetActiveScene();
-            // // Destroy the current scene
-            // SceneManager.UnloadSceneAsync(currentScene);
+            // Loads the specified scene
             SceneManager.LoadScene(sceneName);
+            // Destroys the PlayerController instance to prevent duplication between scenes
             Destroy(PlayerController.Instance.gameObject);
-
-            // StartCoroutine(LoadSceneAndUnloadCurrent(sceneName));
-
         }
-        private IEnumerator LoadSceneAndUnloadCurrent(string sceneName)
-        {
-            // Get the current active scene
-            Scene currentScene = SceneManager.GetActiveScene();
 
-            // Load the new scene asynchronously
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
-            // Wait until the new scene is fully loaded
-            while (!asyncLoad.isDone)
-            {
-                yield return null;
-            }
-
-            // Set the newly loaded scene as the active scene
-            Scene newScene = SceneManager.GetSceneByName(sceneName);
-            SceneManager.SetActiveScene(newScene);
-
-            // Unload the previous scene asynchronously
-            AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(currentScene);
-
-            // Wait until the previous scene is fully unloaded
-            while (!asyncUnload.isDone)
-            {
-                yield return null;
-            }
-        }
         public void B_QuitGame()
         {
-            // Application.Quit();
             try
             {
+                // Attempts to stop the music if the tag "music" GameObject has a MusicControl component
                 GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
             }
             catch (System.Exception e)
             {
+                // Logs any exception that occurs during the process
                 Debug.Log(e);
             }
+            // Loads the "Lobby" scene, which is likely the main menu or exit scene
             SceneManager.LoadScene("Lobby");
+            // Destroys the PlayerController instance to prevent duplication between scenes
             Destroy(PlayerController.Instance.gameObject);
-            // // Get the current active scene
-            // Scene currentScene = SceneManager.GetActiveScene();
-            // // Destroy the current scene
-            // SceneManager.UnloadSceneAsync(currentScene);
-            // StartCoroutine(LoadSceneAndUnloadCurrent("Lobby"));
-
         }
     }
 }
