@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Survival
 {
@@ -116,6 +117,17 @@ namespace Survival
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                // Make the cursor visible and unlock it
+                Cursor.visible = true; // Sets the cursor's visibility to `true`, ensuring that the cursor is visible to the player. This is particularly important in games where the cursor might be hidden by default (e.g., first-person shooters).
+                Cursor.lockState = CursorLockMode.None; // Sets the cursor's lock state to `None`, allowing the cursor to move freely around the screen. The `CursorLockMode` enumeration has three possible values:
+                // Load the specified scene when ESC is pressed
+                // Loads the "Lobby" scene, which is likely the main menu or exit scene
+                SceneManager.LoadScene("Lobby");
+                // Destroys the PlayerController instance to prevent duplication between scenes
+                Destroy(PlayerController.Instance.gameObject);
+            }
             score.text = "Number of images classified correctly: " + numOfCorrectClassifiedImgs;
 
             // Walking / Running In Action:

@@ -12,7 +12,7 @@ namespace Survival
         public int maxAmmoInMag = 10;       // Maximum ammo capacity in the magazine
         public int maxAmmoInStorage = 100;   // Maximum ammo capacity in the storage
         public float shootCooldown = 0.2f;  // Cooldown time between shots
-        public float reloadCooldown = 0.5f;  // Cooldown time between shots
+        public float reloadCooldown = 0.5f;  // Cooldown time between reloads
         private float switchCooldown = 0.5f;  // Cooldown time between shots
         public float shootRange = 100f;     // Range of the raycast
 
