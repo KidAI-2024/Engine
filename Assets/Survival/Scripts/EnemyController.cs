@@ -104,6 +104,7 @@ namespace Survival
         private void CheckForPlayerDetection()
         {
             RaycastHit hit;
+            // Calculate the direction to the player by subtracting the enemy's position from the player's position
             Vector3 playerDirection = player.position - transform.position;
 
             // Perform a raycast to detect the player
