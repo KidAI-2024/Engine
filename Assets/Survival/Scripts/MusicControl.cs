@@ -9,6 +9,7 @@ namespace Survival
     // This class controls the background music in the game
     public class MusicControl : MonoBehaviour
     {
+        // Private variables
         private AudioSource audioSource; // Reference to the AudioSource component
 
         // Awake is called when the script instance is being loaded
