@@ -18,6 +18,7 @@ namespace GlobalAssets.UI
         public void InstantiateNewClass()
         {
             GameObject newClass = Instantiate(ClassPrefab, ClassesContainer.transform);
+
             RectTransform lastClassRect = ClassesContainer.transform.GetChild(ClassesContainer.transform.childCount - 2).GetComponent<RectTransform>();
             RectTransform newClassRect = newClass.GetComponent<RectTransform>();
 

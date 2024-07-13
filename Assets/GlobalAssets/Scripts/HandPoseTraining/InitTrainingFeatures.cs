@@ -9,25 +9,34 @@ namespace GlobalAssets.HandPoseTraining
     {
         public GameObject features;
         private ProjectController ProjectController;
-        void Awake()
+        // Start is called before the first frame update
+        void Start()
         {
             ProjectController = ProjectController.Instance;
-            if (ProjectController.isCreated)
+            if (ProjectController.features.Count == 0)
             {
-                ProjectController.features = GetAllFeaturesList();
+                ProjectController.features = GetFeaturesList();
+            }
+            if (ProjectController.featureExtractionType == "")
+            {
                 ProjectController.featureExtractionType = "mediapipe";
+            }
+            if (ProjectController.model == "")
+            {
                 ProjectController.model = "SVM";
-
             }
         }
 
-        List<string> GetAllFeaturesList()
+        List<string> GetFeaturesList()
         {
             List<string> featuresList = new List<string>();
             // loop on features children (each child is a toggle) if on then add the child.name to the list
             foreach (Transform child in features.transform)
             {
+                if (child.GetComponent<Toggle>().isOn)
+                {
                     featuresList.Add(child.name);
+                }
             }
             Debug.Log("Features List: " + string.Join(", ", featuresList));
             return featuresList;
