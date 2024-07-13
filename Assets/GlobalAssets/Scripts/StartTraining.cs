@@ -35,7 +35,7 @@ public class StartTraining : MonoBehaviour
     public Sprite warningIcon;
     public Sprite errorIcon;
     public Sprite successIcon;
-
+    public TextMeshProUGUI audioAccuracy;
     void Start()
     {
         projectController = ProjectController.Instance;
@@ -58,7 +58,11 @@ public class StartTraining : MonoBehaviour
                 Debug.Log("Training data Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 // If the training is completed successfully
-                if (response["status"] == "success")
+                foreach (KeyValuePair<string, string> kvp in response)
+                {
+                   Debug.Log("Key: "+ kvp.Key+" value "+ kvp.Value);
+                }
+                if (response["status"] == "success" )
                 {
                     projectController.isTrained = true;
                     projectController.savedModelFileName = response["saved_model_name"];
@@ -75,8 +79,16 @@ public class StartTraining : MonoBehaviour
                         texture.LoadImage(imageBytes);
                         GraphImage.GetComponent<RawImage>().texture = texture;
                     }
-                    // unlock the predict button
-                    predictButton.GetComponent<Button>().interactable = true;
+                    if (SceneManager.GetActiveScene().name == "Audio")
+                    {
+                        if (audioAccuracy != null)
+                        {
+                            audioAccuracy.text = response["accuracy"];
+                        }
+                    }
+                        // unlock the predict button
+                        predictButton.GetComponent<Button>().interactable = true;
+                    if(uploadButton != null)
                     uploadButton.GetComponent<Button>().interactable = true;
                     DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
                 }
@@ -232,9 +244,16 @@ public class StartTraining : MonoBehaviour
             {"model_category", projectController.modelCategory.ToString()},
             {"classical_model_type", projectController.classicalModelType.ToString()},
             { "feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString()},
+
+            {"feature_extraction_methods", projectController.audioFeats},
+            {"model_name",projectController.audioModel },
+            {"kernel_name",projectController.audioConfig },
+            {"knn_neigh",projectController.audioConfig },
+            {"num_est",projectController.audioConfig },
+
             { "event", trainingEvent }
         };
         socketClient.SendMessage(message);
-        Debug.Log("Training Started");
+        Debug.Log("Training Started "+trainingEvent);
     }
 }

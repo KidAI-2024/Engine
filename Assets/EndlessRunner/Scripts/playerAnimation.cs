@@ -17,12 +17,20 @@ public class playerAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || pm.predicted_control == "Jump")
+        if (Input.GetKeyUp(KeyCode.Space))
         {
+            animator.SetBool("run", true);
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow) || pm.predicted_control == "Jump")
+            //if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Debug.Log("in jump");
             animator.SetBool("jump", true);
+           
 
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow)||pm.predicted_control!="Jump")
+        //if (Input.GetKeyUp(KeyCode.UpArrow)||pm.predicted_control!="Jump")
+        if (Input.GetKeyUp(KeyCode.UpArrow)|| pm.predicted_control != "Jump")
         {
             animator.SetBool("jump", false);
         }

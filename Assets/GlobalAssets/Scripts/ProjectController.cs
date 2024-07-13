@@ -46,6 +46,12 @@ public class ProjectController : MonoBehaviour
     */
     public int modelCategory = 0; // 0 for classical, 1 for resnet, 2 for CNN
     // Ensure only one instance of ProjectController exists
+
+    public string audioFeats ="";
+    public string audioModel="";
+    public string audioConfig="";
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -115,6 +121,9 @@ public class ProjectController : MonoBehaviour
 
     public void Reset()
     {
+        audioFeats = "";
+        audioModel = "";
+        audioConfig = "";
         projectName = "";
         createdAt = "";
         projectType = "";

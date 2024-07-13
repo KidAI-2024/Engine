@@ -53,7 +53,8 @@ namespace GlobalAssets.UI
                 Transform classBox = targetGameObject.transform.GetChild(i);
                 TMP_InputField className = classBox.GetChild(0).GetChild(1).GetComponentInChildren<TMP_InputField>();
                 className.text = projectController.classes[i];
-                finalAudiosContainer = classBox.GetChild(0).GetChild(4).GetChild(0).GetChild(0).gameObject.transform; // AudiosContainer
+                Debug.Log(classBox.GetChild(0).gameObject.name);
+                finalAudiosContainer = classBox.GetChild(0).GetChild(5).GetChild(0).GetChild(0).gameObject.transform; // AudiosContainer
                 EmptyAudio = finalAudiosContainer.parent.parent.transform.GetChild(2).gameObject;
                 string classFolderPath =  Path.Combine(projectController.directoryPath, projectController.projectName, i + "_" + projectController.classes[i]);
                 if (Directory.Exists(classFolderPath))
