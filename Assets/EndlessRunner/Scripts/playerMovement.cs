@@ -118,11 +118,14 @@ public class playerMovement : MonoBehaviour
 
             if (response["event"] == "predict_audio")
             {
+                DateTime currentTime = DateTime.Now;
 
+                // Print the current system time with high accuracy
+                Debug.Log("Current time: " + currentTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
                 string pred = response["prediction"];
-                //Debug.Log("prediction " + pred);
+                Debug.Log("prediction " + pred);
                 pred_class = PythonToUnityClassName(pred);
-                //Debug.Log("prediction class map" + pred_class);
+                Debug.Log("prediction class map" + pred_class);
                 if (pred_class != "none")
                     pred_control = projectController.classesToControlsMap[pred_class];
                 Debug.Log("prediction zction map" + pred_control);
@@ -145,7 +148,7 @@ public class playerMovement : MonoBehaviour
             // Send the message to the server
             socketClient.SendMessage(message);
         }
-        
+
         if (start_run)
         {
             UpdatePosition();
@@ -193,7 +196,6 @@ public class playerMovement : MonoBehaviour
                 rb.AddForce(Vector3.up * jump_force, ForceMode.Impulse);
                 rb.AddForce(transform.forward * 60, ForceMode.Impulse);
                 //is_jumping_up = true;
-                //predicted_control = "";
             }
         }
     }

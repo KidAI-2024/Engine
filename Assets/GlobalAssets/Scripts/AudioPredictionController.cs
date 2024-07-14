@@ -214,18 +214,7 @@ public class AudioPredictionController : MonoBehaviour
         }
         return message;
     }
-    public void stoping()
-    {
-        Debug.Log("stopping");
-        Dictionary<string, string> message = new Dictionary<string, string>
-        {
 
-            { "event", "stop_prediction" }
-        };
-
-        // Send the message to the server
-        socketClient.SendMessage(message);
-    }
     void OnDestroy()
     {
         //// Ensure microphone is stopped when the script is destroyed

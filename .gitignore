@@ -77,4 +77,3 @@ crashlytics-build.properties
 # Testing
 ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
 
-*.mp4

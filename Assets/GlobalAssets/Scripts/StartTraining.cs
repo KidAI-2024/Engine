@@ -13,7 +13,9 @@ public enum DisplayMessageType
 {
     Success,
     Error,
-    Warning
+    Warning,
+    HighAccuracy,
+    LowAccuracy
 }
 public class StartTraining : MonoBehaviour
 {
@@ -31,18 +33,24 @@ public class StartTraining : MonoBehaviour
     private bool isTrainingStarted = false;
     private GameObject TrainingButton;
     private GameObject GraphImage;
+    private Texture DefaultGraphImage;
 
+    public Sprite HighAccuracyIcon;
+    public Sprite LowAccuracyIcon;
     public Sprite warningIcon;
     public Sprite errorIcon;
     public Sprite successIcon;
-    public TextMeshProUGUI audioAccuracy;
+
     void Start()
     {
         projectController = ProjectController.Instance;
         TrainingButton = this.gameObject;
         // get the graph image container
         if (feebackPanel.transform.childCount > 0)
+        {
+            DefaultGraphImage = feebackPanel.transform.GetChild(0).gameObject.transform.GetComponent<RawImage>().texture;
             GraphImage = feebackPanel.transform.GetChild(0).gameObject;
+        }
         // get socket from SocketClient
         socketClient = GlobalAssets.Socket.SocketUDP.Instance;
     }
@@ -58,11 +66,7 @@ public class StartTraining : MonoBehaviour
                 Debug.Log("Training data Available");
                 Dictionary<string, string> response = socketClient.ReceiveDictMessage();
                 // If the training is completed successfully
-                foreach (KeyValuePair<string, string> kvp in response)
-                {
-                   Debug.Log("Key: "+ kvp.Key+" value "+ kvp.Value);
-                }
-                if (response["status"] == "success" )
+                if (response["status"] == "success")
                 {
                     projectController.isTrained = true;
                     projectController.savedModelFileName = response["saved_model_name"];
@@ -79,18 +83,39 @@ public class StartTraining : MonoBehaviour
                         texture.LoadImage(imageBytes);
                         GraphImage.GetComponent<RawImage>().texture = texture;
                     }
-                    if (SceneManager.GetActiveScene().name == "Audio")
+                    else
                     {
-                        if (audioAccuracy != null)
+                        // Restore the default graph image
+                        GraphImage.GetComponent<RawImage>().texture = DefaultGraphImage;
+
+                    }
+                    // unlock the predict button
+                    predictButton.GetComponent<Button>().interactable = true;
+                    try{
+                        uploadButton.GetComponent<Button>().interactable = true;
+                    }
+                    catch(Exception e){
+                        Debug.Log("Upload button not found");
+                    }
+                    string message = "Training completed successfully";
+                    DisplayMessageType messageType = DisplayMessageType.Success;
+                    if (response.ContainsKey("training_accuracy"))
+                    {
+                        float accuracy = float.Parse(response["training_accuracy"]) * 100;
+                        // round the accuracy to 1 decimal place
+                        accuracy = (float)Math.Round(accuracy, 1);
+                        if (accuracy > 90.0f)
                         {
-                            audioAccuracy.text = response["accuracy"];
+                            message = "Training accuracy is " + accuracy + "%, Good Job!";
+                            messageType = DisplayMessageType.HighAccuracy;
+                        }
+                        else
+                        {
+                            message = "Training accuracy is " + accuracy + "%, Try modify input images or add more features";
+                            messageType = DisplayMessageType.LowAccuracy;
                         }
                     }
-                        // unlock the predict button
-                        predictButton.GetComponent<Button>().interactable = true;
-                    if(uploadButton != null)
-                    uploadButton.GetComponent<Button>().interactable = true;
-                    DisplayWarning("Training completed successfully", "OK", DisplayMessageType.Success);
+                    DisplayWarning(message, "OK", messageType);
                 }
                 else if (response["status"] == "failed") // training failed for a server side error
                 {
@@ -219,6 +244,12 @@ public class StartTraining : MonoBehaviour
             case DisplayMessageType.Success:
                 warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = successIcon;
                 break;
+            case DisplayMessageType.HighAccuracy:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = HighAccuracyIcon;
+                break;
+            case DisplayMessageType.LowAccuracy:
+                warningPanel.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = LowAccuracyIcon;
+                break;
         }
         // warning message
         warningPanel.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
@@ -244,16 +275,15 @@ public class StartTraining : MonoBehaviour
             {"model_category", projectController.modelCategory.ToString()},
             {"classical_model_type", projectController.classicalModelType.ToString()},
             { "feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString()},
-
-            {"feature_extraction_methods", projectController.audioFeats},
-            {"model_name",projectController.audioModel },
-            {"kernel_name",projectController.audioConfig },
-            {"knn_neigh",projectController.audioConfig },
-            {"num_est",projectController.audioConfig },
-
             { "event", trainingEvent }
         };
+        // print the message
+        foreach (KeyValuePair<string, string> kvp in message)
+        {
+            Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+        }
+
         socketClient.SendMessage(message);
-        Debug.Log("Training Started "+trainingEvent);
+        Debug.Log("Training Started");
     }
 }

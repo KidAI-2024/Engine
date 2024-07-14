@@ -81,6 +81,11 @@ public class ConfigureModel : MonoBehaviour
                 toggle.isOn = false;
             }
         }
+        // enable child(1) of any isOn toggle
+        foreach (Transform child in SelectModelTogglesParent.transform)
+        {
+            child.GetChild(1).gameObject.SetActive(child.GetComponent<Toggle>().isOn);
+        }
     }
 
 
