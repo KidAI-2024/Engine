@@ -490,7 +490,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 26fbabbeaa82ecb4f818f0c6088c9af0, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -2898,7 +2898,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 8d1463702a400d14899dccd2744300d7, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -7469,7 +7469,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: b707315a23f53284daf695aac1f2046c, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -7648,7 +7648,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 84549f89579989749b164140bb547612, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -8059,7 +8059,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 51ee951798ca4c3468bcbd3de2bd0511, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -8765,7 +8765,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 1ad2e4018e0830c4fa7cfccaeff233a3, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -8967,7 +8967,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 4afd937f84ae3594f81f1beff065573e, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -9639,7 +9639,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 96e882bd6cc9c77479c7ad06fbfe1209, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -10401,7 +10401,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: 641dc10f7512aac4ca9c2cbbb87a7cb4, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -11877,7 +11877,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: bdcd0e5951a70bd419b9a9d319c88da1, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -12711,7 +12711,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: f5dfe92ba7431374e8e5c7a0591583ae, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -13601,7 +13601,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: bb73dd691d5c1044f8a605fafdce9ea6, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture
@@ -13931,7 +13931,7 @@ PrefabInstance:
       objectReference: {fileID: 32900000, guid: baf1daeb702720f4a923f9a9e008bd4e, type: 3}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_PlayOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203866719593974, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_TargetTexture

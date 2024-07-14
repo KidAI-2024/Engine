@@ -3091,6 +3091,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5427203866719593974, guid: 1df7c96cb14d8cb449f7682de856c57e, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: bdcd0e5951a70bd419b9a9d319c88da1, type: 3}
     - target: {fileID: 5427203867041500837, guid: 1df7c96cb14d8cb449f7682de856c57e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
