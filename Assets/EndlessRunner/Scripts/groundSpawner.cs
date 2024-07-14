@@ -7,8 +7,8 @@ public class groundSpawner : MonoBehaviour
     public GameObject groundTile;
     private Transform playerTransform;
     private float spawnZ = 0f;
-    public float tileLength = 487f;
-    public int tilesCount = 1;
+    private float tileLength = 487f;
+    private int tilesCount = 1;
     private float safeZone = 25f;
     private List<GameObject> activeTiles = new List<GameObject>();
     public GameObject player;
@@ -17,8 +17,6 @@ public class groundSpawner : MonoBehaviour
     public GameObject coinPrefab;
     public bool toBeDeleted;
     private Vector3 initial_po_player;
-    public int obstaclesToSpawn = 30;
-    public float off = 4.1f;
     GameObject spawning()
     {
         GameObject go = Instantiate(groundTile) as GameObject;
@@ -75,9 +73,9 @@ public class groundSpawner : MonoBehaviour
             int spawnIndex = Random.Range(0, 3);
             float val = 0;
             if (spawnIndex == 0)
-                val = -off;
+                val = -4.1f;
             else if (spawnIndex == 2)
-                val =off;
+                val = 4.1f;
 
             // Calculate coin position within the tile length
             Vector3 coinPosition = new Vector3(initial_po_player.x + val, initial_po_player.y + 1f, tile.transform.position.z + Random.Range(0, tileLength));
@@ -104,7 +102,7 @@ public class groundSpawner : MonoBehaviour
 
     void SpawnObstacles(GameObject tile)
     {
-       
+        int obstaclesToSpawn = 30;
         List<Vector3> obstaclePositions = new List<Vector3>();
 
         for (int i = 0; i < obstaclesToSpawn; i++)
@@ -116,9 +114,9 @@ public class groundSpawner : MonoBehaviour
             }
             float val = 0;
             if (spawnIndex == 0)
-                val = -off;
+                val = -4.1f;
             else if (spawnIndex == 2)
-                val =off;
+                val = 4.1f;
             int distance = Random.Range(0, 20);
             Vector3 spawnPosition = new Vector3(initial_po_player.x + val, initial_po_player.y + 0.5f, tile.transform.position.z + Random.Range(0, tileLength));
             //Vector3 coinPosition = new Vector3(initial_po_player.x + val, initial_po_player.y + 1f, tile.transform.position.z + Random.Range(0, tileLength));

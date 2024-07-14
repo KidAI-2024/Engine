@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using System.Threading.Tasks;
 using System.IO;
+using SFB;
 public class PredictionController : MonoBehaviour
 {
     public string PredictEventName = "";
@@ -47,21 +49,52 @@ public class PredictionController : MonoBehaviour
         SetButtonsInteractable(false);
         predictImagePlaceHolder = predictButton.transform.parent.GetChild(2).GetComponent<RawImage>().texture as Texture2D;
     }
-    public void StartUploadPrediction()
+    public static async Task<string[]> OpenFileBrowser(string windowtitle, string filtername, params string[] filters)
     {
-        isPredictingUploadedImage = true;
-        // add code to upload image 
-        uploadedImgPath = EditorUtility.OpenFilePanel("Select image to predict", "", "png,jpg,jpeg");
-        if (uploadedImgPath.Length == 0)
+        await Task.Yield();
+        ExtensionFilter[] extensions = new[] { new ExtensionFilter(filtername, filters) };
+        return StandaloneFileBrowser.OpenFilePanel(windowtitle, "", extensions, true);
+    }
+    public async void StartUploadPrediction()
+    {
+        try
         {
-            return;
+            // #if UNITY_EDITOR
+
+            // add code to upload image 
+            // uploadedImgPath = EditorUtility.OpenFilePanel("Select image to predict", "", "png,jpg,jpeg");
+            await Task.Yield();
+            string fullpath = "";
+            string[] extensions = new[] { "png", "jpg", "jpeg" };
+
+            //Browse file, wait for files to be selected
+            string[] uploadedImgPath = await OpenFileBrowser("Select Images", "Image Files", extensions);
+
+
+            if (uploadedImgPath.Length > 0)
+                fullpath = uploadedImgPath[0];
+
+            if (uploadedImgPath.Length == 0 || !string.IsNullOrEmpty(fullpath))
+            {
+                WWW www = new WWW("file://" + fullpath);
+                webcamDisplay.texture = www.texture; // uploaded image texture; 
+                webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
+                uploadedImage = www.texture;
+                isPredictingUploadedImage = true;
+            }
+            else
+            {
+                return;
+            }
+            // #else
+
+            // throw new System.Exception("This code is running outside the Unity Editor");
+            // #endif
         }
-        if (uploadedImgPath != null)
+        catch (System.Exception e)
         {
-            WWW www = new WWW("file://" + uploadedImgPath);
-            webcamDisplay.texture = www.texture; // uploaded image texture; 
-            webcamDisplay.material.mainTexture = www.texture; // uploaded image texture;
-            uploadedImage = www.texture;
+            Debug.Log("Error in uploading images: " + e.Message);
+            return;
         }
     }
     public void StartPrediction()
@@ -102,6 +135,9 @@ public class PredictionController : MonoBehaviour
             { "feature_extraction_type", projectController.featureExtractionType },
             { "features", string.Join(",", projectController.features) },
             { "num_classes", projectController.numberOfClasses.ToString() },
+            {"model_category", projectController.modelCategory.ToString() },
+            {"classical_model_type", projectController.classicalModelType.ToString() },
+            {"feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString() },
             { "event", LoadModelEventName }
         };
         socketClient.SendMessage(message);

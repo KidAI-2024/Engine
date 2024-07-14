@@ -9,7 +9,7 @@ namespace MortalKombat
     {
         public RawImage webcamDisplay;
         public TextMeshProUGUI predictionText;
-        public int framePredicitonRate = 5; // predict every 5 frames
+        public int framePredicitonRate = 2; // predict every 5 frames
 
         private GameObject player1;
         private GameObject player2;
@@ -94,6 +94,14 @@ namespace MortalKombat
                 else{
                     unityPredictedClass = MapToClassName(pred); // ML code returns 1,2,3 we want "class x", "class y", "class z"
                     player1.GetComponent<Player1Controller>().prediction = unityPredictedClass;
+                }
+                if (response.ContainsKey("preprocessed_image") && response["preprocessed_image"] != "")
+                {
+                    byte[] preprocessedImageBytes = Convert.FromBase64String(response["preprocessed_image"]);
+                    Texture2D preprocessedImage = new Texture2D(webcamTexture.width, webcamTexture.height);
+                    preprocessedImage.LoadImage(preprocessedImageBytes);
+                    webcamDisplay.texture = preprocessedImage;
+                    webcamDisplay.material.mainTexture = preprocessedImage;
                 }
                 predictionText.text = unityPredictedClass;
                 nextFrameReady = true;
