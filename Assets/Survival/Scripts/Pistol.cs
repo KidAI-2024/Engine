@@ -1,16 +1,24 @@
-﻿using System.Collections;
+﻿/*
+Purpose of the Script
+This script manages the behavior of a pistol weapon in a Unity game. It handles shooting mechanics, reloading, ammo management, 
+visual and audio effects, and interactions with enemy objects. 
+The script includes cooldowns for shooting and reloading to ensure realistic weapon behavior and prevent rapid firing or reloading.
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 namespace Survival
 {
-
-
+    // This class handles the functionality of a pistol weapon in the game
     public class Pistol : MonoBehaviour
     {
+        // Public Variables
         public int maxAmmoInMag = 10;       // Maximum ammo capacity in the magazine
-        public int maxAmmoInStorage = 30;   // Maximum ammo capacity in the storage
-        public float shootCooldown = 0.5f;  // Cooldown time between shots
-        public float reloadCooldown = 0.5f;  // Cooldown time between shots
+        public int maxAmmoInStorage = 100;   // Maximum ammo capacity in the storage
+        public float shootCooldown = 0.2f;  // Cooldown time between shots
+        public float reloadCooldown = 0.5f;  // Cooldown time between reloads
         private float switchCooldown = 0.5f;  // Cooldown time between shots
         public float shootRange = 100f;     // Range of the raycast
 
@@ -18,9 +26,9 @@ namespace Survival
 
         public int currentAmmoInMag;       // Current ammo in the magazine
         public int currentAmmoInStorage;   // Current ammo in the storage
-        public int damager;   // Current ammo in the storage
+        public int damager; // Damage dealt by the pistol
         public bool canShoot = true;       // Flag to check if shooting is allowed
-        public bool canSwitch = true;       // Flag to check if shooting is allowed
+        public bool canSwitch = true;      // Flag to check if switching weapons is allowed
         private bool isReloading = false;   // Flag to check if reloading is in progress
         private float shootTimer;           // Timer for shoot cooldown
 
@@ -28,13 +36,15 @@ namespace Survival
         public GameObject cartridgePrefab; // Prefab of the cartridge
         public float cartridgeEjectionForce = 5f; // Force applied to the cartridge
 
+        public Text ammoText; // UI Text to display current ammo in magazine
+        public Text storageText; // UI Text to display current ammo in storage
 
+        public Animator gun; // Animator component for the gun
+        public ParticleSystem muzzleFlash; // Particle system for muzzle flash effect
+        public GameObject muzzleFlashLight; // Light object for muzzle flash
+        public AudioSource shoot; // Audio source for shooting sound
 
-        public Animator gun;
-        public ParticleSystem muzzleFlash;
-        public GameObject muzzleFlashLight;
-        public AudioSource shoot;
-
+        // Initialization
         void Start()
         {
             currentAmmoInMag = maxAmmoInMag;
@@ -43,12 +53,14 @@ namespace Survival
             muzzleFlashLight.SetActive(false);
         }
 
+        // Update is called once per frame
         void Update()
         {
-
-            // Update current ammo counts
+            // Clamp the ammo values to ensure they are within valid ranges
             currentAmmoInMag = Mathf.Clamp(currentAmmoInMag, 0, maxAmmoInMag);
             currentAmmoInStorage = Mathf.Clamp(currentAmmoInStorage, 0, maxAmmoInStorage);
+            ammoText.text = "Current Ammo: " + currentAmmoInMag.ToString();
+            storageText.text = "Current Storage: " + currentAmmoInStorage.ToString();
 
             // Check for shoot input
             if (Input.GetButtonDown("Fire1") && canShoot && !isReloading)
@@ -71,6 +83,7 @@ namespace Survival
             }
         }
 
+        // Handle the shooting action
         void Shoot()
         {
             // Check if there is ammo in the magazine
@@ -86,7 +99,7 @@ namespace Survival
                 RaycastHit hit;
                 if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootRange))
                 {
-                    // Check if the hit object has the "enemy" tag
+                    // Check if the hit object has the "Enemy" tag
                     if (hit.collider.CompareTag("Enemy"))
                     {
                         // Get the EnemyHealth component from the hit object
@@ -96,7 +109,7 @@ namespace Survival
                         if (enemyHealth != null)
                         {
                             // Apply damage to the enemy
-                            enemyHealth.TakeDamage(damager); // Replace 'damager' with the actual damage value.
+                            enemyHealth.TakeDamage(damager); // Apply damage to the enemy
                         }
                     }
 
@@ -130,6 +143,7 @@ namespace Survival
             }
         }
 
+        // Handle the reloading action
         void Reload()
         {
             switchCooldown -= Time.deltaTime;
@@ -143,10 +157,8 @@ namespace Survival
             // Check if there is enough ammo in the storage for reloading
             if (bulletsToReload > 0)
             {
-
                 gun.SetBool("reload", true);
                 StartCoroutine(endAnimations());
-
 
                 // Determine the actual number of bullets to reload based on available ammo
                 int bulletsAvailable = Mathf.Min(bulletsToReload, currentAmmoInStorage);
@@ -166,6 +178,7 @@ namespace Survival
             }
         }
 
+        // Handle the cooldown for reloading
         IEnumerator ReloadCooldown()
         {
             isReloading = true;
@@ -179,26 +192,26 @@ namespace Survival
             canSwitch = true;
         }
 
+        // End shooting and reloading animations
         IEnumerator endAnimations()
         {
             yield return new WaitForSeconds(.1f);
             gun.SetBool("shoot", false);
             gun.SetBool("reload", false);
-
-
         }
 
+        // Turn off the muzzle flash light
         IEnumerator endLight()
         {
             yield return new WaitForSeconds(.1f);
             muzzleFlashLight.SetActive(false);
         }
 
+        // Allow switching and shooting after cooldown
         IEnumerator canswitchshoot()
         {
             yield return new WaitForSeconds(shootCooldown);
             canSwitch = true;
         }
-
     }
 }

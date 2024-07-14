@@ -21,16 +21,15 @@ public class playerAnimation : MonoBehaviour
         {
             animator.SetBool("run", true);
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow) || pm.predicted_control == "Jump")
-            //if (Input.GetKeyDown(KeyCode.UpArrow))
+        //if (Input.GetKeyDown(KeyCode.UpArrow) || pm.predicted_control == "Jump")
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Debug.Log("in jump");
             animator.SetBool("jump", true);
-           
 
         }
         //if (Input.GetKeyUp(KeyCode.UpArrow)||pm.predicted_control!="Jump")
-        if (Input.GetKeyUp(KeyCode.UpArrow)|| pm.predicted_control != "Jump")
+        if (Input.GetKeyUp(KeyCode.UpArrow)&& pm.predicted_control != "Jump")
         {
             animator.SetBool("jump", false);
         }

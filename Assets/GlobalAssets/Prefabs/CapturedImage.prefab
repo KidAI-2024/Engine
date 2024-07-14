@@ -242,7 +242,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capturedImages: []
   ImageIndex: 0
-  isLoad: 0
 --- !u!1 &8137004045537003411
 GameObject:
   m_ObjectHideFlags: 0
