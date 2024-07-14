@@ -15,6 +15,7 @@ public class gameManager : MonoBehaviour
     public cameraFollowing cam;
     public playerMovement player;
     public TextMeshProUGUI scoring;
+    public TextMeshProUGUI class_pred;
     private float originalFogDensity;
     private void Awake()
     {
@@ -28,6 +29,10 @@ public class gameManager : MonoBehaviour
     {
         score++;
         scoring.text ="Score : " +score;
+    }public void change_class_ui(string pred)
+    {
+
+        class_pred.text =pred;
     }
      public void eraseScore()
     {
@@ -36,8 +41,8 @@ public class gameManager : MonoBehaviour
         audioSource.clip = clip;
         audioSource.PlayOneShot(clip);
         StartCoroutine(player.freezeMoving(0.5f));
-        StartCoroutine(cam.shaking(0.5f));
-        StartCoroutine(changeFog());
+        StartCoroutine(player.BlinkPlayerRoutine());
+        //StartCoroutine(changeFog());
     }
 
 

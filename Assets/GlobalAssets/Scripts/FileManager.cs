@@ -1,9 +1,11 @@
+// using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.UI;
 using System.IO;
+using SFB;
+using System.Threading.Tasks;
 
 public class FileManager : MonoBehaviour
 {
@@ -14,46 +16,64 @@ public class FileManager : MonoBehaviour
     public Transform finalImagesContainer; // Parent transform for instantiated RawImages
     private GameObject EmptyImage; // GameObject to display when there are no images
 
-    public void OpenFileExplorer(GameObject outsideImagesContainer)
+    public static async Task<string[]> OpenFileBrowser(string windowtitle, string filtername, params string[] filters)
+    {
+        await Task.Yield();
+        ExtensionFilter[] extensions = new[] { new ExtensionFilter(filtername, filters) };
+        return StandaloneFileBrowser.OpenFilePanel(windowtitle, "", extensions, true);
+    }
+
+    public async void OpenFileExplorer(GameObject outsideImagesContainer)
     {
         // Debug.Log("finalImagesContainer: " + finalImagesContainer);
 
         // path = EditorUtility.OpenFilePanel("Select images", "", "png,jpg,jpeg");
         try
         {
-#if UNITY_EDITOR
+            // #if UNITY_EDITOR
             finalImagesContainer = outsideImagesContainer.transform;
             EmptyImage = outsideImagesContainer.transform.parent.parent.transform.GetChild(2).gameObject;
             GetPreviousCapturedImages();
-            path = EditorUtility.OpenFolderPanel("Select images", "./", "");
-            string[] files = Directory.GetFiles(path);
+            // path = EditorUtility.OpenFolderPanel("Select images", "./", "");
+            // string[] files = Directory.GetFiles(path);
+            await Task.Yield();
+            string[] extensions = new[] { "png", "jpg", "jpeg" };
+            //Browse file, wait for files to be selected
+            string[] files = await OpenFileBrowser("Select Images", "Image Files", extensions);
 
-            // check if size of the array is zero then return
-            if (files.Length == 0)
+
+            if (files.Length != 0 && files[0] != null)
+            {
+                foreach (string file in files)
+                {
+                    GetImg(file);
+                }
+            }
+            else
             {
                 return;
             }
-            Debug.Log("path: " + path);
+            // Debug.Log("path: " + path);
 
 
-            foreach (string file in files)
-            {
-                if (file.EndsWith(".png") || file.EndsWith(".jpg") || file.EndsWith(".jpeg") || file.EndsWith(".PNG") || file.EndsWith(".JPG") || file.EndsWith(".JPEG"))
-                {
+            // foreach (string file in files)
+            // {
+            //     if (file.EndsWith(".png") || file.EndsWith(".jpg") || file.EndsWith(".jpeg") || file.EndsWith(".PNG") || file.EndsWith(".JPG") || file.EndsWith(".JPEG"))
+            //     {
 
-                    // File.Copy(file, EditorApplication.currentScene);
-                    // Debug.Log("file:" + path + "/" + Path.GetFileName(file));
+            //         // File.Copy(file, EditorApplication.currentScene);
+            //         // Debug.Log("file:" + path + "/" + Path.GetFileName(file));
 
-                    GetImg(path + "/" + Path.GetFileName(file));
-                }
-            }
+            //         GetImg(path + "/" + Path.GetFileName(file));
+            //     }
+            // }
             OnSelectImageFinish();
             // empty the list of captured images
             capturedImages.Clear();
-#else
+            // #else
 
-            throw new System.Exception("This code is running outside the Unity Editor");
-#endif
+            // throw new System.Exception("This code is running outside the Unity Editor");
+            // #endif
 
         }
         catch (System.Exception e)
@@ -112,7 +132,7 @@ public class FileManager : MonoBehaviour
             if (col == 0 && capturedImages.Count > 5)
             {
                 finalImagesContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x, 
+                    finalImagesContainer.GetComponent<RectTransform>().sizeDelta.x,
                     finalImagesContainer.GetComponent<RectTransform>().sizeDelta.y + 70
                 );
             }
