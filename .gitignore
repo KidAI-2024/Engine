@@ -94,7 +94,7 @@ ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
 # lbp.mp4
 # hog.mp4
 # resnet.mp4
-logistic_regression.mp4
+# logistic_regression.mp4
 learning_rate.mp4
 epochs.mp4
 What are Convolutional Neural Networks (CNNs)？-(720p30).mp4
