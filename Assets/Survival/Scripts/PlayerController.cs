@@ -1,198 +1,117 @@
-﻿/*
-    Script Name: PlayerController
-
-    Purpose:
-    This script manages player control, including movement, camera control, footstep sounds, zoom functionality, and scoring for correctly classified images in a game environment.
-
-    Public Variables:
-    - public Camera playerCamera: Reference to the player's camera.
-    - public float walkingSpeed: Speed of the player's walking movement.
-    - public float runingSpeed: Speed of the player's running movement.
-    - public float jumpingPower: Power of the player's jump (not currently used).
-    - public float gravity
-*/
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-
 namespace Survival
 {
-    // This script ensures a CharacterController component is added to the GameObject automatically if not already present.
+    // This Will Auto Add Character Controller To Gameobject If It's Not Already Applied:
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
-        // Public Variables
+        // // Public Variables
 
-        // Reference to the player's camera
-        public Camera playerCamera;
+        // Camera:
+        public Camera playerCam;
 
         // Movement Settings:
-        public float walkingSpeed = 5f; // Speed of walking movement
-        public float runingSpeed = 10f; // Speed of running movement
-        public float jumpingPower = 5f; // Power of jump (not currently used)
-        public float gravityForce = 10f; // Gravity force applied to the player
+        public float walkSpeed = 3f;
+        public float runSpeed = 10f;
+        public float jumpPower = 5f; //edit it if you want to add jumping to the game
+        public float gravity = 10f;
 
         // Camera Settings:
-        public float lookingSpeed = 2f; // Speed of camera rotation
-        public float lookInXLimit = 75f; // Limit for camera rotation on the X-axis
-        public float cameraRotationSmoothness = 5f; // Smoothness of camera rotation
+        public float lookSpeed = 2f;
+        public float lookXLimit = 75f;
+        public float cameraRotationSmooth = 5f;
 
         // Ground Sounds:
-        public AudioClip[] woodFootStepSoundsArr; // Footstep sounds on wood
-        public AudioClip[] tileFootStepSoundsArr; // Footstep sounds on tile
-        public AudioClip[] carpetFootStepSoundsArr; // Footstep sounds on carpet
-        public Transform footStepAudioPosition; // Position for playing footstep sounds
-        public AudioSource audioSource; // AudioSource component for playing sounds
+        public AudioClip[] woodFootstepSounds;
+        public AudioClip[] tileFootstepSounds;
+        public AudioClip[] carpetFootstepSounds;
+        public Transform footstepAudioPosition;
+        public AudioSource audioSource;
 
-        // Score
-        public Text score;
-
-        // Private Variables
-        Vector3 moveDirection = Vector3.zero; // Movement direction
-        float rotationX = 0; // X-axis rotation for camera
-        float rotationY = 0; // Y-axis rotation for camera
-        private bool isZoomed = false; // Flag to check if camera is zoomed in
+        Vector3 moveDirection = Vector3.zero;
+        float rotationX = 0;
+        float rotationY = 0;
 
         // Camera Zoom Settings:
-        public int zoomFieldOfView = 35; // Field of view when zoomed in
-        public int initialFieldOfView; // Initial field of view
-        public float cameraZoomSmoothness = 1; // Smoothness of camera zoom
+        public int ZoomFOV = 35;
+        public int initialFOV;
+        public float cameraZoomSmooth = 1;
 
-        // Number of correctly classified images
-        public int numOfCorrectClassifiedImgs = 0;
+        // // Private Variables
+        private bool isWalking = false;
+        private bool isFootstepCoroutineRunning = false;
+        private AudioClip[] currentFootstepSounds;
 
-        private bool canMove = true; // Flag to check if the player can move
-        private bool isWalking = false; // Flag to check if the player is walking
-        private bool isFootstepCoroutineRunning = false; // Flag to check if the footstep coroutine is running
-        private AudioClip[] currentFootStepSounds; // Array to hold current footstep sounds
 
-        CharacterController characterController; // Reference to the CharacterController component
+        private bool isZoomed = false;
 
-        // Static instance of the PlayerController for singleton pattern
-        private static PlayerController instance;
+        // Can The Player Move?:
+        private bool canMove = true;
 
-        // Property to access the singleton instance of PlayerController
-        public static PlayerController Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    // Find the instance in the scene or create a new one if not found
-                    instance = FindObjectOfType<PlayerController>();
-                    if (instance == null)
-                    {
-                        GameObject singleton = new GameObject(typeof(PlayerController).Name);
-                        instance = singleton.AddComponent<PlayerController>();
-                        DontDestroyOnLoad(singleton);
-                    }
-                }
-                return instance;
-            }
-        }
+        CharacterController characterController;
 
-        // Initialization method called when the script instance is being loaded
-        void Awake()
-        {
-            // Ensure there is only one instance of PlayerController and it persists between scenes
-            if (instance == null)
-            {
-                instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else if (instance != this)
-            {
-                Destroy(gameObject);
-            }
-        }
-
-        // Initialization method called at the start
+        // //Initialization
         void Start()
         {
-            try
-            {
-                // Stop background music when the player starts
-                GameObject.FindGameObjectWithTag("music").GetComponent<MusicControl>().StopMusic();
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log(e);
-            }
-
-            // Ensure the GameObject has a CharacterController component
+            // Ensure We Are Using The Character Controller Component:
             characterController = GetComponent<CharacterController>();
 
-            // Lock and hide the cursor
+            // Lock And Hide Cursor:
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
             // Initialize current footstep sounds to wood sounds by default
-            currentFootStepSounds = woodFootStepSoundsArr;
+            currentFootstepSounds = woodFootstepSounds;
         }
 
-        // Update is called once per frame
         void Update()
         {
-            // Handle ESC key press to load the "Lobby" scene and unlock cursor
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                SceneManager.LoadScene("Lobby");
-                Cursor.visible = true; // Make cursor visible
-                Cursor.lockState = CursorLockMode.None; // Unlock cursor
-                Destroy(PlayerController.Instance.gameObject); // Destroy PlayerController instance
-            }
-
-            // Update score UI with the number of correctly classified images
-            score.text = "Number of images classified correctly: " + numOfCorrectClassifiedImgs;
-
-            // Movement and rotation logic
+            // Walking / Running In Action:
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
 
             bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
-            float curSpeedX = canMove ? (isRunning ? runingSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-            float curSpeedY = canMove ? (isRunning ? runingSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
+            float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
+            float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
             float movementDirectionY = moveDirection.y;
             moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-            // Jumping logic (not currently used)
+            // Jumping In Action:
             if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
             {
-                moveDirection.y = jumpingPower;
+                moveDirection.y = jumpPower;
             }
             else
             {
                 moveDirection.y = movementDirectionY;
             }
 
-            // Apply gravity
             if (!characterController.isGrounded)
             {
-                moveDirection.y -= gravityForce * Time.deltaTime;
+                moveDirection.y -= gravity * Time.deltaTime;
             }
 
-            // Move the player
             characterController.Move(moveDirection * Time.deltaTime);
 
-            // Camera rotation logic
+            // Camera Movement In Action:
             if (canMove)
             {
-                rotationX -= Input.GetAxis("Mouse Y") * lookingSpeed;
-                rotationX = Mathf.Clamp(rotationX, -lookInXLimit, lookInXLimit);
+                rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
+                rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
 
-                rotationY += Input.GetAxis("Mouse X") * lookingSpeed;
+                rotationY += Input.GetAxis("Mouse X") * lookSpeed;
 
                 Quaternion targetRotationX = Quaternion.Euler(rotationX, 0, 0);
                 Quaternion targetRotationY = Quaternion.Euler(0, rotationY, 0);
 
-                playerCamera.transform.localRotation = Quaternion.Slerp(playerCamera.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotationSmoothness);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotationSmoothness);
+                playerCam.transform.localRotation = Quaternion.Slerp(playerCam.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotationSmooth);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotationSmooth);
             }
 
-            // Zooming logic
+            // Zooming In Action:
             if (Input.GetButtonDown("Fire2"))
             {
                 isZoomed = true;
@@ -203,21 +122,20 @@ namespace Survival
                 isZoomed = false;
             }
 
-            // Smoothly adjust camera FOV based on zoom state
             if (isZoomed)
             {
-                playerCamera.GetComponent<Camera>().fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFieldOfView, Time.deltaTime * cameraZoomSmoothness);
+                playerCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(playerCam.fieldOfView, ZoomFOV, Time.deltaTime * cameraZoomSmooth);
             }
             else
             {
-                playerCamera.GetComponent<Camera>().fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, initialFieldOfView, Time.deltaTime * cameraZoomSmoothness);
+                playerCam.GetComponent<Camera>().fieldOfView = Mathf.Lerp(playerCam.fieldOfView, initialFOV, Time.deltaTime * cameraZoomSmooth);
             }
 
-            // Play footstep sounds based on movement
+            // Play footstep sounds when walking
             if ((curSpeedX != 0f || curSpeedY != 0f) && !isWalking && !isFootstepCoroutineRunning)
             {
                 isWalking = true;
-                StartCoroutine(PlayFootstepSounds(1.3f / (isRunning ? runingSpeed : walkingSpeed)));
+                StartCoroutine(PlayFootstepSounds(1.3f / (isRunning ? runSpeed : walkSpeed)));
             }
             else if (curSpeedX == 0f && curSpeedY == 0f)
             {
@@ -225,18 +143,18 @@ namespace Survival
             }
         }
 
-        // Coroutine to play footstep sounds with a delay
+        // Play footstep sounds with a delay based on movement speed
         IEnumerator PlayFootstepSounds(float footstepDelay)
         {
             isFootstepCoroutineRunning = true;
 
             while (isWalking)
             {
-                if (currentFootStepSounds.Length > 0)
+                if (currentFootstepSounds.Length > 0)
                 {
-                    int randomIndex = Random.Range(0, currentFootStepSounds.Length);
-                    audioSource.transform.position = footStepAudioPosition.position;
-                    audioSource.clip = currentFootStepSounds[randomIndex];
+                    int randomIndex = Random.Range(0, currentFootstepSounds.Length);
+                    audioSource.transform.position = footstepAudioPosition.position;
+                    audioSource.clip = currentFootstepSounds[randomIndex];
                     audioSource.Play();
                     yield return new WaitForSeconds(footstepDelay);
                 }
@@ -249,22 +167,28 @@ namespace Survival
             isFootstepCoroutineRunning = false;
         }
 
-        // OnTriggerEnter is called when the Collider other enters the trigger
+        // Detect ground surface and set the current footstep sounds array accordingly
         private void OnTriggerEnter(Collider other)
         {
-            // Detect ground surface and set the current footstep sounds array accordingly
             if (other.CompareTag("Wood"))
             {
-                currentFootStepSounds = woodFootStepSoundsArr;
+                Debug.Log("Wood");
+                
+                currentFootstepSounds = woodFootstepSounds;
             }
             else if (other.CompareTag("Tile"))
             {
-                currentFootStepSounds = tileFootStepSoundsArr;
+                Debug.Log("Tile");
+                
+                currentFootstepSounds = tileFootstepSounds;
             }
             else if (other.CompareTag("Carpet"))
             {
-                currentFootStepSounds = carpetFootStepSoundsArr;
+                Debug.Log("Carpet");
+                
+                currentFootstepSounds = carpetFootstepSounds;
             }
         }
     }
+
 }

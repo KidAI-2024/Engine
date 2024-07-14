@@ -45,12 +45,6 @@ public class ClassesMapping : MonoBehaviour
                 button.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => AssignClassToControl());
                 button.name = controls[j];
             }
-            if (i > 0)
-            {
-                // increase the height of the classes container
-                RectTransform rt = classesContainer.GetComponent<RectTransform>();
-                rt.sizeDelta = new Vector2(rt.sizeDelta.x, rt.sizeDelta.y + verticalOffset);
-            }
         }
     }
 
