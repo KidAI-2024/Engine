@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using System.Collections;
 
 public class videoPlayer : MonoBehaviour
 {
@@ -9,8 +10,6 @@ public class videoPlayer : MonoBehaviour
     public Button pauseButton;
     public Slider videoSlider;
 
-    bool videoPrepared = false;
-
     void Start()
     {
         vid = GetComponent<VideoPlayer>();
@@ -18,47 +17,44 @@ public class videoPlayer : MonoBehaviour
         pauseButton.onClick.AddListener(PauseVideo);
         videoSlider.onValueChanged.AddListener(SliderSeek);
 
+        // Disable controls until video is prepared
         playButton.interactable = false;
         pauseButton.interactable = false;
         videoSlider.interactable = false;
 
         if (vid.clip != null)
         {
-            // Set initial playback speed
-            vid.playbackSpeed = 1.0f;
-
-            // Skip frames if the video can't keep up
-            vid.skipOnDrop = true;
-
-            // Set slider's maxValue to video length
-            videoSlider.maxValue = (float)vid.clip.length;
-
-            // Ensure slider doesn't reach the end prematurely
-            videoSlider.value = 0.0f;
-
-            // Enable controls
-            playButton.interactable = true;
-            pauseButton.interactable = true;
-            videoSlider.interactable = true;
-
-            // Listen for video prepared event
-            vid.prepareCompleted += VideoPrepared;
-            vid.Prepare();
+            vid.playbackSpeed = 1.0f; // Set initial playback speed
+            vid.skipOnDrop = true; // Skip frames if the video can't keep up
+            StartCoroutine(PrepareVideo());
         }
+    }
+
+    IEnumerator PrepareVideo()
+    {
+        vid.Prepare();
+        while (!vid.isPrepared)
+        {
+            yield return null; // Wait until the video is prepared
+        }
+        VideoPrepared(vid);
     }
 
     void VideoPrepared(VideoPlayer vp)
     {
-        // Video prepared callback
-        videoPrepared = true;
-
-        // Play the video once prepared
+        videoSlider.maxValue = (float)vp.length;
         vid.Play();
+        vid.Pause();
+
+        // Enable controls after video is prepared
+        playButton.interactable = true;
+        pauseButton.interactable = true;
+        videoSlider.interactable = true;
     }
 
     void Update()
     {
-        if (videoPrepared && vid.isPlaying)
+        if (vid.isPlaying)
         {
             videoSlider.value = (float)vid.time;
         }
@@ -68,25 +64,8 @@ public class videoPlayer : MonoBehaviour
     {
         if (vid.clip != null)
         {
-            if (!videoPrepared)
-            {
-                // If video is not prepared, prepare and play on completion
-                vid.prepareCompleted += PlayVideoOnPrepareComplete;
-                vid.Prepare();
-            }
-            else
-            {
-                // Play the video if already prepared
-                vid.Play();
-            }
+            vid.Play();
         }
-    }
-
-    void PlayVideoOnPrepareComplete(VideoPlayer vp)
-    {
-        // Play video once prepared
-        vid.prepareCompleted -= PlayVideoOnPrepareComplete;
-        vid.Play();
     }
 
     void PauseVideo()
