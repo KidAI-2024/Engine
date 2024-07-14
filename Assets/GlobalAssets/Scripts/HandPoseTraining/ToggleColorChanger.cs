@@ -28,15 +28,14 @@ namespace GlobalAssets.HandPoseTraining
             }
             else
             {
-                //black with alpha 70
-                toggleBackground.color = new Color(0, 0, 0, 0.7f);
+                toggleBackground.color = Color.red; // Change to red when off
             }
         }
 
         void OnDestroy()
         {
             // Remove listener when the script is destroyed to avoid memory leaks
-            if (toggle != null) toggle.onValueChanged.RemoveListener(UpdateColor);
+            toggle.onValueChanged.RemoveListener(UpdateColor);
         }
     }
 
