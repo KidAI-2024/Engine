@@ -91,7 +91,7 @@ ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
 # *.drc
 # *.gif
 # *.gifv
-lbp.mp4
+# lbp.mp4
 hog.mp4
 resnet.mp4
 logistic_regression.mp4
