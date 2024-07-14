@@ -78,24 +78,16 @@ crashlytics-build.properties
 ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
 
 # videos
-# *.mp4
-# *.mov
-# *.avi
-# *.wmv
-# *.flv
-# *.mkv
-# *.webm
-# *.vob
-# *.ogv
-# *.ogg
-# *.drc
-# *.gif
-# *.gifv
-# lbp.mp4
-# hog.mp4
-# resnet.mp4
-# logistic_regression.mp4
-# learning_rate.mp4
-# epochs.mp4
-# What are Convolutional Neural Networks (CNNs)？-(720p30).mp4
-# Neural Networks for Babies-(720p30).mp4
+*.mp4
+*.mov
+*.avi
+*.wmv
+*.flv
+*.mkv
+*.webm
+*.vob
+*.ogv
+*.ogg
+*.drc
+*.gif
+*.gifv
