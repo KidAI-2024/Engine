@@ -49,20 +49,18 @@ namespace Survival
         // Score
         public Text score;
 
+        // Camera Zoom Settings:
+        public int zoomFieldOfView = 35; // Field of view when zoomed in
+        public int initialFieldOfView; // Initial field of view
+        public float cameraZoomSmoothness = 1; // Smoothness of camera zoom
+        // Number of correctly classified images
+        public int numOfCorrectClassifiedImgs = 0;
+
         // Private Variables
         Vector3 moveDirection = Vector3.zero; // Movement direction
         float rotationX = 0; // X-axis rotation for camera
         float rotationY = 0; // Y-axis rotation for camera
         private bool isZoomed = false; // Flag to check if camera is zoomed in
-
-        // Camera Zoom Settings:
-        public int zoomFieldOfView = 35; // Field of view when zoomed in
-        public int initialFieldOfView; // Initial field of view
-        public float cameraZoomSmoothness = 1; // Smoothness of camera zoom
-
-        // Number of correctly classified images
-        public int numOfCorrectClassifiedImgs = 0;
-
         private bool canMove = true; // Flag to check if the player can move
         private bool isWalking = false; // Flag to check if the player is walking
         private bool isFootstepCoroutineRunning = false; // Flag to check if the footstep coroutine is running

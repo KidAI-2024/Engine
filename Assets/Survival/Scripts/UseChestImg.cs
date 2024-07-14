@@ -16,20 +16,22 @@ namespace Survival
 {
     public class UseChestImg : MonoBehaviour
     {
-        private GameObject chestObj; // Reference to the chest GameObject
+        // Public variables
         public GameObject handUI; // UI element for indicating interaction with the chest
+        public Text predictionResult; // Text UI element to display prediction result
         public GameObject rawImageToPredict; // GameObject containing RawImage for displaying images to predict
+        public int pythonPredictedClass { get; private set; } = -1; // Predicted class ID from Python model
+        public string UnityPredictedClass { get; private set; } = ""; // Predicted class name mapped to Unity
+        // Private variables
+        private GameObject chestObj; // Reference to the chest GameObject
         private ProjectController projectController; // Reference to the project controller for managing project-related data
         private string projectPath = ""; // Path to the project directory
         private System.Random random = new System.Random(); // Random number generator
         private bool canReach; // Flag to track if the player is within reach of the chest
         private int numberOfClasses; // Number of classes (categories) in the project
-        public int pythonPredictedClass { get; private set; } = -1; // Predicted class ID from Python model
-        public string UnityPredictedClass { get; private set; } = ""; // Predicted class name mapped to Unity
         private Color32[] frame; // Array of colors representing the current frame
 
         private GlobalAssets.Socket.SocketUDP socketClient; // Socket client for sending and receiving messages
-        public Text predictionResult; // Text UI element to display prediction result
         private bool predictDone = false; // Flag to track if prediction process is completed
         private bool reqSent = false; // Flag to track if prediction request has been sent
 

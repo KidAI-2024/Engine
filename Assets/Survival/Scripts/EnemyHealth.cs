@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 namespace Survival
 {
-
-
     public class EnemyHealth : MonoBehaviour
     {
+        // Public variables
         public int maxHealth = 100; // Maximum health of the enemy.
+        // Private variables
         private int currentHealth; // Current health of the enemy.
 
         // Called when the enemy is initialized.
