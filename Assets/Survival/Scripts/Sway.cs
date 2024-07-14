@@ -11,12 +11,14 @@ namespace Survival
 {
     public class Sway : MonoBehaviour
     {
+        // Public Variables
         // Determines how much the object (e.g., a pistol) will sway in response to mouse movement.
         public float swayAmount = 0.5f;
 
         // Controls how smoothly the sway motion transitions.
         public float smoothFactor = 2f;
 
+        // Private Variables
         // Stores the initial rotation of the object to which the script is attached.
         private Quaternion initialRotation;
 

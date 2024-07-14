@@ -13,6 +13,7 @@ namespace Survival // Defines the namespace "Survival" to organize the code
 {
     public class MenuStuff : MonoBehaviour // Defines a public class named "MenuStuff" that inherits from MonoBehaviour
     {
+        // Public variables accessible in the Unity Editor
         public string nextSceneName; // Name of the next scene to load
 
         void Start()

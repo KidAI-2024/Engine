@@ -158,6 +158,7 @@ public class StartTraining : MonoBehaviour
             DisplayWarning("Class names must not be empty or be the same", "OK");
             return;
         }
+        Debug.Log(projectController.classes.Count);
         if (!Validate()) return; // validate the project before training
         // set the training in progress flags
         isTrainingFinished = false;
@@ -212,22 +213,21 @@ public class StartTraining : MonoBehaviour
                 return false;
             }
         }
-
-        // check if number if image a class is less than 10
-        foreach (string className in projectController.classes)
-        {
-            if (projectController.imagesPerClass[className] < 1)
-            {
-                DisplayWarning("Add at least 10 images to each class", "OK", DisplayMessageType.Warning);
-                return false;
-            }
-        }
         // check number of images in each class is greater than 0
         foreach (string className in projectController.classes)
         {
             if (projectController.imagesPerClass[className] < 1)
             {
                 DisplayWarning("Add images to class " + className, "OK");
+                return false;
+            }
+        }
+        // check if number if image a class is less than 10
+        foreach (string className in projectController.classes)
+        {
+            if (projectController.imagesPerClass[className] < 10)
+            {
+                DisplayWarning("Add at least 10 images to each class", "OK", DisplayMessageType.Warning);
                 return false;
             }
         }

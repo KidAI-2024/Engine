@@ -14,12 +14,14 @@ namespace Survival // Defines the namespace "Survival" to organize the code
 {
     public class Door : MonoBehaviour // Defines a public class named "Door" that inherits from MonoBehaviour
     {
+        // Public variables accessible in the Unity Editor
         public GameObject handImg; // UI element indicating interaction is possible
         public GameObject noKeyText; // UI text to display interaction information
         public GameObject exitText; // UI text to display exit information
         public GameObject key; // UI element for the inventory key
         public GameObject fadeEffectFx; // UI element for fade effect
         public string nextScene; // Name of the next scene to load
+        // Private variables
         private bool canReach; // Boolean to check if the player is within reach of the door
 
         void Start()
