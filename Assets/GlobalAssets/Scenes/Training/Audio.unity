@@ -15166,6 +15166,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5427203866719593974, guid: 766329c003903934794dfe7ed5997623, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: 67dd98c655379d148a6d8b829cd42a6e, type: 3}
     - target: {fileID: 5427203867041500837, guid: 766329c003903934794dfe7ed5997623, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -15256,15 +15260,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867041500839, guid: 766329c003903934794dfe7ed5997623, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867348338577, guid: 766329c003903934794dfe7ed5997623, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867408930377, guid: 766329c003903934794dfe7ed5997623, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 766329c003903934794dfe7ed5997623, type: 3}
