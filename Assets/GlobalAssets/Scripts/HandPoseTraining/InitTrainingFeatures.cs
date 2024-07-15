@@ -17,7 +17,8 @@ namespace GlobalAssets.HandPoseTraining
                 ProjectController.features = GetAllFeaturesList();
                 ProjectController.featureExtractionType = "mediapipe";
                 ProjectController.model = "SVM";
-
+                ProjectController.isCreated = false;
+                ProjectController.Save();
             }
         }
 
