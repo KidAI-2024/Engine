@@ -552,20 +552,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867041500839, guid: 1df7c96cb14d8cb449f7682de856c57e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867348338577, guid: 1df7c96cb14d8cb449f7682de856c57e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867408930377, guid: 1df7c96cb14d8cb449f7682de856c57e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9061102083640312729, guid: 1df7c96cb14d8cb449f7682de856c57e, type: 3}
       propertyPath: videoToPlay
       value: 
-      objectReference: {fileID: 32900000, guid: 84549f89579989749b164140bb547612, type: 3}
+      objectReference: {fileID: 32900000, guid: c895d8113d828e94a98ee30acc7f27f2, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1df7c96cb14d8cb449f7682de856c57e, type: 3}
 --- !u!1 &823680131 stripped
