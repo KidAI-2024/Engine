@@ -3124,7 +3124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867041500839, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_Name
-      value: TutorialPanel_LR
+      value: TutorialPanel_LearnRate
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867041500839, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_IsActive
@@ -3644,6 +3644,7 @@ GameObject:
   - component: {fileID: 698193645}
   - component: {fileID: 698193644}
   - component: {fileID: 698193647}
+  - component: {fileID: 698193648}
   m_Layer: 5
   m_Name: cnn
   m_TagString: Untagged
@@ -3728,6 +3729,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 698193648}
+        m_TargetAssemblyTypeName: GlobalAssets.UI.Popup, Assembly-CSharp
+        m_MethodName: CloseDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &698193645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3779,6 +3792,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialog: {fileID: 330191938}
+  IscaptureCameraPanel: 0
+  captureImageCanvas: {fileID: 0}
+  isAudio: 0
+--- !u!114 &698193648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698193641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e757d32403b8e9419240dfa4bc80c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialog: {fileID: 456128678}
   IscaptureCameraPanel: 0
   captureImageCanvas: {fileID: 0}
   isAudio: 0
@@ -4942,6 +4971,7 @@ GameObject:
   - component: {fileID: 862806144}
   - component: {fileID: 862806143}
   - component: {fileID: 862806146}
+  - component: {fileID: 862806147}
   m_Layer: 5
   m_Name: resnet
   m_TagString: Untagged
@@ -5026,6 +5056,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 862806147}
+        m_TargetAssemblyTypeName: GlobalAssets.UI.Popup, Assembly-CSharp
+        m_MethodName: CloseDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &862806144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5077,6 +5119,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialog: {fileID: 1474301141}
+  IscaptureCameraPanel: 0
+  captureImageCanvas: {fileID: 0}
+  isAudio: 0
+--- !u!114 &862806147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862806140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e757d32403b8e9419240dfa4bc80c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialog: {fileID: 456128678}
   IscaptureCameraPanel: 0
   captureImageCanvas: {fileID: 0}
   isAudio: 0
@@ -9921,6 +9979,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4263841331665259148, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
+      propertyPath: videoToPlay
+      value: 
+      objectReference: {fileID: 32900000, guid: 96e882bd6cc9c77479c7ad06fbfe1209, type: 3}
     - target: {fileID: 5427203866678596346, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_SizeDelta.x
       value: 500
@@ -10683,6 +10745,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4263841331665259148, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
+      propertyPath: videoToPlay
+      value: 
+      objectReference: {fileID: 32900000, guid: 641dc10f7512aac4ca9c2cbbb87a7cb4, type: 3}
     - target: {fileID: 5427203866678596346, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_SizeDelta.x
       value: 500
@@ -13004,7 +13070,7 @@ PrefabInstance:
     - target: {fileID: 4263841331665259148, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: videoToPlay
       value: 
-      objectReference: {fileID: 32900000, guid: 8d1463702a400d14899dccd2744300d7, type: 3}
+      objectReference: {fileID: 32900000, guid: f5dfe92ba7431374e8e5c7a0591583ae, type: 3}
     - target: {fileID: 5427203866678596346, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 69
@@ -13119,7 +13185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867041500839, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_Name
-      value: TutorialPanel_LR
+      value: TutorialPanel_LogReg
       objectReference: {fileID: 0}
     - target: {fileID: 5427203867041500839, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_IsActive
@@ -13395,6 +13461,7 @@ GameObject:
   - component: {fileID: 1957302375}
   - component: {fileID: 1957302374}
   - component: {fileID: 1957302377}
+  - component: {fileID: 1957302378}
   m_Layer: 5
   m_Name: classical
   m_TagString: Untagged
@@ -13479,6 +13546,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1957302378}
+        m_TargetAssemblyTypeName: GlobalAssets.UI.Popup, Assembly-CSharp
+        m_MethodName: CloseDialog
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1957302375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13530,6 +13609,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialog: {fileID: 517647419}
+  IscaptureCameraPanel: 0
+  captureImageCanvas: {fileID: 0}
+  isAudio: 0
+--- !u!114 &1957302378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957302371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e757d32403b8e9419240dfa4bc80c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialog: {fileID: 456128678}
   IscaptureCameraPanel: 0
   captureImageCanvas: {fileID: 0}
   isAudio: 0
@@ -14225,6 +14320,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4263841331665259148, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
+      propertyPath: videoToPlay
+      value: 
+      objectReference: {fileID: 32900000, guid: baf1daeb702720f4a923f9a9e008bd4e, type: 3}
     - target: {fileID: 5427203866678596346, guid: 511ea4a6c2a58b741bdf61acd3ef7eaf, type: 3}
       propertyPath: m_SizeDelta.x
       value: 500
