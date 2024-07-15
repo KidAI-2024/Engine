@@ -40,7 +40,7 @@ public class StartTraining : MonoBehaviour
     public Sprite warningIcon;
     public Sprite errorIcon;
     public Sprite successIcon;
-
+    public TextMeshProUGUI audioAccuracy;
     void Start()
     {
         projectController = ProjectController.Instance;
@@ -88,6 +88,13 @@ public class StartTraining : MonoBehaviour
                         // Restore the default graph image
                         GraphImage.GetComponent<RawImage>().texture = DefaultGraphImage;
 
+                    }
+                    if (SceneManager.GetActiveScene().name == "Audio")
+                    {
+                        if (audioAccuracy != null)
+                        {
+                            audioAccuracy.text = response["accuracy"];
+                        }
                     }
                     // unlock the predict button
                     predictButton.GetComponent<Button>().interactable = true;
@@ -151,6 +158,7 @@ public class StartTraining : MonoBehaviour
             DisplayWarning("Class names must not be empty or be the same", "OK");
             return;
         }
+        Debug.Log(projectController.classes.Count);
         if (!Validate()) return; // validate the project before training
         // set the training in progress flags
         isTrainingFinished = false;
@@ -205,22 +213,21 @@ public class StartTraining : MonoBehaviour
                 return false;
             }
         }
-
-        // check if number if image a class is less than 10
-        foreach (string className in projectController.classes)
-        {
-            if (projectController.imagesPerClass[className] < 1)
-            {
-                DisplayWarning("Add at least 10 images to each class", "OK", DisplayMessageType.Warning);
-                return false;
-            }
-        }
         // check number of images in each class is greater than 0
         foreach (string className in projectController.classes)
         {
             if (projectController.imagesPerClass[className] < 1)
             {
                 DisplayWarning("Add images to class " + className, "OK");
+                return false;
+            }
+        }
+        // check if number if image a class is less than 10
+        foreach (string className in projectController.classes)
+        {
+            if (projectController.imagesPerClass[className] < 10)
+            {
+                DisplayWarning("Add at least 10 images to each class", "OK", DisplayMessageType.Warning);
                 return false;
             }
         }
@@ -275,6 +282,12 @@ public class StartTraining : MonoBehaviour
             {"model_category", projectController.modelCategory.ToString()},
             {"classical_model_type", projectController.classicalModelType.ToString()},
             { "feature_extraction_type_img", projectController.featureExtractionTypeImg.ToString()},
+            {"feature_extraction_methods", projectController.audioFeats},
+            {"model_name",projectController.audioModel },
+            {"kernel_name",projectController.audioConfig },
+            {"knn_neigh",projectController.audioConfig },
+            {"num_est",projectController.audioConfig },
+
             { "event", trainingEvent }
         };
         // print the message

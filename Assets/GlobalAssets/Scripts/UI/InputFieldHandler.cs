@@ -37,15 +37,15 @@ namespace GlobalAssets.UI
                 {
                     inputField2.text = projectController.classicalModelType.ToString();
                 }
-                else if (inputFieldName1 == "feature_extraction")
+                if (inputFieldName1 == "feature_extraction")
                 {
                     inputField1.text = projectController.featureExtractionTypeImg.ToString();
                 }
-                else if (inputFieldName1 == "epochs")
+                if (inputFieldName1 == "epochs")
                 {
                     inputField1.text = projectController.epochs.ToString();
                 }
-                else if (inputFieldName2 == "learning_rate")
+                if (inputFieldName2 == "learning_rate")
                 {
                     inputField2.text = projectController.learningRate.ToString();
                 }

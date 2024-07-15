@@ -29,10 +29,12 @@ namespace Survival
 {
     public class UseChest : MonoBehaviour
     {
-        private GameObject chestObj; // Reference to the chest GameObject
+        // public variables
         public GameObject handImg; // UI element for indicating interaction with the chest
         public GameObject objInChest; // Object to activate when interacting with the chest
 
+        // private variables
+        private GameObject chestObj; // Reference to the chest GameObject
         private bool canReach; // Flag to track if the player is within reach of the chest
 
         void Start()

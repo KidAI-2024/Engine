@@ -46,6 +46,12 @@ public class ProjectController : MonoBehaviour
     1: HOG
     2: LBP
     */
+
+
+    public string audioFeats = "";
+    public string audioModel = "";
+    public string audioConfig = "";
+
     private void Awake()
     {
         if (Instance == null)
@@ -115,6 +121,9 @@ public class ProjectController : MonoBehaviour
 
     public void Reset()
     {
+        audioFeats = "";
+        audioModel = "";
+        audioConfig = "";
         projectName = "";
         createdAt = "";
         projectType = "";
