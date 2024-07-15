@@ -174,7 +174,7 @@ namespace Karting.Car
                 MoveVehicle(Input.Accelerate, Input.Brake, Input.TurnInput);
             }
             //If the vehicle is in the air, make it fall faster
-            GroundAirbourne();
+            GroundAirborne();
             // audio management
             UpdateEngineSound(currentRPM);
 
@@ -596,7 +596,7 @@ namespace Karting.Car
             // clamp values in finalstats
             finalStats.Grip = Mathf.Clamp(finalStats.Grip, 0, 1);
         }
-        void GroundAirbourne()
+        void GroundAirborne()
         {
             // while in the air, fall faster
             if (AirPercent >= 1)
