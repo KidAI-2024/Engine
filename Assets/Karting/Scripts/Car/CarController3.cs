@@ -180,11 +180,12 @@ namespace Karting.Car
 
             prevGroundPercent = GroundPercent;
 
-            // Set animation params
+            // Set colliders steer angles
             AnimateWheels();
         }
         void LateUpdate()
         {
+            // update the wheel meshes based on their colliders
             ApplyWheelPositions();
         }
 
