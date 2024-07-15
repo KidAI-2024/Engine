@@ -46,6 +46,7 @@ public class ConfigureModel : MonoBehaviour
             return;
         }
         ProjectController.features = GetFeaturesList();
+        Debug.Log("Features List: " + string.Join(", ", ProjectController.features));
         ProjectController.model = GetModel();
         ProjectController.featureExtractionType = GetTrainingMode();
         ProjectController.Save();
